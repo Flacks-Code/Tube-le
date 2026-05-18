@@ -91,6 +91,12 @@ TARGETS = [
     "Beckton Park","Cyprus","Gallions Reach","Beckton",
     "Pudding Mill Lane","Devons Road","Bow Church","Langdon Park","All Saints",
     "Silvertown","London City Airport","King George V","Woolwich Arsenal",
+    # --- Piccadilly: Uxbridge branch ---
+    "North Ealing","Park Royal","Alperton","Sudbury Town","Sudbury Hill","South Harrow",
+    "Eastcote","Ruislip Manor","Ruislip","Ickenham","Hillingdon",
+    # --- Piccadilly: Heathrow branch ---
+    "South Ealing","Northfields","Boston Manor","Osterley",
+    "Hounslow East","Hounslow Central","Hounslow West","Hatton Cross",
 ]
 
 # Aliases the PDF typesetter uses. Where multiple aliases exist we'll take
@@ -230,7 +236,12 @@ LINE_STATIONS: dict[str, list[str]] = {
         "Covent Garden","Leicester Square","Piccadilly Circus","Green Park",
         "South Kensington","Gloucester Road","Earl's Court","Barons Court",
         "Hammersmith","Turnham Green","Acton Town","Ealing Common",
-        "Rayners Lane","Uxbridge",
+        # Uxbridge branch
+        "North Ealing","Park Royal","Alperton","Sudbury Town","Sudbury Hill","South Harrow",
+        "Rayners Lane","Eastcote","Ruislip Manor","Ruislip","Ickenham","Hillingdon","Uxbridge",
+        # Heathrow branch
+        "South Ealing","Northfields","Boston Manor","Osterley",
+        "Hounslow East","Hounslow Central","Hounslow West","Hatton Cross",
         "Heathrow Terminals 2 & 3","Heathrow Terminal 4","Heathrow Terminal 5",
     ],
     "Victoria": [
