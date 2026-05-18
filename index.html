@@ -1,0 +1,2238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tube-le · The London Underground Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FAF7F0;
+    --paper-2:#F2EFE6;
+    --ink:#0A0A0A;
+    --ink-soft:#3a3a3a;
+    --ink-mute:#7a7a78;
+    --rule:#DC241F;
+    --bar:#0019A8;
+    --thames:#9BC1DC;
+    --thames-ink:#3a78a1;
+    --L-bak:#B36305;
+    --L-cen:#E32017;
+    --L-cir:#FFD300;
+    --L-dis:#00782A;
+    --L-hac:#F3A9BB;
+    --L-jub:#A0A5A9;
+    --L-met:#9B0056;
+    --L-nor:#000000;
+    --L-pic:#003688;
+    --L-vic:#0098D4;
+    --L-wac:#95CDBA;
+    --L-dlr:#00A4A7;
+    --L-eli:#6950A1;
+    --grey-stub:#bdbab1;
+    --shadow:0 1px 0 rgba(0,0,0,.04), 0 8px 24px -8px rgba(20,20,20,.18);
+    font-synthesis:none;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:'Public Sans',system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Paper grain overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+      radial-gradient(rgba(0,0,0,.018) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 2px;
+    mix-blend-mode:multiply;
+    z-index:1;
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns:440px 1fr;
+    height:100vh;
+    position:relative;
+    z-index:2;
+  }
+
+  /* ============ LEFT PANEL ============ */
+  .panel{
+    background:var(--paper);
+    border-right:2px solid var(--ink);
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+    position:relative;
+  }
+  .panel::after{
+    content:"";
+    position:absolute;top:0;right:-2px;bottom:0;width:6px;
+    background:repeating-linear-gradient(180deg, var(--ink) 0 2px, transparent 2px 6px);
+    opacity:.12;pointer-events:none;
+  }
+
+  .panel-head{
+    padding:22px 26px 18px;
+    border-bottom:2px solid var(--ink);
+    background:var(--paper);
+  }
+  .brand{
+    display:flex;align-items:center;gap:14px;
+  }
+  .roundel{
+    width:64px;height:64px;flex-shrink:0;
+    display:block;
+  }
+  .titleblock h1{
+    font-family:'Hammersmith One',serif;
+    font-weight:400;
+    font-size:38px;
+    letter-spacing:-0.5px;
+    margin:0;line-height:.95;
+  }
+  .titleblock .sub{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:3.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    font-weight:600;
+  }
+  .head-actions{
+    margin-top:14px;
+    display:flex;gap:8px;align-items:center;justify-content:space-between;
+  }
+  .meta-line{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color:var(--ink-mute);
+    font-weight:600;
+  }
+  .icon-btn{
+    background:transparent;border:1.5px solid var(--ink);
+    width:30px;height:30px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    color:var(--ink);
+    transition:background .15s ease, color .15s ease;
+  }
+  .icon-btn:hover{background:var(--ink);color:var(--paper)}
+  .icon-btn svg{width:14px;height:14px;display:block}
+  .head-buttons{display:flex;gap:6px}
+  .text-btn{
+    font-family:'Public Sans',sans-serif;
+    font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:1.4px;
+    background:transparent;border:1.5px solid var(--ink);
+    padding:6px 12px;border-radius:14px;
+    cursor:pointer;color:var(--ink);
+    transition:background .15s ease, color .15s ease;
+  }
+  .text-btn:hover{background:var(--ink);color:var(--paper)}
+
+  /* progress dots */
+  .progress{
+    display:flex;gap:6px;margin-top:14px;
+  }
+  .pip{
+    flex:1;height:8px;background:var(--paper-2);
+    border:1.5px solid var(--ink);border-radius:4px;
+    transition:background .25s ease;
+  }
+  .pip.used{background:var(--ink)}
+  .pip.win{background:var(--L-dis)}
+  .pip.last{background:var(--L-cen)}
+
+  /* input area */
+  .input-area{
+    padding:18px 26px 14px;
+    position:relative;
+  }
+  .field-label{
+    font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--ink-mute);font-weight:700;margin-bottom:6px;
+  }
+  .input-row{
+    display:flex;gap:8px;align-items:stretch;
+  }
+  .station-input{
+    flex:1;min-width:0;
+    font-family:'Public Sans',sans-serif;
+    font-size:17px;font-weight:500;
+    border:2px solid var(--ink);
+    border-radius:6px;
+    background:var(--paper);
+    padding:11px 12px;
+    color:var(--ink);
+    letter-spacing:.2px;
+  }
+  .station-input:focus{outline:none;background:#fff}
+  .station-input::placeholder{color:var(--ink-mute)}
+  .submit{
+    font-family:'Hammersmith One',serif;
+    background:var(--rule);color:#fff;
+    border:2px solid var(--ink);
+    padding:0 16px;
+    border-radius:6px;
+    font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+    cursor:pointer;
+    transition:transform .08s ease;
+  }
+  .submit:disabled{background:var(--ink-mute);cursor:not-allowed}
+  .submit:not(:disabled):active{transform:translateY(1px)}
+
+  /* autocomplete dropdown */
+  .ac-list{
+    position:absolute;
+    left:26px;right:26px;
+    top:calc(100% - 6px);
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:6px;
+    max-height:280px;
+    overflow-y:auto;
+    z-index:20;
+    box-shadow:var(--shadow);
+    display:none;
+  }
+  .ac-list.open{display:block}
+  .ac-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-size:15px;
+    border-bottom:1px solid rgba(10,10,10,.07);
+  }
+  .ac-item:last-child{border-bottom:none}
+  .ac-item.active{background:var(--ink);color:var(--paper)}
+  .ac-item.active .ac-lines{opacity:.95}
+  .ac-name{flex:1;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ac-name mark{background:rgba(220,36,31,.20);color:inherit;padding:0;font-weight:700}
+  .ac-item.active .ac-name mark{background:rgba(255,255,255,.25)}
+  .ac-lines{display:flex;gap:3px;flex-shrink:0}
+  .ac-lines span{
+    width:8px;height:8px;border-radius:50%;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+  }
+
+  /* history */
+  .history-head{
+    padding:14px 26px 8px;
+    border-top:1.5px dashed rgba(10,10,10,.25);
+    display:flex;align-items:baseline;justify-content:space-between;
+  }
+  .history-head h2{
+    font-family:'Hammersmith One',serif;
+    font-weight:400;font-size:13px;
+    letter-spacing:2.5px;text-transform:uppercase;margin:0;
+    color:var(--ink);
+  }
+  .history-count{
+    font-size:11px;color:var(--ink-mute);letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
+  }
+  .history{
+    flex:1;overflow-y:auto;
+    padding:8px 22px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .history::-webkit-scrollbar{width:8px}
+  .history::-webkit-scrollbar-thumb{background:rgba(10,10,10,.18);border-radius:4px}
+
+  /* Transit Ticket */
+  .ticket{
+    background:linear-gradient(180deg, #FFFCF1 0%, #F8F2DF 100%);
+    border:1.5px solid var(--ink);
+    border-radius:10px;
+    padding:12px 14px 32px;
+    position:relative;
+    box-shadow:var(--shadow);
+    animation:slidein .35s cubic-bezier(.2,.7,.2,1);
+    overflow:hidden;
+  }
+  @keyframes slidein{
+    from{transform:translateX(28px);opacity:0}
+    to{transform:none;opacity:1}
+  }
+  .ticket::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:1px;
+    background:repeating-linear-gradient(90deg, var(--ink) 0 4px, transparent 4px 8px);
+    opacity:.35;
+  }
+  .ticket::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:22px;
+    background:#3b2a18;
+    background-image:linear-gradient(90deg, rgba(255,255,255,.05) 0 30%, transparent 30% 100%);
+    border-top:1px solid #2b1d0f;
+  }
+  .ticket .t-top{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  }
+  .ticket .t-name{
+    font-family:'Hammersmith One',serif;
+    font-size:18px;line-height:1.05;
+    color:var(--ink);
+  }
+  .ticket .t-zone{
+    font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+    color:var(--ink-mute);margin-top:2px;
+  }
+  .ticket .t-stops{
+    font-family:'Hammersmith One',serif;
+    font-size:24px;line-height:1;
+    background:var(--ink);color:var(--paper);
+    border-radius:6px;padding:4px 8px;
+    display:flex;flex-direction:column;align-items:center;
+    min-width:54px;
+  }
+  .ticket .t-stops small{
+    font-family:'Public Sans',sans-serif;
+    font-size:8px;letter-spacing:1.5px;font-weight:700;
+    margin-top:2px;
+  }
+  .ticket .t-lines{
+    display:flex;gap:5px;margin-top:11px;flex-wrap:wrap;align-items:center;
+  }
+  .ticket .t-lines span{
+    height:18px;
+    border-radius:3px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+    padding:0 7px;
+    font-size:9.5px;
+    font-weight:800;
+    letter-spacing:1px;
+    display:inline-flex;
+    align-items:center;
+    line-height:1;
+  }
+  .ticket .t-row{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:10px;gap:10px;
+  }
+  .ticket .t-compass{
+    display:flex;align-items:center;gap:8px;
+    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
+    color:var(--ink-soft);
+  }
+  .ticket .t-compass svg{width:26px;height:26px}
+  .ticket .t-temp{
+    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
+    color:var(--ink);
+    padding:3px 7px;border-radius:9px;border:1.2px solid var(--ink);
+  }
+  .ticket.win{
+    background:linear-gradient(180deg, #E8F3E0 0%, #C6E1B6 100%);
+    border-color:#00521E;
+  }
+  .ticket.win::after{background:#00521E;border-top-color:#00351A}
+
+  /* ============ MAP PANEL ============ */
+  .map{
+    position:relative;
+    background:
+      radial-gradient(circle at 50% 40%, var(--paper) 0%, var(--paper-2) 90%);
+    overflow:hidden;
+  }
+  .map::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(to right, rgba(10,10,10,.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,10,10,.04) 1px, transparent 1px);
+    background-size:32px 32px;
+    pointer-events:none;
+  }
+  .map svg{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    display:block;
+    touch-action:none;
+    user-select:none;
+  }
+  .map.interactive svg{cursor:grab}
+  .map.interactive svg.grabbing{cursor:grabbing}
+
+  .zoom-controls{
+    position:absolute;
+    top:50%;right:18px;
+    transform:translateY(-50%);
+    display:none;
+    flex-direction:column;gap:6px;
+    z-index:6;
+  }
+  .zoom-controls.show{display:flex}
+  .zoom-btn{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    width:38px;height:38px;
+    border-radius:50%;
+    cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:'Hammersmith One',serif;
+    font-size:20px;line-height:1;
+    color:var(--ink);
+    box-shadow:var(--shadow);
+    transition:background .15s ease, color .15s ease, transform .1s ease;
+    padding:0;
+  }
+  .zoom-btn:hover{background:var(--ink);color:var(--paper)}
+  .zoom-btn:active{transform:scale(.92)}
+  .zoom-btn svg{width:16px;height:16px}
+  .map-hint{
+    position:absolute;
+    top:18px;right:18px;
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    border-radius:18px;
+    padding:6px 12px;
+    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
+    color:var(--ink-soft);
+    box-shadow:var(--shadow);
+    z-index:5;
+    display:none;
+    animation:slidein .4s ease;
+  }
+  .map-hint.show{display:inline-block}
+  .map-overlay{
+    position:absolute;top:18px;left:18px;
+    display:flex;flex-direction:column;gap:8px;
+    z-index:5;
+    pointer-events:none;
+  }
+  .chip{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    border-radius:18px;
+    padding:6px 14px;
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+    box-shadow:var(--shadow);
+    display:inline-flex;align-items:center;gap:8px;
+    width:max-content;
+    opacity:0;transform:translateY(-6px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .chip.show{opacity:1;transform:none}
+  .reopen-btn{
+    position:absolute;bottom:18px;right:18px;
+    background:var(--ink);color:var(--paper);
+    border:1.5px solid var(--ink);
+    padding:9px 16px;border-radius:22px;
+    font-family:'Hammersmith One',serif;
+    font-size:12px;letter-spacing:1.6px;text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    display:none;align-items:center;gap:8px;
+    z-index:6;
+    animation:popin .35s cubic-bezier(.2,1.4,.4,1);
+  }
+  .reopen-btn.show{display:inline-flex}
+  .reopen-btn:hover{background:var(--rule);border-color:var(--rule)}
+  .reopen-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--L-cir)}
+  .reopen-btn.win .dot{background:var(--L-dis)}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--rule)}
+  .legend{
+    position:absolute;bottom:18px;left:18px;
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    border-radius:10px;
+    padding:10px 14px;
+    box-shadow:var(--shadow);
+    font-size:11px;letter-spacing:.4px;
+    max-width:300px;
+    z-index:5;
+  }
+  .legend strong{
+    font-family:'Hammersmith One',serif;font-weight:400;
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;
+    display:block;margin-bottom:4px;
+  }
+  .legend-row{display:flex;align-items:center;gap:8px;margin-top:3px;color:var(--ink-soft)}
+  .legend-row b{color:var(--ink);font-weight:700}
+
+  /* ============ MODAL ============ */
+  .modal-backdrop{
+    position:fixed;inset:0;
+    background:rgba(10,10,10,.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    animation:fadein .35s ease;
+  }
+  .modal-backdrop.open{display:flex}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .modal{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:14px;
+    width:min(440px, 92vw);
+    padding:26px 28px 24px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.5);
+    animation:popin .45s cubic-bezier(.2,1.4,.4,1);
+    position:relative;
+  }
+  .modal-close{
+    position:absolute;top:12px;right:12px;
+    background:transparent;border:1.5px solid var(--ink);
+    width:30px;height:30px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--ink);
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .modal-close:hover{background:var(--ink);color:var(--paper);transform:rotate(90deg)}
+  .modal-close svg{width:12px;height:12px;display:block}
+  @keyframes popin{from{transform:translateY(20px) scale(.94);opacity:0}to{transform:none;opacity:1}}
+  .modal .roundel{
+    margin:0 auto 12px;display:block;
+    width:84px;height:84px;
+  }
+  .modal h2{
+    font-family:'Hammersmith One',serif;font-weight:400;font-size:22px;
+    text-align:center;margin:0 0 4px;letter-spacing:1px;
+  }
+  .modal .station-found{
+    font-family:'Hammersmith One',serif;
+    font-size:34px;text-align:center;line-height:1.1;
+    margin:6px 0 2px;
+  }
+  .modal .lines-row{
+    display:flex;gap:6px;justify-content:center;margin:10px 0 14px;flex-wrap:wrap;
+  }
+  .modal .lines-row span{
+    font-size:10px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;
+    color:#fff;padding:3px 9px;border-radius:10px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+  }
+  .modal .lines-row span.text-dark{color:var(--ink)}
+  .stats{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+    margin:6px 0 14px;
+  }
+  .stat{
+    text-align:center;
+    border:1.5px dashed rgba(10,10,10,.25);
+    border-radius:8px;padding:8px 4px;
+  }
+  .stat .v{font-family:'Hammersmith One',serif;font-size:22px;line-height:1}
+  .stat .l{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin-top:3px}
+  .grid-area{
+    background:var(--paper-2);
+    border:1.5px solid var(--ink);
+    border-radius:8px;
+    padding:12px;
+    text-align:center;
+    margin:10px 0 14px;
+    font-family:'Public Sans',monospace;
+    font-size:13px;line-height:1.5;letter-spacing:.5px;
+    white-space:pre;
+  }
+  .modal .actions{
+    display:flex;gap:8px;
+  }
+  .btn-primary{
+    flex:1;
+    font-family:'Hammersmith One',serif;
+    background:var(--ink);color:var(--paper);
+    border:2px solid var(--ink);
+    padding:11px 14px;border-radius:8px;
+    font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--rule);border-color:var(--rule)}
+  .btn-secondary{
+    flex:1;
+    font-family:'Hammersmith One',serif;
+    background:transparent;color:var(--ink);
+    border:2px solid var(--ink);
+    padding:11px 14px;border-radius:8px;
+    font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+    cursor:pointer;
+  }
+  .toast{
+    position:absolute;bottom:-32px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);
+    padding:5px 12px;border-radius:6px;font-size:11px;
+    letter-spacing:1.4px;text-transform:uppercase;font-weight:700;
+    opacity:0;transition:opacity .3s ease;
+  }
+  .toast.show{opacity:1}
+
+  /* Confetti */
+  .confetti{
+    position:fixed;pointer-events:none;
+    inset:0;z-index:45;overflow:hidden;
+  }
+  .confetti i{
+    position:absolute;width:10px;height:10px;
+    border-radius:2px;
+    animation:fall 2.5s ease-in forwards;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.2);
+  }
+  @keyframes fall{
+    0%{transform:translateY(-30px) rotate(0);opacity:1}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:.4}
+  }
+
+  /* Empty state for history */
+  .empty-state{
+    color:var(--ink-mute);font-size:13px;
+    text-align:center;padding:20px 6px;line-height:1.5;
+    border:1.5px dashed rgba(10,10,10,.2);
+    border-radius:10px;margin:4px 0;
+  }
+  .empty-state b{display:block;font-family:'Hammersmith One',serif;font-weight:400;font-size:14px;color:var(--ink);margin-bottom:4px;letter-spacing:1.5px;text-transform:uppercase}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr;grid-template-rows:55vh 45vh}
+    .panel{border-right:none;border-bottom:2px solid var(--ink);height:auto}
+    .panel-head{padding:14px 18px 12px}
+    .titleblock h1{font-size:30px}
+    .roundel{width:50px;height:50px}
+  }
+</style>
+</head>
+<body>
+
+<main class="app">
+  <!-- ============ LEFT PANEL ============ -->
+  <aside class="panel">
+    <div class="panel-head">
+      <div class="brand">
+        <svg class="roundel" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#DC241F" stroke-width="12"/>
+          <rect x="6" y="42" width="88" height="16" fill="#0019A8"/>
+          <text x="50" y="55" text-anchor="middle" fill="#fff"
+            font-family="Hammersmith One, sans-serif" font-size="11" letter-spacing="1.5">UNDERGROUND</text>
+        </svg>
+        <div class="titleblock">
+          <h1>Tube-le</h1>
+          <div class="sub">The Daily Station</div>
+        </div>
+      </div>
+
+      <div class="head-actions">
+        <span class="meta-line" id="dateline">— · —</span>
+        <div class="head-buttons">
+          <button class="icon-btn" id="mute-btn" aria-label="Toggle sound">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="mute-icon">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+          </button>
+          <button class="text-btn" id="next-btn">Next puzzle</button>
+        </div>
+      </div>
+
+      <div class="progress" id="progress">
+        <div class="pip"></div><div class="pip"></div><div class="pip"></div>
+        <div class="pip"></div><div class="pip"></div><div class="pip last"></div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="field-label">Guess the station — 6 tries</div>
+      <div class="input-row">
+        <input class="station-input" id="station-input" type="text"
+          placeholder="Type a station…" autocomplete="off" spellcheck="false">
+        <button class="submit" id="submit-btn" disabled>Guess</button>
+      </div>
+      <div class="ac-list" id="ac-list" role="listbox"></div>
+    </div>
+
+    <div class="history-head">
+      <h2>Guess History</h2>
+      <span class="history-count" id="history-count">0 / 6</span>
+    </div>
+    <div class="history" id="history">
+      <div class="empty-state">
+        <b>Today's diagram is loaded</b>
+        Read the angles. Read the colours.
+        Make your first guess.
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ RIGHT MAP ============ -->
+  <section class="map">
+    <svg id="map-svg" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="map-overlay">
+      <div class="chip" id="chip-zone"><span class="dot"></span><span id="chip-zone-text">Zone —</span></div>
+      <div class="chip" id="chip-letter"><span class="dot" style="background:var(--bar)"></span><span id="chip-letter-text">Starts with —</span></div>
+    </div>
+    <button class="reopen-btn" id="reopen-btn">
+      <span class="dot"></span>
+      <span id="reopen-text">Show result</span>
+    </button>
+    <div class="map-hint" id="map-hint">Drag · scroll · pinch</div>
+    <div class="zoom-controls" id="zoom-controls">
+      <button class="zoom-btn" id="zoom-in" aria-label="Zoom in" title="Zoom in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+      <button class="zoom-btn" id="zoom-out" aria-label="Zoom out" title="Zoom out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+      <button class="zoom-btn" id="zoom-reset" aria-label="Recenter on station" title="Recenter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3"/>
+          <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="legend" id="legend">
+      <strong>The reveal</strong>
+      <div class="legend-row"><b>Guess 1+</b> Lines light up in colour</div>
+      <div class="legend-row"><b>Guess 3+</b> Connecting tracks appear</div>
+      <div class="legend-row"><b>Guess 4+</b> Zone revealed</div>
+      <div class="legend-row"><b>Guess 5+</b> River Thames shown</div>
+      <div class="legend-row"><b>Guess 6</b> First letter revealed</div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modal-bd">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close and view map" title="Close · view map">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+        <line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>
+      </svg>
+    </button>
+    <svg class="roundel" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#DC241F" stroke-width="12"/>
+      <rect x="6" y="42" width="88" height="16" fill="#0019A8"/>
+      <text x="50" y="55" text-anchor="middle" fill="#fff" font-family="Hammersmith One, sans-serif" font-size="11" letter-spacing="1.5">UNDERGROUND</text>
+    </svg>
+    <h2 id="modal-title">Station Found</h2>
+    <div class="station-found" id="modal-station">—</div>
+    <div class="lines-row" id="modal-lines"></div>
+    <div class="stats">
+      <div class="stat"><div class="v" id="stat-guesses">—</div><div class="l">Guesses</div></div>
+      <div class="stat"><div class="v" id="stat-lines">—</div><div class="l">Lines</div></div>
+      <div class="stat"><div class="v" id="stat-zone">—</div><div class="l">Zone</div></div>
+    </div>
+    <div class="grid-area" id="grid-area"></div>
+    <div class="actions">
+      <button class="btn-secondary" id="modal-next">New puzzle</button>
+      <button class="btn-primary" id="copy-btn">Copy result</button>
+    </div>
+    <div class="toast" id="toast">Copied</div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ============================================================
+   STATION DATA — coordinates on a stylised 1400×900 grid roughly
+   mirroring the TFL diagram. Zones 1–6. Lines list the TFL/DLR/
+   Elizabeth lines that serve the station.
+   ============================================================ */
+const STATIONS = {
+  // Far NW / N / NE termini and high-zone outliers
+  "Stanmore":                 { coords:[495.7,151.7], zone:5, lines:["Jubilee"], river:"far" },
+  "Edgware":                  { coords:[528.7,120.7], zone:5, lines:["Northern"], river:"far" },
+  "Harrow & Wealdstone":      { coords:[418.9,170.3], zone:5, lines:["Bakerloo"], river:"far" },
+  "Wembley Park":             { coords:[508.4,222.5], zone:4, lines:["Jubilee","Metropolitan"], river:"far" },
+  "High Barnet":              { coords:[748.5,94.5], zone:5, lines:["Northern"], river:"far" },
+  "Cockfosters":              { coords:[876.0,83.8], zone:5, lines:["Piccadilly"], river:"far" },
+  "Uxbridge":                 { coords:[119.6,184.7],  zone:6, lines:["Metropolitan","Piccadilly"], river:"far" },
+  "Rayners Lane":             { coords:[258.2,203.2], zone:5, lines:["Metropolitan","Piccadilly"], river:"far" },
+  "Wembley Central":          { coords:[410.1,262.0], zone:4, lines:["Bakerloo"], river:"far" },
+  "Hampstead":                { coords:[575.5,296.0], zone:3, lines:["Northern"], river:"far" },
+  "Walthamstow Central":      { coords:[1099.9,229.3],zone:3, lines:["Victoria"], river:"far" },
+  "Tottenham Hale":           { coords:[1000.7,241.8], zone:3, lines:["Victoria"], river:"far" },
+  "Seven Sisters":            { coords:[962.2,222.5], zone:3, lines:["Victoria"], river:"far" },
+  "Willesden Junction":       { coords:[407.9,299.2], zone:3, lines:["Bakerloo"], river:"far" },
+  "Queen's Park":             { coords:[427.5,343.4], zone:2, lines:["Bakerloo"], river:"far" },
+
+  // Inner-north
+  "Finsbury Park":            { coords:[894.3,256.5], zone:2, lines:["Piccadilly","Victoria"], river:"far" },
+  "Highbury & Islington":     { coords:[890.1,293.5], zone:2, lines:["Victoria"], river:"far" },
+  "Camden Town":              { coords:[709.6,317.5], zone:2, lines:["Northern"], river:"far" },
+  "Finchley Road":            { coords:[564.4,340.8], zone:2, lines:["Jubilee","Metropolitan"], river:"far" },
+  "Swiss Cottage":            { coords:[626.6,344.3], zone:2, lines:["Jubilee"], river:"far" },
+  "St John's Wood":           { coords:[642.7,355.6], zone:2, lines:["Jubilee"], river:"medium" },
+  "Euston Square":            { coords:[700.5,388.7], zone:1, lines:["Circle","Hammersmith & City","Metropolitan"], river:"medium" },
+  "King's Cross St. Pancras": { coords:[812.8,349.3], zone:1, lines:["Circle","Hammersmith & City","Metropolitan","Northern","Piccadilly","Victoria"], river:"medium" },
+  "Euston":                   { coords:[714.7,353.4], zone:1, lines:["Northern","Victoria"], river:"medium" },
+  "Angel":                    { coords:[818.4,375.0], zone:1, lines:["Northern"], river:"medium" },
+  "Old Street":               { coords:[856.1,383.0], zone:1, lines:["Northern"], river:"medium" },
+  "Baker Street":             { coords:[653.2,368.6], zone:1, lines:["Bakerloo","Circle","Hammersmith & City","Jubilee","Metropolitan"], river:"medium" },
+  "Farringdon":               { coords:[819.0,394.1], zone:1, lines:["Circle","Hammersmith & City","Metropolitan","Elizabeth"], river:"medium" },
+  "Warren Street":            { coords:[733.9,399.8], zone:1, lines:["Northern","Victoria"], river:"medium" },
+
+  // West/Central Zone 1
+  "Paddington":               { coords:[561.4,399.6], zone:1, lines:["Bakerloo","Circle","District","Hammersmith & City","Elizabeth"], river:"medium" },
+  "Edgware Road":             { coords:[530.3,358.4], zone:1, lines:["Circle","District","Hammersmith & City"], river:"medium" },
+  "Notting Hill Gate":        { coords:[546.8,469.5], zone:1, lines:["Central","Circle","District"], river:"medium" },
+  "Marble Arch":              { coords:[570.9,451.8], zone:1, lines:["Central"], river:"medium" },
+  "Bond Street":              { coords:[640.8,428.7], zone:1, lines:["Central","Jubilee","Elizabeth"], river:"medium" },
+  "Oxford Circus":            { coords:[685.0,453.6], zone:1, lines:["Bakerloo","Central","Victoria"], river:"medium" },
+  "Tottenham Court Road":     { coords:[733.7,426.4], zone:1, lines:["Central","Northern","Elizabeth"], river:"medium" },
+  "Holborn":                  { coords:[743.3,455.0], zone:1, lines:["Central","Piccadilly"], river:"medium" },
+  "Chancery Lane":            { coords:[770.8,476.0], zone:1, lines:["Central"], river:"medium" },
+  "St. Paul's":               { coords:[815.8,473.5], zone:1, lines:["Central"], river:"close" },
+  "Bank":                     { coords:[863.5,462.5], zone:1, lines:["Central","Northern","Waterloo & City","DLR"], river:"close" },
+  "Liverpool Street":         { coords:[893.1,402.3], zone:1, lines:["Central","Circle","Hammersmith & City","Elizabeth"], river:"medium" },
+  "Aldgate":                  { coords:[906.7,453.2], zone:1, lines:["Circle","Metropolitan"], river:"close" },
+  "Aldgate East":             { coords:[959.8,443.2], zone:1, lines:["District","Hammersmith & City"], river:"close" },
+  "Moorgate":                 { coords:[829.5,440.7], zone:1, lines:["Circle","Hammersmith & City","Metropolitan","Northern"], river:"medium" },
+
+  // Theatreland / South Bank
+  "Covent Garden":            { coords:[750.0,486.3], zone:1, lines:["Piccadilly"], river:"close" },
+  "Leicester Square":         { coords:[705.4,475.0], zone:1, lines:["Northern","Piccadilly"], river:"close" },
+  "Piccadilly Circus":        { coords:[680.4,495.1], zone:1, lines:["Bakerloo","Piccadilly"], river:"close" },
+  "Charing Cross":            { coords:[732.8,506.7], zone:1, lines:["Bakerloo","Northern"], river:"close" },
+  "Embankment":               { coords:[749.9,534.7], zone:1, lines:["Bakerloo","Circle","District","Northern"], river:"close" },
+  "Blackfriars":              { coords:[773.1,523.1], zone:1, lines:["Circle","District"], river:"close" },
+  "Monument":                 { coords:[871.9,489.1], zone:1, lines:["Circle","District"], river:"close" },
+  "Tower Hill":               { coords:[904.0,491.9], zone:1, lines:["Circle","District"], river:"close" },
+  "High Street Kensington":   { coords:[552.0,500.7], zone:1, lines:["Circle","District"], river:"medium" },
+  "Gloucester Road":          { coords:[552.1,524.9], zone:1, lines:["Circle","District","Piccadilly"], river:"medium" },
+  "South Kensington":         { coords:[568.0,553.9], zone:1, lines:["Circle","District","Piccadilly"], river:"medium" },
+  "Sloane Square":            { coords:[609.9,553.5], zone:1, lines:["Circle","District"], river:"close" },
+  "Green Park":               { coords:[657.1,478.4], zone:1, lines:["Jubilee","Piccadilly","Victoria"], river:"close" },
+  "Victoria":                 { coords:[621.1,533.5], zone:1, lines:["Circle","District","Victoria"], river:"close" },
+  "Westminster":              { coords:[664.5,533.7], zone:1, lines:["Circle","District","Jubilee"], river:"close" },
+  "Waterloo":                 { coords:[695.3,581.8], zone:1, lines:["Bakerloo","Jubilee","Northern","Waterloo & City"], river:"close" },
+  "London Bridge":            { coords:[876.8,537.8], zone:1, lines:["Jubilee","Northern"], river:"close" },
+  "Borough":                  { coords:[814.2,605.4], zone:1, lines:["Northern"], river:"close" },
+
+  // West
+  "Earl's Court":             { coords:[517.0,553.6], zone:2, lines:["District","Piccadilly"], river:"medium" },
+  "Barons Court":             { coords:[470.5,524.0], zone:2, lines:["District","Piccadilly"], river:"medium" },
+  "Hammersmith":              { coords:[425.0,527.6], zone:2, lines:["Circle","District","Hammersmith & City","Piccadilly"], river:"close" },
+  "Turnham Green":            { coords:[361.5,554.3], zone:3, lines:["District","Piccadilly"], river:"close" },
+  "Acton Town":               { coords:[288.4,523.6], zone:3, lines:["District","Piccadilly"], river:"far" },
+  "Ealing Common":            { coords:[249.2,509.3], zone:3, lines:["District","Piccadilly"], river:"far" },
+  "Ealing Broadway":          { coords:[251.2,459.5], zone:3, lines:["Central","District","Elizabeth"], river:"far" },
+  "White City":               { coords:[434.9,468.1], zone:2, lines:["Central"], river:"far" },
+  "Shepherd's Bush":          { coords:[500.2,468.3], zone:2, lines:["Central"], river:"medium" },
+
+  // South
+  "Vauxhall":                 { coords:[623.5,674.8], zone:1, lines:["Victoria"], river:"close" },
+  "Battersea Power Station":  { coords:[578.0,665.4], zone:1, lines:["Northern"], river:"close" },
+  "Kennington":               { coords:[696.6,661.7], zone:1, lines:["Northern"], river:"medium" },
+  "Elephant & Castle":        { coords:[792.9,657.0], zone:1, lines:["Bakerloo","Northern"], river:"medium" },
+  "Stockwell":                { coords:[702.8,706.6], zone:2, lines:["Northern","Victoria"], river:"medium" },
+  "Brixton":                  { coords:[716.4,747.2], zone:2, lines:["Victoria"], river:"far" },
+  "Morden":                   { coords:[498.1,825.7], zone:4, lines:["Northern"], river:"far" },
+
+  // East
+  "Bethnal Green":            { coords:[997.5,403.7], zone:2, lines:["Central"], river:"medium" },
+  "Mile End":                 { coords:[1043.8,411.4],zone:2, lines:["Central","District","Hammersmith & City"], river:"medium" },
+  "West Ham":                 { coords:[1148.4,416.5],zone:3, lines:["District","Hammersmith & City","Jubilee","DLR"], river:"close" },
+  "Canning Town":             { coords:[1174.5,515.1],zone:3, lines:["Jubilee","DLR"], river:"close" },
+  "North Greenwich":          { coords:[1135.8,580.9],zone:2, lines:["Jubilee"], river:"close" },
+  "Canary Wharf":             { coords:[1061.0,550.4],zone:2, lines:["Jubilee","DLR","Elizabeth"], river:"close" },
+  "Whitechapel":              { coords:[993.9,439.1],zone:2, lines:["District","Hammersmith & City","Elizabeth"], river:"medium" },
+  "Stratford":                { coords:[1098.1,307.5],zone:3, lines:["Central","Jubilee","DLR","Elizabeth"], river:"medium" },
+  "Leyton":                   { coords:[1091.9,259.5],zone:3, lines:["Central"], river:"far" },
+  "Leytonstone":              { coords:[1153.0,270.4],zone:3, lines:["Central"], river:"far" },
+  "Epping":                   { coords:[1228.4,74.3],zone:6, lines:["Central"], river:"far" },
+  "Lewisham":                 { coords:[1102.7,746.1],zone:2, lines:["DLR"], river:"far" },
+  "Woolwich":                 { coords:[1222.1,670.3],zone:4, lines:["Elizabeth"], river:"close" },
+  "Abbey Wood":               { coords:[1282.1,689.3],zone:4, lines:["Elizabeth"], river:"close" },
+  "Barking":                  { coords:[1263.4,439.6],zone:4, lines:["District","Hammersmith & City"], river:"medium" },
+
+  // Heathrow
+  "Heathrow Terminals 2 & 3": { coords:[128.7,617.6],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
+  "Heathrow Terminal 4":      { coords:[167.1,696.5],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
+  "Heathrow Terminal 5":      { coords:[117.9,696.6],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" }
+};
+
+/* ============================================================
+   LINES — official TFL colours and ordered sequences.
+   Sequences include only stations that exist in STATIONS;
+   real intermediate stations are skipped silently.
+   ============================================================ */
+const LINES = {
+  "Bakerloo": {
+    color:"#B36305",
+    sequences:[[
+      "Harrow & Wealdstone","Wembley Central","Willesden Junction","Queen's Park",
+      "Paddington","Baker Street","Oxford Circus","Piccadilly Circus",
+      "Charing Cross","Embankment","Waterloo","Elephant & Castle"
+    ]]
+  },
+  "Central": {
+    color:"#E32017",
+    sequences:[[
+      "Ealing Broadway","White City","Shepherd's Bush","Notting Hill Gate",
+      "Marble Arch","Bond Street","Oxford Circus","Tottenham Court Road",
+      "Holborn","Chancery Lane","St. Paul's","Bank","Liverpool Street",
+      "Bethnal Green","Mile End","Stratford","Leyton","Leytonstone","Epping"
+    ]]
+  },
+  "Circle": {
+    color:"#FFD300",
+    loop:true,
+    sequences:[
+      ["Paddington","Edgware Road","Baker Street","Euston Square",
+       "King's Cross St. Pancras","Farringdon","Moorgate","Liverpool Street",
+       "Aldgate","Tower Hill","Monument","Blackfriars","Embankment","Westminster",
+       "Victoria","Sloane Square","South Kensington","Gloucester Road",
+       "High Street Kensington","Notting Hill Gate"],
+      ["Hammersmith","Paddington"]
+    ]
+  },
+  "District": {
+    color:"#00782A",
+    sequences:[
+      ["Ealing Broadway","Ealing Common","Acton Town","Turnham Green","Hammersmith",
+       "Barons Court","Earl's Court","Gloucester Road","South Kensington","Sloane Square",
+       "Victoria","Westminster","Embankment","Blackfriars","Monument","Tower Hill",
+       "Aldgate East","Whitechapel","Mile End","West Ham","Barking"],
+      ["Earl's Court","High Street Kensington","Notting Hill Gate","Paddington","Edgware Road"]
+    ]
+  },
+  "Hammersmith & City": {
+    color:"#F3A9BB",
+    sequences:[[
+      "Hammersmith","Paddington","Edgware Road","Baker Street","Euston Square",
+      "King's Cross St. Pancras","Farringdon","Moorgate","Liverpool Street",
+      "Aldgate East","Whitechapel","Mile End","West Ham","Barking"
+    ]]
+  },
+  "Jubilee": {
+    color:"#A0A5A9",
+    sequences:[[
+      "Stanmore","Wembley Park","Finchley Road","Swiss Cottage","St John's Wood",
+      "Baker Street","Bond Street","Green Park","Westminster","Waterloo",
+      "London Bridge","Canary Wharf","North Greenwich","Canning Town","West Ham","Stratford"
+    ]]
+  },
+  "Metropolitan": {
+    color:"#9B0056",
+    sequences:[[
+      "Uxbridge","Rayners Lane","Wembley Park","Finchley Road","Baker Street",
+      "Euston Square","King's Cross St. Pancras","Farringdon","Moorgate","Aldgate"
+    ]]
+  },
+  "Northern": {
+    color:"#000000",
+    sequences:[
+      ["Edgware","Hampstead","Camden Town"],
+      ["High Barnet","Camden Town"],
+      ["Camden Town","Euston","Warren Street","Tottenham Court Road","Leicester Square",
+       "Charing Cross","Embankment","Waterloo","Kennington"],
+      ["Camden Town","Euston","King's Cross St. Pancras","Angel","Old Street","Moorgate",
+       "Bank","London Bridge","Borough","Elephant & Castle","Kennington"],
+      ["Kennington","Stockwell","Morden"],
+      ["Kennington","Battersea Power Station"]
+    ]
+  },
+  "Piccadilly": {
+    color:"#003688",
+    sequences:[
+      ["Cockfosters","Finsbury Park","King's Cross St. Pancras","Holborn","Covent Garden",
+       "Leicester Square","Piccadilly Circus","Green Park","South Kensington",
+       "Gloucester Road","Earl's Court","Barons Court","Hammersmith","Turnham Green","Acton Town"],
+      ["Acton Town","Heathrow Terminals 2 & 3","Heathrow Terminal 5"],
+      ["Heathrow Terminals 2 & 3","Heathrow Terminal 4"],
+      ["Acton Town","Ealing Common","Rayners Lane","Uxbridge"]
+    ]
+  },
+  "Victoria": {
+    color:"#0098D4",
+    sequences:[[
+      "Brixton","Stockwell","Vauxhall","Victoria","Green Park","Oxford Circus",
+      "Warren Street","Euston","King's Cross St. Pancras","Highbury & Islington",
+      "Finsbury Park","Seven Sisters","Tottenham Hale","Walthamstow Central"
+    ]]
+  },
+  "Waterloo & City": {
+    color:"#95CDBA",
+    sequences:[["Waterloo","Bank"]]
+  },
+  "DLR": {
+    color:"#00A4A7",
+    sequences:[
+      ["Bank","Canary Wharf","Lewisham"],
+      ["Stratford","Canning Town","West Ham"],
+      ["Canning Town","Canary Wharf"]
+    ]
+  },
+  "Elizabeth": {
+    color:"#6950A1",
+    sequences:[
+      ["Heathrow Terminal 5","Heathrow Terminals 2 & 3","Paddington","Bond Street",
+       "Tottenham Court Road","Farringdon","Liverpool Street","Whitechapel",
+       "Canary Wharf","Woolwich","Abbey Wood"],
+      ["Heathrow Terminals 2 & 3","Heathrow Terminal 4"],
+      ["Liverpool Street","Stratford"],
+      ["Paddington","Ealing Broadway"]
+    ]
+  }
+};
+
+/* River Thames — stylised path through London, in the same 1400×900 grid */
+const THAMES_PATH =
+  "M237.64,543.19 L202.83,543.18 C199.74,543.18 196.95,544.43 194.92,546.45 C194.03,547.35 188.77,552.6 182.03,559.33 C181.91,559.22 146.24,594.74 146.24,594.74 C144.06,596.92 142.97,599.78 142.97,602.64 C142.97,604.46 142.96,621.17 142.95,636.35 L142.98,636.3 L142.98,639.07 C142.98,641.41 141.09,643.3 138.75,643.3 L116.53,643.3 L116.52,643.28 L49.65,643.28 L49.65,648.85 L100.39,648.85 L100.39,648.86 L138.75,648.86 C144.92,648.86 148.58,645.17 148.58,639 L148.57,609.89 L148.57,609.89 C148.57,605.55 148.57,603.11 148.58,602.62 C148.57,601.14 149.13,599.66 150.27,598.53 L176.07,573.22 C187.04,562.26 198.22,551.08 198.9,550.4 C199.95,549.35 201.39,548.7 202.99,548.7 L232.23,548.73 C232.24,548.76 233.84,548.73 233.86,548.75 L271.32,548.78 L271.32,548.78 L314.11,548.77 C315.7,548.77 317.15,549.42 318.19,550.47 C318.87,551.14 330.06,562.32 341.03,573.28 L341.03,573.28 C345.53,577.78 348.89,581.14 349.48,581.73 C351.5,583.75 354.29,585.01 357.38,585.01 L501.8,585 L523.24,584.9 L533.1,584.9 C539.27,584.9 544.27,579.9 544.27,573.72 L544.26,545.93 L544.26,545.93 L544.26,525.26 C544.26,522.79 546.26,520.79 548.72,520.79 L602.89,520.79 L602.89,520.8 L633.28,520.8 C636.39,520.83 639.34,519.55 641.44,517.37 L672.64,486.15 L672.72,486.08 L682.98,475.82 C683.78,475.03 684.86,474.55 686.01,474.52 L723.36,474.51 L723.36,474.52 L763.14,474.53 C764.29,474.56 765.37,475.04 766.17,475.83 L771.61,481.27 L771.62,481.27 L776.56,486.21 L777.63,487.28 C779.73,489.47 782.68,490.74 785.79,490.71 L794.04,490.71 L794.03,490.74 L850.4,490.72 C852.86,490.72 854.85,492.72 854.85,495.18 L854.85,555.37 L854.85,561.85 L854.85,589.22 C854.85,595.71 860.12,600.96 866.6,600.96 L890.98,600.96 L892.58,600.96 L921.28,600.96 C927.76,600.96 933.03,595.71 933.03,589.22 L933.03,549.59 L933.14,515.13 C933.14,512.67 935.13,510.67 937.59,510.67 L985.91,510.72 L987.85,510.72 C990.31,510.72 992.3,512.72 992.3,515.18 L992.3,588.64 C992.3,594.99 997.36,600.15 1003.65,600.37 L1003.65,600.39 L1128.53,600.81 C1135.01,600.81 1140.28,595.56 1140.28,589.07 L1140.28,443.5 C1140.28,442.49 1140.67,441.49 1141.44,440.72 L1158.65,423.51 C1159.36,422.79 1160.35,422.35 1161.43,422.35 L1215.37,422.35 L1215.37,414.03 L1162.72,414.03 C1158.98,414.03 1155.59,415.55 1153.14,418.01 L1135.93,435.22 C1133.28,437.87 1131.96,441.35 1131.96,444.82 L1131.96,589.08 C1131.96,590.96 1130.44,592.49 1128.56,592.49 L1008.43,592.09 L1008.44,592.07 L1004.05,592.06 L1004.03,592.06 C1002.15,592.06 1000.63,590.54 1000.63,588.66 L1000.61,515.56 C1000.61,509.07 995.36,503.82 988.88,503.82 L987,503.82 L936.56,503.76 C930.08,503.76 924.83,509.02 924.83,515.5 L924.7,589.24 C924.7,591.12 923.18,592.65 921.3,592.65 L890.64,592.65 L889.35,592.65 L866.58,592.65 C864.7,592.65 863.18,591.12 863.18,589.24 L863.17,553.85 L863.17,553.85 L863.16,495.56 C863.16,489.07 857.91,483.82 851.43,483.82 L825.53,483.83 L825.53,483.8 L785.75,483.8 C784.6,483.77 783.52,483.29 782.72,482.49 L777.78,477.55 L777.77,477.56 L772.33,472.11 L771.26,471.05 C769.16,468.86 766.21,467.58 763.1,467.62 L742.51,467.61 L742.51,467.6 L686.05,467.61 C682.94,467.57 679.99,468.85 677.89,471.04 L676.82,472.1 L663.73,485.2 L663.68,485.24 L636.35,512.58 C635.55,513.37 634.47,513.85 633.32,513.88 L608.39,513.88 L608.39,513.86 L548.47,513.86 C542.3,513.86 537.3,518.87 537.3,525.04 L537.3,545.93 L537.3,553.06 L537.3,575.21 C537.3,577.54 535.41,579.44 533.07,579.44 L523.4,579.43 L522.51,579.44 L357.52,579.43 C355.92,579.43 354.48,578.78 353.44,577.74 C353.05,577.35 348.16,572.46 342,566.31 L341.99,566.31 C332.2,556.53 323.36,547.7 322.17,546.51 C320.15,544.49 317.36,543.24 314.27,543.24 L271.19,543.25 L271.19,543.25 L239.33,543.2 L237.64,543.19";
+
+/* ============================================================
+   GRAPH HELPERS
+   ============================================================ */
+const ADJ = (() => {
+  const adj = {};
+  for (const name in STATIONS) adj[name] = {};
+  for (const [lineName, line] of Object.entries(LINES)) {
+    for (const seq of line.sequences) {
+      for (let i=0; i<seq.length; i++) {
+        const a = seq[i];
+        const next = seq[i+1];
+        if (next) {
+          (adj[a][lineName] ||= new Set()).add(next);
+          (adj[next][lineName] ||= new Set()).add(a);
+        }
+      }
+      if (line.loop && seq.length > 2) {
+        const first = seq[0], last = seq[seq.length-1];
+        (adj[first][lineName] ||= new Set()).add(last);
+        (adj[last][lineName] ||= new Set()).add(first);
+      }
+    }
+  }
+  // freeze into arrays
+  for (const s in adj) for (const ln in adj[s]) adj[s][ln] = [...adj[s][ln]];
+  return adj;
+})();
+
+function neighborsOf(station) {
+  const out = new Set();
+  for (const ln in ADJ[station]) for (const n of ADJ[station][ln]) out.add(n);
+  return [...out];
+}
+
+function bfsDistance(a, b) {
+  if (a === b) return 0;
+  const seen = new Set([a]);
+  let frontier = [a];
+  let dist = 0;
+  while (frontier.length) {
+    dist++;
+    const next = [];
+    for (const node of frontier) {
+      for (const n of neighborsOf(node)) {
+        if (seen.has(n)) continue;
+        if (n === b) return dist;
+        seen.add(n);
+        next.push(n);
+      }
+    }
+    frontier = next;
+  }
+  return Infinity;
+}
+
+const COMPASS = ['E','SE','S','SW','W','NW','N','NE'];
+function bearingFromTo(a, b) {
+  const [ax,ay] = STATIONS[a].coords;
+  const [bx,by] = STATIONS[b].coords;
+  const angle = Math.atan2(by-ay, bx-ax); // -PI..PI, y is down
+  const oct = Math.round((angle / (Math.PI/4))) & 7;
+  return COMPASS[oct];
+}
+
+/* ============================================================
+   AUDIO — synthesised, lazily resumed
+   ============================================================ */
+let AC = null;
+let muted = (() => { try { return localStorage.getItem('tubele-muted') === '1'; } catch { return false; } })();
+function ensureAudio() {
+  if (muted) return null;
+  if (!AC) {
+    try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; }
+  }
+  if (AC.state === 'suspended') AC.resume();
+  return AC;
+}
+function envOsc({type='triangle', freq=1000, gain=0.08, attack=0.005, decay=0.1, start=0}) {
+  const ac = ensureAudio(); if (!ac) return;
+  const t = ac.currentTime + start;
+  const osc = ac.createOscillator();
+  const g = ac.createGain();
+  osc.type = type;
+  if (Array.isArray(freq)) {
+    osc.frequency.setValueAtTime(freq[0], t);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(freq[1],1), t+decay);
+  } else {
+    osc.frequency.setValueAtTime(freq, t);
+  }
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(gain, t+attack);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+attack+decay);
+  osc.connect(g); g.connect(ac.destination);
+  osc.start(t); osc.stop(t+attack+decay+0.05);
+}
+function sndClick() { envOsc({type:'triangle', freq:1300, gain:0.04, attack:0.002, decay:0.05}); }
+function sndTick()  { envOsc({type:'triangle', freq:820,  gain:0.025, attack:0.002, decay:0.04}); }
+function sndThud() {
+  envOsc({type:'sine', freq:[110,40], gain:0.40, attack:0.005, decay:0.45});
+  envOsc({type:'sine', freq:[55,30],  gain:0.18, attack:0.01,  decay:0.55, start:0.02});
+  envOsc({type:'square', freq:[200,80],gain:0.05, attack:0.001, decay:0.12});
+}
+function sndChime() {
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((f,i)=> envOsc({type:'triangle', freq:f, gain:0.10, attack:0.005, decay:0.40, start:i*0.115}));
+  envOsc({type:'sine', freq:130.81, gain:0.06, attack:0.01, decay:0.7, start:0});
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const STATION_NAMES = Object.keys(STATIONS);
+const todayStr = () => new Date().toISOString().slice(0,10);
+
+function hash32(s) {
+  let h = 0x811c9dc5;
+  for (let i=0; i<s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = (h + ((h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24))) >>> 0;
+  }
+  return h >>> 0;
+}
+function targetForOffset(off) {
+  const seed = hash32(todayStr() + ':' + off);
+  return STATION_NAMES[seed % STATION_NAMES.length];
+}
+
+const state = {
+  puzzleOffset: 0,
+  date: todayStr(),
+  target: null,
+  guesses: [],
+  status: 'playing',
+  acIndex: 0,
+  acItems: []
+};
+
+function resetPuzzle() {
+  state.target = targetForOffset(state.puzzleOffset);
+  state.guesses = [];
+  state.status = 'playing';
+  const inp = $('#station-input');
+  inp.value = '';
+  inp.disabled = false;
+  $('#submit-btn').disabled = true;
+  closeAC();
+  $('#modal-bd').classList.remove('open');
+  $('#reopen-btn').classList.remove('show');
+  $('#legend').style.display = '';
+  $('#chip-zone').classList.remove('show');
+  $('#chip-letter').classList.remove('show');
+  renderHistory();
+  renderProgress();
+  renderMap();
+  $('#dateline').textContent = `Tube-le · ${state.date}${state.puzzleOffset>0 ? ' · #'+(state.puzzleOffset+1):''}`;
+}
+
+/* ============================================================
+   DOM HELPERS
+   ============================================================ */
+const $  = sel => document.querySelector(sel);
+const $$ = sel => [...document.querySelectorAll(sel)];
+function el(tag, attrs={}, ...children) {
+  const ns = (tag === 'svg' || tag === 'g' || tag === 'path' || tag === 'line' || tag === 'circle' || tag === 'rect' || tag === 'text' || tag === 'defs' || tag === 'filter' || tag === 'feTurbulence' || tag === 'feColorMatrix' || tag === 'clipPath' || tag === 'mask') ? 'http://www.w3.org/2000/svg' : null;
+  const node = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) {
+    if (k === 'class') node.setAttribute('class', v);
+    else if (k === 'style' && typeof v === 'object') Object.assign(node.style, v);
+    else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
+    else if (v === false || v == null) continue;
+    else if (v === true) node.setAttribute(k, '');
+    else node.setAttribute(k, v);
+  }
+  for (const c of children) {
+    if (c == null || c === false) continue;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return node;
+}
+
+/* ============================================================
+   FUZZY AUTOCOMPLETE
+   ============================================================ */
+function scoreMatch(query, name) {
+  const q = query.toLowerCase().trim();
+  if (!q) return -1;
+  const n = name.toLowerCase();
+  if (n === q) return 1000;
+  if (n.startsWith(q)) return 500 + (10 - Math.min(10, n.length));
+  // word-prefix
+  const words = n.split(/[\s&.'-]+/);
+  for (const w of words) if (w.startsWith(q)) return 300 + (10 - Math.min(10, w.length));
+  const idx = n.indexOf(q);
+  if (idx !== -1) return 100 - idx;
+  // sparse subsequence
+  let i = 0;
+  for (const ch of n) { if (ch === q[i]) i++; if (i === q.length) break; }
+  if (i === q.length) return 30;
+  return -1;
+}
+
+function renderAC(q) {
+  const list = $('#ac-list');
+  list.innerHTML = '';
+  if (!q.trim()) { closeAC(); return; }
+  const scored = STATION_NAMES
+    .map(n => ({ n, s: scoreMatch(q, n) }))
+    .filter(x => x.s >= 0)
+    .sort((a,b) => b.s - a.s || a.n.localeCompare(b.n))
+    .slice(0, 8);
+  if (!scored.length) { closeAC(); return; }
+  state.acItems = scored.map(x=>x.n);
+  state.acIndex = 0;
+  scored.forEach((x, i) => {
+    const item = el('div', {
+      class:'ac-item' + (i===0 ? ' active':''),
+      role:'option',
+      'data-i': i,
+      onmouseenter: () => setAC(i),
+      onmousedown: (e) => { e.preventDefault(); chooseAC(i); }
+    },
+      makeHighlightedName(x.n, q),
+      el('div', { class:'ac-lines' },
+        ...STATIONS[x.n].lines.map(ln => el('span', { style:{ background: LINES[ln].color } }))
+      )
+    );
+    list.appendChild(item);
+  });
+  list.classList.add('open');
+}
+function makeHighlightedName(name, q) {
+  const wrap = el('div', { class:'ac-name' });
+  const i = name.toLowerCase().indexOf(q.toLowerCase());
+  if (i === -1) { wrap.textContent = name; return wrap; }
+  wrap.appendChild(document.createTextNode(name.slice(0,i)));
+  const m = el('mark'); m.textContent = name.slice(i, i+q.length); wrap.appendChild(m);
+  wrap.appendChild(document.createTextNode(name.slice(i+q.length)));
+  return wrap;
+}
+function setAC(i) {
+  state.acIndex = i;
+  $$('#ac-list .ac-item').forEach((el,idx) => el.classList.toggle('active', idx===i));
+  sndTick();
+}
+function chooseAC(i) {
+  const name = state.acItems[i];
+  if (!name) return;
+  $('#station-input').value = name;
+  $('#submit-btn').disabled = false;
+  closeAC();
+  submitGuess();
+}
+function closeAC() {
+  $('#ac-list').classList.remove('open');
+  state.acItems = [];
+}
+
+/* ============================================================
+   GAME LOGIC
+   ============================================================ */
+function isValidStation(s) { return Object.prototype.hasOwnProperty.call(STATIONS, s); }
+
+function submitGuess() {
+  if (state.status !== 'playing') return;
+  const v = $('#station-input').value.trim();
+  if (!isValidStation(v)) return;
+  if (state.guesses.some(g => g.name === v)) {
+    flashInput(); return;
+  }
+  const target = state.target;
+  const correct = v === target;
+  const distance = correct ? 0 : bfsDistance(v, target);
+  const bearing = correct ? null : bearingFromTo(v, target);
+  state.guesses.push({ name:v, distance, bearing, correct });
+
+  $('#station-input').value = '';
+  $('#submit-btn').disabled = true;
+  closeAC();
+
+  if (correct) {
+    state.status = 'won';
+    renderHistory();
+    renderProgress();
+    renderMap(true);
+    setTimeout(() => { sndChime(); celebrate(); openModal(true); }, 200);
+  } else if (state.guesses.length >= 6) {
+    state.status = 'lost';
+    renderHistory();
+    renderProgress();
+    renderMap(true);
+    sndThud();
+    setTimeout(() => openModal(false), 600);
+  } else {
+    renderHistory();
+    renderProgress();
+    renderMap();
+    sndThud();
+  }
+}
+
+function flashInput() {
+  const inp = $('#station-input');
+  inp.animate(
+    [{ borderColor:'var(--ink)' }, { borderColor:'var(--rule)' }, { borderColor:'var(--ink)' }],
+    { duration: 400 }
+  );
+}
+
+/* ============================================================
+   RENDER — left-panel pieces
+   ============================================================ */
+function renderProgress() {
+  const pips = $$('#progress .pip');
+  pips.forEach((p, i) => {
+    p.classList.remove('used','win');
+    if (i < state.guesses.length) {
+      const g = state.guesses[i];
+      if (g.correct) p.classList.add('win');
+      else p.classList.add('used');
+    }
+  });
+  $('#history-count').textContent = `${state.guesses.length} / 6`;
+}
+
+const LINE_ABBREV = {
+  "Bakerloo":"BAK","Central":"CEN","Circle":"CIR","District":"DIS",
+  "Hammersmith & City":"H&C","Jubilee":"JUB","Metropolitan":"MET",
+  "Northern":"NOR","Piccadilly":"PIC","Victoria":"VIC",
+  "Waterloo & City":"W&C","DLR":"DLR","Elizabeth":"ELZ"
+};
+function lineSwatch(lineName) {
+  const color = LINES[lineName].color;
+  const dark = ['#FFD300','#F3A9BB','#95CDBA','#A0A5A9'].includes(color);
+  const sw = el('span', { style:{ background: color, color: dark ? '#0a0a0a' : '#fff' } });
+  sw.textContent = LINE_ABBREV[lineName] || lineName;
+  return sw;
+}
+
+function compassSVG(dir) {
+  if (!dir) return el('span');
+  const map = { 'N':-90,'NE':-45,'E':0,'SE':45,'S':90,'SW':135,'W':180,'NW':-135 };
+  const a = map[dir];
+  return el('svg', { viewBox:'0 0 100 100' },
+    el('circle', { cx:50, cy:50, r:46, fill:'none', stroke:'currentColor','stroke-width':3 }),
+    el('g', { transform:`rotate(${a} 50 50)` },
+      el('path', { d:'M 50 12 L 62 50 L 50 38 L 38 50 Z', fill:'currentColor' }),
+      el('line', { x1:50, y1:50, x2:50, y2:80, stroke:'currentColor','stroke-width':3 })
+    ),
+    el('text', { x:50, y:96, 'text-anchor':'middle', 'font-family':'Public Sans, sans-serif', 'font-size':18, 'font-weight':700, fill:'currentColor' }, dir)
+  );
+}
+
+function tempLabel(distance) {
+  if (distance === 1) return 'NEXT STOP';
+  if (distance <= 2) return 'BURNING';
+  if (distance <= 4) return 'WARM';
+  if (distance <= 7) return 'COOL';
+  if (distance <= 12) return 'COLD';
+  return 'FREEZING';
+}
+
+function renderHistory() {
+  const wrap = $('#history');
+  wrap.innerHTML = '';
+  if (!state.guesses.length) {
+    wrap.appendChild(el('div', { class:'empty-state' },
+      el('b', {}, "Today's diagram is loaded"),
+      'Read the angles. Read the colours. Make your first guess.'
+    ));
+    return;
+  }
+  for (const g of state.guesses) {
+    const s = STATIONS[g.name];
+    const node = el('div', { class:'ticket' + (g.correct ? ' win':'') },
+      el('div', { class:'t-top' },
+        el('div', {},
+          el('div', { class:'t-name' }, g.name),
+          el('div', { class:'t-zone' }, `Zone ${s.zone}${g.correct ? ' · Match' : ''}`)
+        ),
+        el('div', { class:'t-stops' },
+          g.correct ? '★' : String(g.distance === Infinity ? '∞' : g.distance),
+          el('small', {}, g.correct ? 'FOUND' : (g.distance === 1 ? 'STOP' : 'STOPS'))
+        )
+      ),
+      el('div', { class:'t-lines' },
+        ...s.lines.map(l => lineSwatch(l))
+      ),
+      el('div', { class:'t-row' },
+        el('div', { class:'t-temp' }, g.correct ? 'CORRECT' : tempLabel(g.distance))
+      )
+    );
+    wrap.appendChild(node);
+  }
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+/* ============================================================
+   RENDER — the map (right side)
+   ============================================================ */
+const MAP_W = 1400, MAP_H = 900;
+const ASPECT = 9/14;
+
+/* Camera (viewBox) state. We mutate this and call applyViewBox() to commit. */
+const vb = { x:0, y:0, w:MAP_W, h:MAP_H };
+function applyViewBox() {
+  $('#map-svg').setAttribute('viewBox', `${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}`);
+}
+function setView(center, width) {
+  vb.w = width;
+  vb.h = width * ASPECT;
+  vb.x = center[0] - vb.w/2;
+  vb.y = center[1] - vb.h/2;
+  applyViewBox();
+}
+function clampView() {
+  /* Soft clamp — let the user pan a bit beyond the map but not lose it entirely */
+  const margin = 200;
+  const minX = -margin, maxX = MAP_W - vb.w + margin;
+  const minY = -margin, maxY = MAP_H - vb.h + margin;
+  if (maxX > minX) vb.x = Math.max(minX, Math.min(maxX, vb.x));
+  if (maxY > minY) vb.y = Math.max(minY, Math.min(maxY, vb.y));
+}
+function clampZoom() {
+  const minW = 160, maxW = 1800;
+  if (vb.w < minW) { vb.w = minW; vb.h = vb.w * ASPECT; }
+  if (vb.w > maxW) { vb.w = maxW; vb.h = vb.w * ASPECT; }
+}
+
+function snap45(angle) {
+  return Math.round(angle / (Math.PI/4)) * (Math.PI/4);
+}
+
+/* ALL_EDGES — every unique pair of adjacent stations, with the lines on that edge.
+   Pre-computed once so the full-map render is cheap. */
+const LINE_ORDER = ['Bakerloo','Central','Circle','District','Hammersmith & City',
+                    'Jubilee','Metropolitan','Northern','Piccadilly','Victoria',
+                    'Waterloo & City','DLR','Elizabeth'];
+
+const ALL_EDGES = (() => {
+  const edges = new Map();
+  const add = (a, b, lineName) => {
+    const key = (a < b ? a+'|'+b : b+'|'+a);
+    let e = edges.get(key);
+    if (!e) { e = { a, b, lines: [] }; edges.set(key, e); }
+    if (!e.lines.includes(lineName)) e.lines.push(lineName);
+  };
+  for (const [lineName, line] of Object.entries(LINES)) {
+    for (const seq of line.sequences) {
+      for (let i=0; i<seq.length-1; i++) add(seq[i], seq[i+1], lineName);
+      if (line.loop && seq.length > 2) add(seq[0], seq[seq.length-1], lineName);
+    }
+  }
+  // sort lines on each edge by canonical order so parallel offsets are stable
+  for (const e of edges.values()) {
+    e.lines.sort((x,y) => LINE_ORDER.indexOf(x) - LINE_ORDER.indexOf(y));
+  }
+  return [...edges.values()];
+})();
+
+const TFL_LINE_PATHS = {
+  "Bakerloo": [
+    "M752.44,646.34 L731.41,625.32 C729.87,623.77 728.61,620.71 728.61,618.53 L728.61,614.95 L728.61,612.9 L728.61,526.99 C728.61,524.33 727.59,521.66 725.8,520.2 L665.42,459.85 C663.64,458.39 662.61,455.72 662.61,453.06 L662.61,442.72 L662.61,441.16 L662.61,436.64 C662.61,433.97 661.59,431.31 659.8,429.85 L598.93,368.47 C597.39,366.92 594.33,365.66 592.14,365.66 L504.59,365.66 L502.52,365.66 L478.12,365.66 C475.93,365.66 472.88,364.39 471.33,362.84 C470.76,362.28 468.16,359.67 460.49,352.01 L458.13,349.65 C441.13,332.66 441.28,332.81 441.28,332.81 C439.26,330.79 437.61,326.8 437.61,323.94 L437.61,323.94 L437.61,315.16 L437.61,313.56 L437.61,170.99"
+  ],
+  "Central": [
+    "M251.62,478.89 C251.62,478.89 562.55,478.89 565.05,478.89 C567.24,478.89 570.3,477.62 571.84,476.07 L597.1,450.82 C598.64,449.27 601.7,448.01 603.89,448.01 L744.77,448.01 L746.04,448.01 L750.04,448.01 C752.23,448.01 755.28,449.27 756.83,450.82 L770.14,464.13 C771.68,465.68 774.74,466.94 776.93,466.94 L801.69,466.94 L802.97,466.94 L826.15,466.94 C828.34,466.94 831.4,465.68 832.94,464.13 L849.44,447.63 L850.72,446.35 L881,416.07 C882.54,414.53 885.6,413.26 887.78,413.26 L992.5,413.26 L1014.22,413.27 L1019.39,413.27 C1021.57,413.27 1024.63,414.54 1026.18,416.09 L1027.09,417 L1027.71,417.64 L1028.81,418.73 C1030.35,420.28 1033.41,421.55 1035.6,421.55 L1040.53,421.55 L1043.4,421.6 L1050.27,421.6 C1052.45,421.6 1055.51,420.33 1057.06,418.79 L1067.65,408.2 L1070.26,405.59 L1093.42,382.41 L1094.89,380.95 L1165.66,310.15 L1167.75,308.06 L1181.67,294.13 C1183.45,292.36 1184.48,288.37 1184.48,285.81 L1184.48,260.71 L1184.48,258.77 L1184.48,153.92 L1184.49,152.19 L1184.49,143.24 C1184.49,140.69 1185.49,136.73 1187.26,134.96 L1191.28,130.94 L1193.39,128.83 L1221.89,100.32 L1223.92,98.3 L1242.33,79.89"
+  ],
+  "Circle": [
+    "M449.4,521.36 L449.4,452.99 C449.39,452.46 449.6,451.44 450,450.5 C450.38,449.56 450.96,448.68 451.34,448.32 L486.52,413.19 L489,410.71 L519.77,380.01 C521.66,378.12 524.15,377.17 526.63,377.17 L609.76,377.17 L612.19,377.17 L773.81,377.18 C776.5,377.18 778.92,378.27 780.68,380.02 L831.11,430.43 C832.87,432.19 835.29,433.28 837.98,433.28 L863.15,433.28 L866.59,433.33 L915.69,433.33 C918.37,433.33 920.8,434.42 922.56,436.18 C924.32,437.93 925.4,440.36 925.4,443.04 L925.4,466.04 L925.4,467.89 L925.4,473.75 C925.4,475.58 924.69,477.31 923.39,478.6 C922.09,479.9 920.36,480.62 918.53,480.62 L907.31,480.62 L903.51,480.62 L839.16,480.62 C836.61,480.62 834.21,481.61 832.41,483.42 L776.42,539.4 C775.12,540.7 773.4,541.41 771.56,541.41 L542,541.41 C539.32,541.41 536.89,540.33 535.13,538.57 C533.24,536.68 532.29,534.19 532.29,531.71 L532.29,393.04 C532.29,391.04 533.1,389.23 534.41,387.92 L534.46,387.87 C535.87,386.45 537.72,385.75 539.57,385.75 L557.52,385.75"
+  ],
+  "District": [
+    "M514.94,541.54 L520.27,541.54 C522.81,541.54 525.29,540.32 526.76,538.85 C528.22,537.39 529.44,535.06 529.44,532.38 L529.44,527.68 L529.44,526.33 L529.44,393.05 C529.44,390.36 530.48,387.83 532.38,385.93 L532.44,385.88 C534.34,383.97 536.87,382.93 539.56,382.93 L557.31,382.93",
+    "M503.92,506.4 L503.92,532.08 C503.92,534.85 504.98,537.06 506.69,538.77 C508.41,540.49 510.78,541.55 513.39,541.55 L515.21,541.55 L520.77,541.55",
+    "M513.39,541.55 C510.78,541.55 508.41,540.49 506.69,538.77 C504.98,537.06 503.92,534.85 503.92,532.08 L503.92,506.4",
+    "M1396.32,313.88 C1396.32,313.88 1282.59,427.6 1279.69,430.5 C1277.93,432.26 1275.5,433.34 1272.82,433.34 L1169.57,433.34 L1165.91,433.35 L976.35,433.35 L973.54,433.35 L965.95,433.35 L963.45,433.35 L955.19,433.35 C952.51,433.35 950.09,434.44 948.33,436.19 C947.59,436.93 944.76,439.77 940.84,443.68 L938.62,445.9 C930.18,454.35 931.43,453.1 931.03,453.5 C929.13,455.39 928.18,457.88 928.18,460.36 C928.18,461.41 928.18,462.63 928.18,468.17 L928.19,469.61 L928.19,474.3 C928.12,477.12 926.94,479.15 925.28,480.78 C923.81,482.24 921.57,483.37 919.02,483.46 L911.77,483.46 L908.44,483.45 L839.15,483.47 C837.36,483.47 835.67,484.17 834.4,485.44 L778.41,541.42 C776.66,543.18 774.23,544.26 771.55,544.26 L351.52,544.27 L343.78,544.26 L286.93,544.26 L283.82,544.26 L277.54,544.26 C270.94,544.26 265.53,538.49 265.53,531.98 L265.54,525.14 L265.54,520.25 L265.55,497.31 C265.55,494.62 264.46,492.2 262.7,490.44 C260.95,488.68 258.52,487.59 255.84,487.59 L248.19,487.59"
+  ],
+  "Hammersmith & City": [
+    "M446.59,521.29 L446.59,453.01 C446.58,452.02 446.9,450.62 447.41,449.42 C447.9,448.2 448.67,446.98 449.37,446.3 L484.65,411.07 L485.45,410.27 L517.78,378.01 C520.15,375.64 523.31,374.33 526.65,374.33 L610.03,374.33 L612.77,374.33 L773.84,374.34 C777.19,374.34 780.34,375.65 782.71,378.01 L833.14,428.43 C834.4,429.69 836.11,430.44 838,430.44 C838.4,430.44 843.03,430.49 851.05,430.49 L852.65,430.49 C923.86,430.49 1260.09,430.49 1260.09,430.49"
+  ],
+  "Jubilee": [
+    "M476.6,151.38 L476.6,190.56 L476.61,192.72 L476.61,214.86 C476.61,217.04 477.88,220.1 479.43,221.64 L573.97,316.24 L575.85,318.13 L619.8,362.1 C621.35,363.65 622.62,366.71 622.62,368.9 L622.62,374.7 L622.62,376.87 L622.62,451.32 L622.62,453.67 L622.62,464.48 C622.62,467.15 623.64,469.81 625.43,471.27 L647.36,493.2 L649.35,495.2 L709.13,554.97 C710.57,556.24 711.94,559.14 711.94,561.81 L711.94,565.49 L711.94,567.78 L711.94,579.58 C711.94,584.83 716.2,589.09 721.45,589.09 L736.26,589.1 L739.1,589.1 L775.94,589.1 C777.85,589.2 780.85,588.18 782.73,586.29 L826.17,542.85 L828.04,540.99 L835.13,533.9 C836.68,532.35 839.74,531.09 841.92,531.09 L848.94,531.12 L851.72,531.12 L897.55,531.11 C899.74,531.11 902.79,532.38 904.34,533.92 L913.9,543.49 L915.1,544.7 L927.13,556.73 C928.68,558.28 931.73,559.54 933.92,559.54 L1004.99,559.51 L1008.45,559.5 L1060.06,559.5 C1062.24,559.5 1065.3,560.76 1066.85,562.31 L1071.74,567.19 L1073.08,568.53 L1078.22,573.66 C1079.77,575.21 1082.82,576.48 1085.01,576.48 L1107.34,576.51 L1107.56,576.49 L1122.57,576.51 C1124.76,576.51 1127.82,575.24 1129.36,573.69 L1154.56,548.47 L1156.46,546.57 L1158.55,544.48 C1160.09,542.93 1161.36,540.95 1161.36,538.13 L1161.34,337.21"
+  ],
+  "Metropolitan": [
+    "M121.61,175.49 L248.86,175.49 C251.54,175.49 254.83,177.04 256.72,178.94 L273.09,195.31 L275.8,197.99 L297.8,219.99 C299.34,221.54 302.4,222.8 304.59,222.8 L358.42,222.8 L368.01,222.8 L463.48,222.8 C465.67,222.8 468.73,224.06 470.28,225.61 L610.69,366.02 L613.06,368.39 L621.9,377.23 C623.46,378.75 626.58,379.9 628.69,380.04 L773.82,380.03 C775.65,380.03 777.38,380.75 778.68,382.04 L829.08,432.44 C831.45,434.81 834.6,436.12 837.95,436.12 L906.39,436.12 L909.54,436.12 L915.7,436.12 C917.54,436.12 919.27,436.83 920.56,438.13 C921.86,439.43 922.57,441.15 922.57,442.99 L922.57,452.66"
+  ],
+  "Northern": [
+    "M542.98,113.87 L733.01,303.88 C734.55,305.43 735.82,308.49 735.82,310.67",
+    "M581.64,652.65 L655.32,652.65 C657.51,652.65 660.56,653.92 662.1,655.46 L667.69,661.05 L669.3,662.64 C672.85,666.2 677.94,671.54 677.94,671.54 C679.48,673.09 682.53,674.36 684.72,674.36 L689.79,674.36 L693.03,674.36 L704.39,674.36 C706.57,674.36 709.63,673.1 711.18,671.55 L716.53,666.21",
+    "M770.28,95.15 L770.28,256.56 L770.28,258.99 L770.28,268.68 C770.28,270.33 769.01,273.38 767.46,274.93 L738.63,303.77 C737.08,305.31 735.82,308.37 735.82,310.56 L735.79,315.05 L735.81,316.44 L735.78,322.17 C735.78,324.36 734.51,327.42 732.97,328.97 C731.42,330.51 730.15,333.57 730.15,335.75 L730.15,347.85 L730.15,350.18 L730.15,365.65 C730.15,367.84 728.88,370.89 727.34,372.44 L723.01,376.76 C721.47,378.31 720.2,381.36 720.2,383.55 L720.2,652.21 L720.2,653.59 L720.2,658.54 C720.2,660.72 718.93,663.78 717.38,665.32 L715.09,667.61 L713.43,669.32 L705.65,677.1 C704.1,678.64 702.84,681.7 702.84,683.89 C702.84,686.07 701.57,689.13 700.03,690.68 L698.95,691.74 C698.95,691.74 698.32,692.38 698.11,692.59 L695.4,695.29 L694.19,696.5 L536.5,854.2",
+    "M700.17,690.56 C701.13,689.83 702.51,688.97 703.18,688.69 C704.41,688.18 705.72,687.87 706.82,687.86 C709.01,687.87 712.06,686.6 713.61,685.05 L720.14,678.53 L720.98,677.8 L785.63,613.14 L788.48,610.3 L850.47,548.31 C852.01,546.77 853.28,543.71 853.28,541.52 L853.28,494.1 L853.29,459.49 L853.29,426.23 L853.29,422.34 L853.29,404.13 C853.29,401.44 852.2,399.02 850.44,397.26 L843.39,390.2 L841.91,388.72 L838.21,385.02 C836.31,383.12 833.83,382.18 831.34,382.18 L819.27,382.18 L815.23,382.18 L797.8,382.17 C795.31,382.17 792.83,381.23 790.93,379.33 L783.6,372 L782.79,371.18 L774.37,362.76 C772.61,361.01 770.18,359.92 767.5,359.92 L762.65,359.92 L760.26,359.92 L748.29,359.93 C746.45,359.93 744.73,359.22 743.43,357.92 C742.13,356.62 741.42,354.9 741.42,353.06 L741.41,347.56 L741.41,345.92 L741.41,341.64 L741.41,340.01 L741.41,335.75 C741.41,333.57 740.14,330.51 738.59,328.96 C737.05,327.42 735.78,324.36 735.78,322.18"
+  ],
+  "Piccadilly": [
+    "M291.98,534.04 L284.47,534.04 C281.79,534.04 279.36,532.95 277.6,531.19 C275.85,529.43 274.76,527.01 274.76,524.32 L274.77,516.14 L274.76,513.98 L274.76,462.4 L274.76,457.5 L274.76,206.68 C274.86,204.39 273.59,201.34 272.04,199.79 C272.04,199.79 266.74,194.5 265.32,193.07 L263.3,191.04 C257.78,185.52 254.82,182.57 254.32,182.08 C253.06,180.82 250.58,179.46 248.53,179.46 L121.48,179.46",
+    "M115.23,686.47 L115.23,673.17 C115.23,669.94 116.54,667.01 118.66,664.9 L130.64,652.92 L137.21,646.33 L176.54,606.97 L181.36,602.14 L246.65,536.85 C248.2,535.31 251.26,534.04 253.44,534.04 L303.18,534.04 L306.12,534.03 L559.32,534.02 L562.62,534.02 L574.22,534.01 C576.4,534.01 579.46,532.74 581.01,531.2 L607.88,504.33 L611.13,501.07 L624.73,487.47 C626.28,485.92 629.33,484.66 631.52,484.66 L653.94,484.66 L657.52,484.66 L717.76,484.66 L719.93,484.66 L727.53,484.66 C729.72,484.66 732.78,483.39 734.32,481.84 L772.8,443.36 L774.22,441.97 L776.03,440.17 C777.57,438.62 778.84,435.56 778.84,433.37 L778.84,396.39 L778.85,391.81 L778.85,351.73 C778.85,349.55 780.11,346.49 781.66,344.94 L785.44,341.17 L790.87,335.73 L887.56,239.04 L890.06,236.54 L895.63,230.97 C897.18,229.43 898.44,226.37 898.44,224.18 L898.44,85.04",
+    "M127.58,669.52 L127.58,660.8 C127.58,657.57 128.89,654.65 131.01,652.53 L134.8,648.74",
+    "M167.98,615.58 C165.7,617.86 164.55,620.85 164.55,623.85 L164.55,657.47 L164.55,659.86 L164.55,675.22 C164.55,681.66 159.34,686.88 152.9,686.88 L146.01,686.88 L144.29,686.88 L139.22,686.88 C132.78,686.88 127.57,681.66 127.57,675.22 L127.57,657.4"
+  ],
+  "Victoria": [
+    "M718.81,742.23 L650.85,674.27 L646.94,670.34 L641.38,664.77 C639.83,663.23 638.56,660.17 638.56,657.98 L638.79,512.58 L638.78,511.44 L638.82,475.81 C638.82,473.62 640.06,470.58 641.61,469.04 L655.77,454.88 L657.43,453.21 L718.21,392.43 L719.78,390.86 L740.34,370.3 C741.89,368.75 744.95,367.49 747.14,367.49 L787.53,367.49 L789.96,367.49 L832.52,367.44 C834.71,367.44 837.76,366.18 839.31,364.63 L861.19,343.35 L862.72,341.81 L868.12,336.52 C869.66,334.97 870.93,331.91 870.93,329.73 L870.93,271.97 L870.93,270.19 L870.93,264.92 C870.93,262.73 872.2,259.67 873.74,258.13 L880.05,251.79 L881.25,250.58 L897.94,233.9 C899.49,232.36 902.54,231.09 904.73,231.09 L929.92,231.09 L932.23,231.1 L1077.46,231.1"
+  ],
+  "DLR": [
+    "M1083.93,744.49 L1083.94,418.43 C1083.94,416.22 1085.2,412.84 1086.75,411.29 L1161.24,337.83"
+  ],
+  "Elizabeth": [
+    "M145.97,676.23 L145.98,606.63 L145.98,601.79 L145.98,506.12 L145.98,502.76 L145.98,479.8 C145.98,477.16 147.05,474.77 148.78,473.04 C150.51,471.31 152.9,470.25 155.54,470.25 L164.4,470.25 L166.85,470.25 L272.92,470.25 L280.31,470.25 L288.71,470.25 C290.9,470.25 293.95,468.99 295.5,467.44 C295.5,467.44 316.7,446.21 333.55,429.35 L337.65,425.25 C345.69,417.19 351.85,411.03 352.35,410.53 C353.9,408.98 356.63,407.85 358.77,407.77 L387.87,407.77 L395.6,407.77 L546.07,407.77",
+    "M543.96,407.77 L565.07,407.77 C567.26,407.77 570.31,409.03 571.86,410.58 L595.96,434.72 C597.51,436.27 600.57,437.53 602.75,437.53 L679.54,437.53 L683.93,437.53 L697.34,437.53 L702.46,437.53 L743.37,437.54 C745.56,437.54 748.62,436.28 750.16,434.73 L763.61,421.29 L765.81,419.09 L770.48,414.41 C772.03,412.86 775.08,411.59 777.27,411.59 L817,411.59 L821.97,411.58 L866.97,411.58 L871.45,411.58 C873.63,411.58 876.69,412.84 878.24,414.39 L879.93,416.08 L881.04,417.19 L882.89,419.03 C884.44,420.58 887.49,421.85 889.68,421.85 L905.98,421.85 L911.5,421.84 C930.83,421.84 928.29,421.93 962.34,421.93 L965.75,421.93 L997.39,421.93 C999.58,421.93 1002.64,423.19 1004.19,424.74 L1016.39,436.94 L1017.12,437.67 L1050.44,471 L1051.44,471.99 L1060.74,481.35 C1062.28,482.9 1063.55,485.95 1063.55,488.14 L1063.55,513.76 L1063.55,514.99 L1063.55,519.19 C1063.55,521.38 1064.81,524.44 1066.36,525.99 L1080.08,539.7 C1081.62,541.25 1084.68,542.51 1086.87,542.51 L1125.77,542.51 L1128.73,542.51 L1236.7,542.51 L1238.13,542.51 L1250.82,542.51 C1253,542.51 1256.06,543.78 1257.61,545.33 C1258.24,545.96 1259.31,547.03 1260.31,548.03 L1261.28,549 C1264.32,552.05 1265.13,552.85 1265.13,552.85 C1266.68,554.4 1267.94,557.45 1267.94,559.64 L1267.94,645.56 L1267.94,645.87 C1267.94,647.29 1267.94,696.41 1267.94,697.3"
+  ]
+};
+
+function getTargetExits(target) {
+  const t = STATIONS[target];
+  const exits = [];
+  for (const lineName of t.lines) {
+    const ns = ADJ[target][lineName] || [];
+    for (const n of ns) {
+      const ncoords = STATIONS[n].coords;
+      const dx = ncoords[0] - t.coords[0];
+      const dy = ncoords[1] - t.coords[1];
+      const raw = Math.atan2(dy, dx);
+      const snap = snap45(raw);
+      exits.push({ line: lineName, color: LINES[lineName].color, angle: snap, neighbor: n, neighborCoords: ncoords });
+    }
+  }
+  // sort exits for stable rendering
+  exits.sort((a,b) => a.angle - b.angle || a.line.localeCompare(b.line));
+  return exits;
+}
+
+function distance(a, b) {
+  return Math.hypot(b[0]-a[0], b[1]-a[1]);
+}
+
+function renderMap() {
+  const svg = $('#map-svg');
+  svg.innerHTML = '';
+  const target = state.target;
+  const t = STATIONS[target];
+  const guessCount = state.guesses.length;
+  const won = state.status === 'won';
+  const lost = state.status === 'lost';
+  const ended = won || lost;
+  const mapEl = $('.map');
+
+  if (ended) {
+    // Full map reveal — pannable, zoomable, centered on target
+    drawFullMapScene(svg, target);
+    setView(t.coords, 700);
+    mapEl.classList.add('interactive');
+    $('#zoom-controls').classList.add('show');
+    $('#map-hint').classList.add('show');
+  } else {
+    // Puzzle scene — local subgraph, fixed view
+    drawPuzzleScene(svg, target, guessCount);
+    const zoomLevel = guessCount < 2 ? 0 : (guessCount < 4 ? 1 : 2);
+    setView(t.coords, [340, 620, 1100][zoomLevel]);
+    mapEl.classList.remove('interactive');
+    $('#zoom-controls').classList.remove('show');
+    $('#map-hint').classList.remove('show');
+  }
+
+  // Reveal chips (DOM, outside SVG)
+  if (guessCount >= 3 || ended) {
+    $('#chip-zone-text').textContent = `Zone ${t.zone} · ${t.river === 'close' ? 'By the river' : t.river === 'medium' ? 'A walk from the river' : 'Inland'}`;
+    $('#chip-zone').classList.add('show');
+  } else {
+    $('#chip-zone').classList.remove('show');
+  }
+  if (guessCount >= 5 || ended) {
+    $('#chip-letter-text').textContent = `Starts with “${target[0]}”`;
+    $('#chip-letter').classList.add('show');
+  } else {
+    $('#chip-letter').classList.remove('show');
+  }
+}
+
+/* ============== Puzzle (in-game) scene ==============
+   The puzzle view is literally an extract from the TFL diagram: we render
+   the real TFL_LINE_PATHS geometry that powers the full-map view, and the
+   SVG viewBox crops to a window centred on the target station. The angles,
+   curves, and parallel routing all come straight from TFL's published map.
+   We only swap colour palettes between reveal stages.
+   ============================================================ */
+function drawPuzzleScene(svg, target, guessCount) {
+  const t = STATIONS[target];
+  const colored = guessCount >= 1;
+  const showNeighbours = guessCount >= 2;
+  const showThames = guessCount >= 4;
+  // What lines exist around the target. Initial reveal only includes
+  // lines that actually pass through this station; later stages broaden
+  // to all lines so the player can see the full surrounding network.
+  const targetLines = new Set(t.lines);
+
+  // Initial stages clip the rendering to a small radius around the
+  // target so the player only sees short stubs of the lines passing
+  // through this station — enough to read the number of lines and the
+  // angles they exit at, without giving away the broader network.
+  const clipR =
+        guessCount < 2 ? 55 :      // initial / colour-reveal: short stubs
+        guessCount < 4 ? 220 :     // neighbour stage: local subgraph
+        null;                      // 4+: no clip
+  let clipRef = null;
+  if (clipR != null) {
+    const defs = el('defs');
+    const cp = el('clipPath', { id:'puzzle-clip' });
+    cp.appendChild(el('circle', { cx:t.coords[0], cy:t.coords[1], r:clipR }));
+    defs.appendChild(cp);
+    svg.appendChild(defs);
+    clipRef = 'url(#puzzle-clip)';
+  }
+
+  if (showThames) drawThames(svg, 0.85);
+
+  // Draw every line from the real TFL geometry, but for the initial
+  // reveal include only the lines that pass through the target — so the
+  // window literally shows just the snippets of those lines crossing at
+  // this station. From guess 2 onward we draw all lines (still clipped).
+  const segs = el('g', { class:'puzzle-segments' });
+  if (clipRef) segs.setAttribute('clip-path', clipRef);
+  const lineW = 5;
+  for (const lineName of LINE_ORDER) {
+    const paths = (typeof TFL_LINE_PATHS !== 'undefined') ? TFL_LINE_PATHS[lineName] : null;
+    if (!paths || !paths.length) continue;
+    if (guessCount < 2 && !targetLines.has(lineName)) continue;
+    const stroke = colored ? LINES[lineName].color : '#b6b1a6';
+    for (const d of paths) {
+      segs.appendChild(el('path', {
+        d, fill:'none', stroke,
+        'stroke-width': lineW,
+        'stroke-linecap':'round',
+        'stroke-linejoin':'round',
+        opacity: colored ? 1 : 0.85
+      }));
+    }
+  }
+  svg.appendChild(segs);
+
+  // Neighbour markers (from guess 2+).
+  if (showNeighbours) {
+    const adjGroup = el('g', { class:'puzzle-neighbours' });
+    for (const n of neighborsOf(target)) {
+      const c = STATIONS[n].coords;
+      adjGroup.appendChild(el('circle', {
+        cx:c[0], cy:c[1], r:3.6,
+        fill:'#fff', stroke:'#0a0a0a','stroke-width':1.4,
+        opacity:0
+      }));
+    }
+    svg.appendChild(adjGroup);
+    requestAnimationFrame(() => {
+      [...adjGroup.children].forEach(child => {
+        child.style.transition = 'opacity .6s ease';
+        child.style.opacity = '1';
+      });
+    });
+  }
+
+  drawTargetMarker(svg, target, false);
+}
+
+/* ============== Full map (post-game) scene ============== */
+function drawFullMapScene(svg, target) {
+  // 1. Thames at the bottom
+  drawThames(svg, 0.85);
+
+  // 2. Real TFL line paths — extracted from the TfL standard tube map PDF
+  //    and rescaled into our 1400×900 viewBox. Falls back to Euclidean
+  //    parallel-offset segments if TFL_LINE_PATHS isn't present.
+  const segs = el('g', { class:'all-segments' });
+  if (typeof TFL_LINE_PATHS !== 'undefined') {
+    const lineW = 4.5;
+    for (const lineName of LINE_ORDER) {
+      const paths = TFL_LINE_PATHS[lineName];
+      if (!paths) continue;
+      const color = LINES[lineName].color;
+      for (const d of paths) {
+        segs.appendChild(el('path', {
+          d, fill:'none', stroke: color,
+          'stroke-width': lineW,
+          'stroke-linecap':'round',
+          'stroke-linejoin':'round'
+        }));
+      }
+    }
+  } else {
+    const lineW = 6.5, gap = 0.6;
+    for (const e of ALL_EDGES) {
+      const A = STATIONS[e.a].coords;
+      const B = STATIONS[e.b].coords;
+      const dx = B[0]-A[0], dy = B[1]-A[1];
+      const len = Math.hypot(dx, dy) || 1;
+      const ux = dx/len, uy = dy/len;
+      const px = -uy, py = ux;
+      const n = e.lines.length;
+      for (let i=0; i<n; i++) {
+        const offset = (i - (n-1)/2) * (lineW + gap);
+        const x1 = A[0] + px*offset, y1 = A[1] + py*offset;
+        const x2 = B[0] + px*offset, y2 = B[1] + py*offset;
+        segs.appendChild(el('line', {
+          x1, y1, x2, y2,
+          stroke: LINES[e.lines[i]].color,
+          'stroke-width': lineW,
+          'stroke-linecap':'round'
+        }));
+      }
+    }
+  }
+  svg.appendChild(segs);
+
+  // 3. All station markers
+  const markers = el('g', { class:'all-stations' });
+  for (const [name, s] of Object.entries(STATIONS)) {
+    if (name === target) continue; // target drawn last on top
+    const r = s.lines.length >= 2 ? 4.5 : 3.3;
+    const g = el('g', { class:'stn-marker' });
+    g.appendChild(el('circle', {
+      cx: s.coords[0], cy: s.coords[1], r,
+      fill:'#fff', stroke:'#0a0a0a', 'stroke-width': 1.6
+    }));
+    // hover tooltip via SVG <title>
+    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent = `${name} · Zone ${s.zone}`;
+    g.appendChild(title);
+    markers.appendChild(g);
+  }
+  svg.appendChild(markers);
+
+  // 4. Target marker (highlighted) + label
+  const t = STATIONS[target];
+  const tg = el('g', { class:'target-marker' });
+  // halo
+  const halo = el('circle', {
+    cx: t.coords[0], cy: t.coords[1], r: 18,
+    fill:'rgba(220,36,31,.15)', stroke:'#DC241F','stroke-width':2.5
+  });
+  tg.appendChild(halo);
+  // marker
+  tg.appendChild(el('circle', {
+    cx: t.coords[0], cy: t.coords[1], r: 8,
+    fill:'#fff', stroke:'#0a0a0a','stroke-width': 3
+  }));
+  tg.appendChild(el('circle', {
+    cx: t.coords[0], cy: t.coords[1], r: 3.5,
+    fill:'#DC241F'
+  }));
+  // pulse animation
+  halo.animate(
+    [{ r: 18, opacity: 1 }, { r: 30, opacity: 0 }],
+    { duration: 1800, iterations: Infinity, easing:'cubic-bezier(.2,.7,.2,1)' }
+  );
+  // label
+  const labelText = el('text', {
+    x: t.coords[0], y: t.coords[1] - 24,
+    'text-anchor':'middle',
+    'font-family':'Hammersmith One, sans-serif',
+    'font-size': 18, fill:'#0a0a0a',
+    'paint-order':'stroke', stroke:'#FAF7F0', 'stroke-width': 5
+  }, target);
+  tg.appendChild(labelText);
+  svg.appendChild(tg);
+}
+
+/* ============== Thames ============== */
+function drawThames(svg, finalOpacity=0.95) {
+  // The TFL PDF gives us the Thames as a closed polygon. Fill it with
+  // TFL's own pale cyan; outline it lightly so the curves read.
+  const water = el('path', {
+    d: THAMES_PATH,
+    fill: '#C7EAFB',
+    stroke: '#76C0E7',
+    'stroke-width': 1.4,
+    'stroke-linejoin': 'round',
+    opacity: 0
+  });
+  svg.appendChild(water);
+  requestAnimationFrame(() => {
+    water.style.transition = 'opacity .8s ease';
+    water.style.opacity = String(finalOpacity);
+  });
+}
+
+/* draw target's outgoing stubs with parallel offset when lines share an angle */
+function drawTargetExits(svg, targetName, guessCount, finalReveal) {
+  const t = STATIONS[targetName];
+  const exits = getTargetExits(targetName);
+  // group by snapped angle
+  const groups = new Map();
+  for (const e of exits) {
+    const key = Math.round(e.angle * 1000);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(e);
+  }
+  const lineW = 9;
+  const lineGap = 2.5;
+  const colored = guessCount >= 1 || finalReveal;
+
+  const g = el('g', { class:'target-lines' });
+  for (const [key, group] of groups) {
+    const a = group[0].angle;
+    const perp = a + Math.PI/2;
+    const count = group.length;
+    for (let i=0; i<count; i++) {
+      const off = (i - (count-1)/2) * (lineW + lineGap);
+      const ox = Math.cos(perp) * off;
+      const oy = Math.sin(perp) * off;
+      const e = group[i];
+      // length: to neighbor if visible, else short stub
+      const fullDist = distance(t.coords, e.neighborCoords);
+      const visible = (guessCount >= 2) || finalReveal;
+      const len = visible ? fullDist : Math.min(85, fullDist - 4);
+      const x1 = t.coords[0] + ox;
+      const y1 = t.coords[1] + oy;
+      const x2 = t.coords[0] + Math.cos(a)*len + ox;
+      const y2 = t.coords[1] + Math.sin(a)*len + oy;
+      g.appendChild(el('line', {
+        x1, y1, x2, y2,
+        stroke: colored ? e.color : '#bdbab1',
+        'stroke-width': lineW,
+        'stroke-linecap':'round',
+        style: 'transition: stroke .6s ease;'
+      }));
+    }
+  }
+  svg.appendChild(g);
+}
+
+/* draw second-degree subgraph around the target — only connections that pass
+   through the target's neighbours, never showing labels */
+function drawNeighbourGraph(svg, targetName, guessCount, finalReveal) {
+  const t = STATIONS[targetName];
+  // collect neighbours (already drawn as stubs from target)
+  const neighborSet = new Set(neighborsOf(targetName));
+
+  // Draw second-degree line segments: for each line passing through each neighbour,
+  // draw to that neighbour's *other* neighbours (skip the target).
+  const drawnSegments = new Set();
+  const g = el('g', { class:'neighbour-lines' });
+  for (const n of neighborSet) {
+    for (const lineName of STATIONS[n].lines) {
+      const further = ADJ[n][lineName] || [];
+      for (const ff of further) {
+        if (ff === targetName) continue;
+        const k = [n, ff].sort().join('|') + '|' + lineName;
+        if (drawnSegments.has(k)) continue;
+        drawnSegments.add(k);
+        const a = STATIONS[n].coords;
+        const b = STATIONS[ff].coords;
+        g.appendChild(el('line', {
+          x1:a[0], y1:a[1], x2:b[0], y2:b[1],
+          stroke: LINES[lineName].color,
+          'stroke-width': 7,
+          'stroke-linecap':'round',
+          opacity: 0
+        }));
+      }
+    }
+  }
+  // small marker for each neighbour (no label)
+  for (const n of neighborSet) {
+    const c = STATIONS[n].coords;
+    g.appendChild(el('circle', {
+      cx:c[0], cy:c[1], r:6.5,
+      fill:'#fff', stroke:'#0a0a0a','stroke-width':2.2,
+      opacity:0
+    }));
+  }
+  svg.appendChild(g);
+  requestAnimationFrame(() => {
+    [...g.children].forEach(child => {
+      child.style.transition = 'opacity .7s ease';
+      child.style.opacity = '1';
+    });
+  });
+}
+
+function drawTargetMarker(svg, targetName, showLabel) {
+  const t = STATIONS[targetName];
+  const lineCount = t.lines.length;
+  // For interchange (2+ lines), TFL uses an oblong white shape with black outline.
+  // For single-line stations we'd use a tick — but visually for the puzzle we always
+  // use the interchange shape so the central station is unmistakable.
+  const g = el('g', { class:'target-marker' });
+  const r = Math.min(14, 9 + lineCount * 0.8);
+  if (lineCount === 1) {
+    g.appendChild(el('circle', {
+      cx:t.coords[0], cy:t.coords[1], r:8,
+      fill:'#fff', stroke:'#0a0a0a','stroke-width':3
+    }));
+  } else {
+    g.appendChild(el('circle', {
+      cx:t.coords[0], cy:t.coords[1], r:r,
+      fill:'#fff', stroke:'#0a0a0a','stroke-width':3.2
+    }));
+    g.appendChild(el('circle', {
+      cx:t.coords[0], cy:t.coords[1], r:r*0.45,
+      fill:'#0a0a0a'
+    }));
+  }
+  // pulse on first render
+  const pulse = el('circle', {
+    cx:t.coords[0], cy:t.coords[1], r:r+2,
+    fill:'none', stroke:'#DC241F','stroke-width':2
+  });
+  pulse.animate(
+    [{ r: r+2, opacity: 0.7 }, { r: r+30, opacity: 0 }],
+    { duration: 1800, iterations: 1, easing:'cubic-bezier(.2,.7,.2,1)' }
+  );
+  g.appendChild(pulse);
+
+  if (showLabel) {
+    const label = el('g', { transform:`translate(${t.coords[0]}, ${t.coords[1]+r+22})` });
+    // background plate for legibility
+    const text = el('text', {
+      x:0, y:0,
+      'text-anchor':'middle',
+      'font-family':'Hammersmith One, sans-serif',
+      'font-size':18,
+      fill:'#0a0a0a'
+    }, targetName);
+    label.appendChild(text);
+    g.appendChild(label);
+  }
+
+  svg.appendChild(g);
+}
+
+/* ============================================================
+   MODAL / SHARE
+   ============================================================ */
+const LINE_EMOJI = {
+  "Bakerloo":"🟧","Central":"🟥","Circle":"🟨","District":"🟩",
+  "Hammersmith & City":"🟪","Jubilee":"⬜","Metropolitan":"🟪",
+  "Northern":"⬛","Piccadilly":"🟦","Victoria":"🟦",
+  "Waterloo & City":"🟨","DLR":"⬛","Elizabeth":"🟪"
+};
+
+function buildShareGrid() {
+  const header = `Tube-le · ${state.date} · ${state.status === 'won' ? state.guesses.length : 'X'}/6`;
+  const rows = state.guesses.map(g => {
+    const lines = STATIONS[g.name].lines;
+    let row = lines.map(l => LINE_EMOJI[l] || '⬛').join('');
+    if (g.correct) row += '🎯';
+    return row;
+  });
+  return [header, '', ...rows].join('\n');
+}
+
+function openModal(won) {
+  const t = STATIONS[state.target];
+  $('#modal-title').textContent = won ? 'Station Found' : 'Out of Stops';
+  $('#modal-station').textContent = state.target;
+  const linesRow = $('#modal-lines'); linesRow.innerHTML='';
+  for (const ln of t.lines) {
+    const color = LINES[ln].color;
+    const dark = ['#FFD300','#F3A9BB','#95CDBA','#A0A5A9'].includes(color);
+    const sp = el('span', { class: dark ? 'text-dark':'', style:{ background:color } }, ln);
+    linesRow.appendChild(sp);
+  }
+  $('#stat-guesses').textContent = won ? state.guesses.length : 'X';
+  $('#stat-lines').textContent = t.lines.length;
+  $('#stat-zone').textContent = t.zone;
+  $('#grid-area').textContent = buildShareGrid();
+  $('#modal-bd').classList.add('open');
+  $('#reopen-btn').classList.remove('show');
+}
+function closeModal() {
+  $('#modal-bd').classList.remove('open');
+  if (state.status === 'won' || state.status === 'lost') {
+    const btn = $('#reopen-btn');
+    btn.classList.add('show');
+    btn.classList.toggle('win', state.status === 'won');
+    $('#reopen-text').textContent = state.status === 'won' ? 'Show result' : 'Show answer';
+    $('#legend').style.display = 'none';
+  }
+}
+
+function copyShare() {
+  const txt = buildShareGrid();
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand('copy'); } catch {}
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).catch(fallback);
+  } else fallback();
+  const toast = $('#toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1500);
+  sndClick();
+}
+
+/* ============================================================
+   CELEBRATION
+   ============================================================ */
+function celebrate() {
+  const wrap = $('#confetti');
+  wrap.innerHTML = '';
+  const palette = Object.values(LINES).map(l => l.color);
+  const N = 80;
+  for (let i=0; i<N; i++) {
+    const p = document.createElement('i');
+    p.style.left = (Math.random()*100) + '%';
+    p.style.top = (-Math.random()*20) + 'px';
+    p.style.background = palette[Math.floor(Math.random()*palette.length)];
+    p.style.animationDelay = (Math.random()*0.6) + 's';
+    p.style.animationDuration = (1.8 + Math.random()*1.6) + 's';
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    p.style.width = (6 + Math.random()*10) + 'px';
+    p.style.height = p.style.width;
+    wrap.appendChild(p);
+  }
+  setTimeout(() => { wrap.innerHTML = ''; }, 4000);
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+function bindEvents() {
+  const inp = $('#station-input');
+  inp.addEventListener('input', e => {
+    sndClick();
+    renderAC(e.target.value);
+    $('#submit-btn').disabled = !isValidStation(e.target.value.trim());
+  });
+  inp.addEventListener('keydown', e => {
+    const items = state.acItems;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!items.length) return;
+      setAC((state.acIndex + 1) % items.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!items.length) return;
+      setAC((state.acIndex - 1 + items.length) % items.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (items.length) chooseAC(state.acIndex);
+      else if (isValidStation(inp.value.trim())) submitGuess();
+    } else if (e.key === 'Tab') {
+      if (items.length) {
+        e.preventDefault();
+        inp.value = items[state.acIndex];
+        $('#submit-btn').disabled = false;
+        closeAC();
+      }
+    } else if (e.key === 'Escape') {
+      closeAC();
+    }
+  });
+  inp.addEventListener('blur', () => setTimeout(closeAC, 120));
+  inp.addEventListener('focus', () => {
+    if (inp.value) renderAC(inp.value);
+  });
+
+  $('#submit-btn').addEventListener('click', () => {
+    if (isValidStation($('#station-input').value.trim())) submitGuess();
+  });
+
+  $('#next-btn').addEventListener('click', () => {
+    state.puzzleOffset += 1;
+    resetPuzzle();
+    sndClick();
+  });
+  $('#modal-next').addEventListener('click', () => {
+    state.puzzleOffset += 1;
+    closeModal();
+    resetPuzzle();
+    sndClick();
+  });
+  $('#copy-btn').addEventListener('click', copyShare);
+
+  $('#modal-bd').addEventListener('click', e => {
+    if (e.target === $('#modal-bd')) closeModal();
+  });
+  $('#modal-close').addEventListener('click', () => { sndClick(); closeModal(); });
+  $('#reopen-btn').addEventListener('click', () => {
+    sndClick();
+    openModal(state.status === 'won');
+  });
+
+  bindMapInteraction();
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && $('#modal-bd').classList.contains('open')) closeModal();
+  });
+
+  $('#mute-btn').addEventListener('click', () => {
+    muted = !muted;
+    try { localStorage.setItem('tubele-muted', muted ? '1' : '0'); } catch {}
+    updateMuteUI();
+    if (!muted) sndClick();
+  });
+  updateMuteUI();
+}
+
+/* ============================================================
+   MAP INTERACTION — pan / wheel-zoom / pinch / buttons
+   Active only when the game has ended (status: won/lost).
+   ============================================================ */
+function isInteractive() { return state.status === 'won' || state.status === 'lost'; }
+
+function clientToWorld(clientX, clientY) {
+  const svg = $('#map-svg');
+  const r = svg.getBoundingClientRect();
+  return {
+    x: vb.x + (clientX - r.left) / r.width * vb.w,
+    y: vb.y + (clientY - r.top) / r.height * vb.h,
+  };
+}
+function zoomAround(clientX, clientY, factor) {
+  const before = clientToWorld(clientX, clientY);
+  vb.w *= factor;
+  vb.h = vb.w * ASPECT;
+  clampZoom();
+  const after = clientToWorld(clientX, clientY);
+  vb.x += before.x - after.x;
+  vb.y += before.y - after.y;
+  clampView();
+  applyViewBox();
+}
+function zoomCenter(factor) {
+  const r = $('#map-svg').getBoundingClientRect();
+  zoomAround(r.left + r.width/2, r.top + r.height/2, factor);
+}
+function recenter() {
+  if (!state.target) return;
+  setView(STATIONS[state.target].coords, 700);
+  clampView(); applyViewBox();
+}
+
+function bindMapInteraction() {
+  const svg = $('#map-svg');
+  const pointers = new Map();
+  let panStart = null;
+  let pinchStart = null;
+  let hintHidden = false;
+
+  function hideHintOnce() {
+    if (hintHidden) return;
+    hintHidden = true;
+    $('#map-hint').classList.remove('show');
+  }
+
+  svg.addEventListener('pointerdown', e => {
+    if (!isInteractive()) return;
+    svg.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 1) {
+      panStart = { mx: e.clientX, my: e.clientY, vbx: vb.x, vby: vb.y };
+      svg.classList.add('grabbing');
+    } else if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      pinchStart = {
+        dist: Math.hypot(a.x - b.x, a.y - b.y),
+        midX: (a.x + b.x)/2, midY: (a.y + b.y)/2,
+        startW: vb.w
+      };
+      panStart = null;
+    }
+    hideHintOnce();
+  });
+
+  svg.addEventListener('pointermove', e => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 1 && panStart) {
+      const r = svg.getBoundingClientRect();
+      const scale = vb.w / r.width;
+      vb.x = panStart.vbx - (e.clientX - panStart.mx) * scale;
+      vb.y = panStart.vby - (e.clientY - panStart.my) * scale;
+      clampView();
+      applyViewBox();
+    } else if (pointers.size === 2 && pinchStart) {
+      const [a, b] = [...pointers.values()];
+      const curDist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+      const factor = pinchStart.dist / curDist;
+      const newW = pinchStart.startW * factor;
+      // Apply zoom around the pinch midpoint at pinch start
+      const before = clientToWorld(pinchStart.midX, pinchStart.midY);
+      vb.w = newW; vb.h = vb.w * ASPECT;
+      clampZoom();
+      const after = clientToWorld(pinchStart.midX, pinchStart.midY);
+      vb.x += before.x - after.x;
+      vb.y += before.y - after.y;
+      clampView();
+      applyViewBox();
+    }
+  });
+
+  function endPointer(e) {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinchStart = null;
+    if (pointers.size === 0) {
+      panStart = null;
+      svg.classList.remove('grabbing');
+    } else if (pointers.size === 1) {
+      // resume pan with the remaining pointer
+      const [p] = [...pointers.values()];
+      panStart = { mx: p.x, my: p.y, vbx: vb.x, vby: vb.y };
+    }
+  }
+  svg.addEventListener('pointerup', endPointer);
+  svg.addEventListener('pointercancel', endPointer);
+  svg.addEventListener('pointerleave', endPointer);
+
+  svg.addEventListener('wheel', e => {
+    if (!isInteractive()) return;
+    e.preventDefault();
+    // Normalize: deltaY positive = scroll down = zoom out
+    const k = e.deltaMode === 1 ? 16 : 1; // line vs pixel mode
+    const factor = Math.pow(1.0025, e.deltaY * k);
+    zoomAround(e.clientX, e.clientY, factor);
+    hideHintOnce();
+  }, { passive: false });
+
+  // Buttons
+  $('#zoom-in').addEventListener('click', () => { sndClick(); zoomCenter(0.78); });
+  $('#zoom-out').addEventListener('click', () => { sndClick(); zoomCenter(1.28); });
+  $('#zoom-reset').addEventListener('click', () => { sndClick(); recenter(); });
+}
+
+function updateMuteUI() {
+  const ic = $('#mute-icon');
+  if (muted) {
+    ic.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/>';
+  } else {
+    ic.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+  }
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+function boot() {
+  bindEvents();
+  resetPuzzle();
+}
+
+document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
+</body>
+</html>

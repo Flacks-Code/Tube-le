@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(uv run *)",
+      "Bash(uvx --no-project --from \"py-mini-racer\" python -c \"import py_mini_racer; ctx = py_mini_racer.MiniRacer\\(\\); import re; html=open\\('index.html'\\).read\\(\\); js=re.search\\(r'<script>\\(.*?\\)</script>', html, re.S\\).group\\(1\\); ctx.eval\\('var window={},document={addEventListener:function\\(\\){}};' + js\\); print\\('OK · executed in mini-racer V8'\\)\")",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(curl -sSL -A \"Mozilla/5.0 Tube-le-research\" -o tube_map.svg \"https://upload.wikimedia.org/wikipedia/commons/1/13/London_Underground_Overground_DLR_Crossrail_map.svg\")",
+      "WebFetch(domain:tfl.gov.uk)",
+      "Bash(curl -sSL -A \"Mozilla/5.0 Tube-le-research\" -o tube_map_tfl.pdf \"https://tfl.gov.uk/cdn/static/cms/documents/standard-tube-map.pdf\")",
+      "Bash(uvx --help)"
+    ]
+  }
+}

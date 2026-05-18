@@ -1,0 +1,386 @@
+{
+  "Abbey Wood": [
+    2365.0,
+    709.0
+  ],
+  "Acton Town": [
+    436.0,
+    785.0
+  ],
+  "Aldgate": [
+    1591.5,
+    545.5
+  ],
+  "Aldgate East": [
+    1653.0,
+    532.0
+  ],
+  "Angel": [
+    1418.0,
+    405.0
+  ],
+  "Baker Street": [
+    1053.0,
+    532.0
+  ],
+  "Bank": [
+    1465.0,
+    559.0
+  ],
+  "Barking": [
+    2228.7,
+    289.0
+  ],
+  "Barons Court": [
+    705.0,
+    890.4
+  ],
+  "Battersea Power Station": [
+    1125.0,
+    931.2
+  ],
+  "Bethnal Green": [
+    1638.5,
+    467.5
+  ],
+  "Blackfriars": [
+    1362.0,
+    634.0
+  ],
+  "Bond Street": [
+    1095.0,
+    611.0
+  ],
+  "Borough": [
+    1491.0,
+    734.0
+  ],
+  "Brixton": [
+    1317.0,
+    962.0
+  ],
+  "Camden Town": [
+    1180.0,
+    302.0
+  ],
+  "Canary Wharf": [
+    1890.7,
+    646.7
+  ],
+  "Canning Town": [
+    2046.0,
+    560.0
+  ],
+  "Chancery Lane": [
+    1330.0,
+    539.0
+  ],
+  "Charing Cross": [
+    1277.0,
+    681.0
+  ],
+  "Cockfosters": [
+    1146.0,
+    -46.5
+  ],
+  "Covent Garden": [
+    1284.0,
+    548.0
+  ],
+  "Ealing Broadway": [
+    340.0,
+    696.0
+  ],
+  "Ealing Common": [
+    395.0,
+    753.0
+  ],
+  "Earl's Court": [
+    871.0,
+    890.4
+  ],
+  "Edgware": [
+    718.0,
+    122.0
+  ],
+  "Edgware Road": [
+    980.5,
+    553.0
+  ],
+  "Elephant & Castle": [
+    1490.0,
+    772.0
+  ],
+  "Embankment": [
+    1282.0,
+    699.0
+  ],
+  "Epping": [
+    1914.0,
+    -100.0
+  ],
+  "Euston": [
+    1200.0,
+    360.0
+  ],
+  "Euston Square": [
+    1211.0,
+    421.0
+  ],
+  "Farringdon": [
+    1386.0,
+    476.5
+  ],
+  "Finchley Road": [
+    957.5,
+    357.0
+  ],
+  "Finsbury Park": [
+    1375.0,
+    187.0
+  ],
+  "Gloucester Road": [
+    1020.3,
+    888.0
+  ],
+  "Green Park": [
+    1142.0,
+    674.0
+  ],
+  "Hammersmith": [
+    1107.3,
+    856.7
+  ],
+  "Hampstead": [
+    929.4,
+    337.9
+  ],
+  "Harrow & Wealdstone": [
+    543.5,
+    240.0
+  ],
+  "Heathrow Terminal 4": [
+    117.0,
+    1006.0
+  ],
+  "Heathrow Terminal 5": [
+    30.0,
+    987.5
+  ],
+  "Heathrow Terminals 2 & 3": [
+    96.0,
+    917.0
+  ],
+  "High Barnet": [
+    864.0,
+    0.0
+  ],
+  "High Street Kensington": [
+    918.0,
+    793.5
+  ],
+  "Highbury & Islington": [
+    1426.0,
+    272.0
+  ],
+  "Holborn": [
+    1284.0,
+    514.0
+  ],
+  "Kennington": [
+    1376.0,
+    879.0
+  ],
+  "King's Cross St. Pancras": [
+    1295.0,
+    353.0
+  ],
+  "Leicester Square": [
+    1269.0,
+    599.0
+  ],
+  "Lewisham": [
+    1892.0,
+    934.0
+  ],
+  "Leyton": [
+    1898.5,
+    192.8
+  ],
+  "Leytonstone": [
+    1945.5,
+    174.0
+  ],
+  "Liverpool Street": [
+    1544.7,
+    508.0
+  ],
+  "London Bridge": [
+    1485.0,
+    693.0
+  ],
+  "Marble Arch": [
+    1038.0,
+    647.5
+  ],
+  "Mile End": [
+    1816.0,
+    463.5
+  ],
+  "Monument": [
+    1459.0,
+    606.0
+  ],
+  "Moorgate": [
+    1484.0,
+    487.0
+  ],
+  "Morden": [
+    990.5,
+    1149.5
+  ],
+  "North Greenwich": [
+    2000.0,
+    669.0
+  ],
+  "Notting Hill Gate": [
+    869.0,
+    704.5
+  ],
+  "Old Street": [
+    1455.0,
+    429.0
+  ],
+  "Oxford Circus": [
+    1164.0,
+    578.0
+  ],
+  "Paddington": [
+    950.0,
+    561.0
+  ],
+  "Piccadilly Circus": [
+    1213.0,
+    641.0
+  ],
+  "Queen's Park": [
+    754.0,
+    531.0
+  ],
+  "Rayners Lane": [
+    300.0,
+    270.5
+  ],
+  "Seven Sisters": [
+    1417.0,
+    102.0
+  ],
+  "Shepherd's Bush": [
+    682.2,
+    737.5
+  ],
+  "Sloane Square": [
+    1138.0,
+    839.0
+  ],
+  "South Kensington": [
+    1085.0,
+    817.0
+  ],
+  "St John's Wood": [
+    985.0,
+    473.5
+  ],
+  "St. Paul's": [
+    1400.0,
+    544.0
+  ],
+  "Stanmore": [
+    663.0,
+    166.0
+  ],
+  "Stockwell": [
+    1296.0,
+    937.0
+  ],
+  "Stratford": [
+    1975.8,
+    313.3
+  ],
+  "Swiss Cottage": [
+    947.5,
+    423.5
+  ],
+  "Tottenham Court Road": [
+    1187.0,
+    473.0
+  ],
+  "Tottenham Hale": [
+    1530.0,
+    133.0
+  ],
+  "Tower Hill": [
+    1563.0,
+    606.0
+  ],
+  "Turnham Green": [
+    540.0,
+    818.5
+  ],
+  "Uxbridge": [
+    20.0,
+    320.0
+  ],
+  "Vauxhall": [
+    1246.0,
+    861.5
+  ],
+  "Victoria": [
+    1666.2,
+    609.8
+  ],
+  "Walthamstow Central": [
+    1694.0,
+    117.0
+  ],
+  "Warren Street": [
+    1148.0,
+    408.0
+  ],
+  "Waterloo": [
+    1655.3,
+    767.3
+  ],
+  "Wembley Central": [
+    595.0,
+    413.0
+  ],
+  "Wembley Park": [
+    656.0,
+    286.0
+  ],
+  "West Ham": [
+    2043.0,
+    454.0
+  ],
+  "Westminster": [
+    1243.0,
+    758.0
+  ],
+  "White City": [
+    624.0,
+    741.0
+  ],
+  "Whitechapel": [
+    1716.0,
+    540.0
+  ],
+  "Willesden Junction": [
+    683.0,
+    470.5
+  ],
+  "Woolwich": [
+    2308.5,
+    700.0
+  ]
+}
