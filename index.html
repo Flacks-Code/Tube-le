@@ -863,6 +863,28 @@ const STATIONS = {
   "Heathrow Terminal 4":      { coords:[121.5,682.1],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
   "Heathrow Terminal 5":      { coords:[78.7,683.3],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
 
+  // --- Piccadilly: Uxbridge branch ---
+  "North Ealing":             { coords:[0,0], zone:3, lines:["Piccadilly"], river:"far", display_only:true },
+  "Park Royal":               { coords:[0,0], zone:3, lines:["Piccadilly"], river:"far", display_only:true },
+  "Alperton":                 { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Sudbury Town":             { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Sudbury Hill":             { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "South Harrow":             { coords:[0,0], zone:5, lines:["Piccadilly"], river:"far", display_only:true },
+  "Eastcote":                 { coords:[0,0], zone:5, lines:["Metropolitan","Piccadilly"], river:"far", display_only:true },
+  "Ruislip Manor":            { coords:[0,0], zone:6, lines:["Metropolitan","Piccadilly"], river:"far", display_only:true },
+  "Ruislip":                  { coords:[0,0], zone:6, lines:["Metropolitan","Piccadilly"], river:"far", display_only:true },
+  "Ickenham":                 { coords:[0,0], zone:6, lines:["Metropolitan","Piccadilly"], river:"far", display_only:true },
+  "Hillingdon":               { coords:[0,0], zone:6, lines:["Metropolitan","Piccadilly"], river:"far", display_only:true },
+  // --- Piccadilly: Heathrow branch ---
+  "South Ealing":             { coords:[0,0], zone:3, lines:["Piccadilly"], river:"far", display_only:true },
+  "Northfields":              { coords:[0,0], zone:3, lines:["Piccadilly"], river:"far", display_only:true },
+  "Boston Manor":             { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Osterley":                 { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Hounslow East":            { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Hounslow Central":         { coords:[0,0], zone:4, lines:["Piccadilly"], river:"far", display_only:true },
+  "Hounslow West":            { coords:[0,0], zone:5, lines:["Piccadilly"], river:"far", display_only:true },
+  "Hatton Cross":             { coords:[0,0], zone:6, lines:["Piccadilly"], river:"far", display_only:true },
+
   // Central — West Ruislip branch (display_only)
   "East Acton":        { coords:[366.2,479.0], zone:2, lines:["Central"], river:"far", display_only:true },
   "North Acton":       { coords:[348.2,479.0], zone:3, lines:["Central"], river:"far", display_only:true },
@@ -1105,9 +1127,13 @@ const LINES = {
       ["Cockfosters","Finsbury Park","King's Cross St. Pancras","Holborn","Covent Garden",
        "Leicester Square","Piccadilly Circus","Green Park","South Kensington",
        "Gloucester Road","Earl's Court","Barons Court","Hammersmith","Turnham Green","Acton Town"],
-      ["Acton Town","Heathrow Terminals 2 & 3","Heathrow Terminal 5"],
+      ["Acton Town","South Ealing","Northfields","Boston Manor","Osterley",
+       "Hounslow East","Hounslow Central","Hounslow West","Hatton Cross",
+       "Heathrow Terminals 2 & 3","Heathrow Terminal 5"],
       ["Heathrow Terminals 2 & 3","Heathrow Terminal 4"],
-      ["Acton Town","Ealing Common","Rayners Lane","Uxbridge"]
+      ["Acton Town","Ealing Common","North Ealing","Park Royal","Alperton",
+       "Sudbury Town","Sudbury Hill","South Harrow","Rayners Lane",
+       "Eastcote","Ruislip Manor","Ruislip","Ickenham","Hillingdon","Uxbridge"]
     ]
   },
   "Victoria": {
