@@ -23,7 +23,6 @@ is right next to each station marker on the diagram.
 from __future__ import annotations
 import json, re, sys
 from pathlib import Path
-import pymupdf
 
 PDF = Path('tube_map_tfl.pdf')
 HTML = Path('index.html')
@@ -408,6 +407,48 @@ def collect_stroke_points(items) -> list[tuple[float, float]]:
 
 # ----------------------------------------------------- station extraction --
 
+def _find_graphical_markers(drawings: list) -> list[tuple[float, float]]:
+    """Return centres of white station circles and step-free access markers.
+
+    White station circles: fill=(1,1,1), curve items, bounding box 4–9.5 PDF units.
+    Step-free markers: blue rectangular fill, bounding box 6.5–12 PDF units.
+    """
+    markers: list[tuple[float, float]] = []
+    for d in drawings:
+        fill = d.get('fill')
+        if fill is None:
+            continue
+        rect = d.get('rect')
+        if rect is None:
+            continue
+        w = rect[2] - rect[0]
+        h = rect[3] - rect[1]
+        cx = (rect[0] + rect[2]) / 2
+        cy = (rect[1] + rect[3]) / 2
+        items = d.get('items', [])
+
+        r, g, b = fill[0], fill[1], fill[2]
+        curve_count = sum(1 for item in items if item[0] == 'c')
+
+        # White station circles
+        if (all(abs(c - 1.0) < 0.05 for c in (r, g, b))
+                and curve_count >= 3
+                and 4.0 <= w <= 9.5
+                and 4.0 <= h <= 9.5):
+            markers.append((cx, cy))
+            continue
+
+        # Step-free access markers (TfL cyan-blue rectangles)
+        if (0.05 < r < 0.30 and 0.55 < g < 0.85 and 0.75 < b < 1.0
+                and 6.5 <= w <= 12.0
+                and 6.5 <= h <= 12.0):
+            markers.append((cx, cy))
+
+    return markers
+
+
+SNAP_RADIUS = 30
+
 def normalise(s: str) -> str:
     s = s.replace("’", "'").replace(" ", " ")
     s = re.sub(r'\s+', ' ', s).strip()
@@ -429,7 +470,7 @@ def match_station(label: str) -> str | None:
                 best, best_len = canonical, len(a)
     return best
 
-def extract_station_positions(page) -> dict[str, tuple[float, float]]:
+def _extract_text_labels(page) -> dict[str, tuple[float, float]]:
     """Spatial line-by-line word matcher.
 
     pymupdf's block grouping is unreliable — it crams unrelated stations
@@ -546,6 +587,35 @@ def extract_station_positions(page) -> dict[str, tuple[float, float]]:
             print(f'  ?: {name}')
     return out
 
+
+def extract_station_positions(page, drawings: list) -> dict[str, tuple[float, float]]:
+    """Extract station centres from the PDF.
+
+    First finds text-label positions (for station-name matching), then snaps
+    each label position to the nearest white circle or step-free marker within
+    SNAP_RADIUS PDF units. Falls back to the text-label position if no marker
+    is close enough (prints a warning).
+    """
+    text_pos = _extract_text_labels(page)
+    markers = _find_graphical_markers(drawings)
+
+    out: dict[str, tuple[float, float]] = {}
+    for name, (tx, ty) in text_pos.items():
+        best_dist = float('inf')
+        best_pos: tuple[float, float] | None = None
+        for mx, my in markers:
+            d = ((mx - tx) ** 2 + (my - ty) ** 2) ** 0.5
+            if d < best_dist:
+                best_dist = d
+                best_pos = (mx, my)
+        if best_pos is not None and best_dist <= SNAP_RADIUS:
+            out[name] = best_pos
+        else:
+            print(f'  snap miss ({best_dist:.1f}u): {name} — using text label')
+            out[name] = (tx, ty)
+    return out
+
+
 # ----------------------------------------------------- main --
 
 def compute_transform(min_x, min_y, max_x, max_y) -> tuple[float, float, float]:
@@ -561,13 +631,14 @@ def compute_transform(min_x, min_y, max_x, max_y) -> tuple[float, float, float]:
     return scale, min_x, min_y, off_x, off_y  # type: ignore[return-value]
 
 def main() -> int:
+    import pymupdf
     doc = pymupdf.open(str(PDF))
     page = doc[0]
     drawings = page.get_drawings()
 
     # Extract stations first — their positions bound the diagram area
     # (excluding the legend/key boxes on the right of the page).
-    raw_stations = extract_station_positions(page)
+    raw_stations = extract_station_positions(page, drawings)
     if not raw_stations:
         raise SystemExit('No stations extracted')
     sxs = [p[0] for p in raw_stations.values()]
