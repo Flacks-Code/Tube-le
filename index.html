@@ -1281,7 +1281,7 @@ function sndChime() {
 /* ============================================================
    STATE
    ============================================================ */
-const STATION_NAMES = Object.keys(STATIONS);
+const STATION_NAMES = Object.keys(STATIONS).filter(n => !STATIONS[n].display_only);
 const todayStr = () => new Date().toISOString().slice(0,10);
 
 function hash32(s) {
