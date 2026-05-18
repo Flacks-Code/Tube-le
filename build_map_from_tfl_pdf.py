@@ -33,6 +33,7 @@ MARGIN = 40
 
 # Canonical Tube-le station list (must match index.html).
 TARGETS = [
+    # --- existing playable stations (unchanged) ---
     "Stanmore","Edgware","Harrow & Wealdstone","Wembley Park","High Barnet",
     "Cockfosters","Uxbridge","Rayners Lane","Wembley Central","Hampstead",
     "Walthamstow Central","Tottenham Hale","Seven Sisters","Willesden Junction",
@@ -54,6 +55,42 @@ TARGETS = [
     "Whitechapel","Stratford","Leyton","Leytonstone","Epping","Lewisham",
     "Woolwich","Abbey Wood","Barking",
     "Heathrow Terminals 2 & 3","Heathrow Terminal 4","Heathrow Terminal 5",
+    # --- Central: West Ruislip branch ---
+    "West Acton","North Acton","East Acton",
+    "Hanger Lane","Perivale","Greenford","Northolt",
+    "South Ruislip","Ruislip Gardens","West Ruislip",
+    # --- Central: Epping main line (intermediate) ---
+    "Snaresbrook","South Woodford","Woodford",
+    "Buckhurst Hill","Loughton","Debden","Theydon Bois",
+    # --- Central: Hainault/Fairlop loop ---
+    "Wanstead","Redbridge","Gants Hill","Newbury Park",
+    "Barkingside","Fairlop","Hainault","Grange Hill","Chigwell","Roding Valley",
+    # --- District: Richmond branch ---
+    "Gunnersbury","Kew Gardens","Richmond",
+    # --- District: Wimbledon branch ---
+    "Fulham Broadway","Parsons Green","Putney Bridge","East Putney",
+    "Southfields","Wimbledon Park","Wimbledon",
+    # --- Metropolitan: NW branches ---
+    "Preston Road","Northwick Park","Harrow-on-the-Hill",
+    "North Harrow","Pinner","Northwood Hills","Northwood",
+    "Moor Park","Croxley","Watford",
+    "Rickmansworth","Chorleywood","Chalfont & Latimer","Amersham","Chesham",
+    # --- Elizabeth: Shenfield branch ---
+    "Maryland","Manor Park","Forest Gate","Ilford","Seven Kings","Goodmayes",
+    "Chadwell Heath","Romford","Gidea Park","Harold Wood","Brentwood","Shenfield",
+    # --- Elizabeth: Reading branch ---
+    "Acton Main Line","West Ealing","Hanwell","Southall","Hayes & Harlington",
+    "West Drayton","Iver","Langley","Slough","Burnham","Taplow",
+    "Maidenhead","Twyford","Reading",
+    # --- DLR ---
+    "Tower Gateway","Shadwell","Limehouse","Westferry","Poplar",
+    "West India Quay","Heron Quays","South Quay","Crossharbour","Mudchute",
+    "Island Gardens","Cutty Sark","Greenwich","Deptford Bridge","Elverson Road",
+    "Stratford High Street","Abbey Road",
+    "Royal Victoria","Custom House","Prince Regent","Royal Albert",
+    "Beckton Park","Cyprus","Gallions Reach","Beckton",
+    "Pudding Mill Lane","Devons Road","Bow Church","Langdon Park","All Saints",
+    "Silvertown","London City Airport","King George V","Woolwich Arsenal",
 ]
 
 # Aliases the PDF typesetter uses. Where multiple aliases exist we'll take
