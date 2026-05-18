@@ -1002,12 +1002,23 @@ const LINES = {
   },
   "Central": {
     color:"#E32017",
-    sequences:[[
-      "Ealing Broadway","White City","Shepherd's Bush","Notting Hill Gate",
-      "Marble Arch","Bond Street","Oxford Circus","Tottenham Court Road",
-      "Holborn","Chancery Lane","St. Paul's","Bank","Liverpool Street",
-      "Bethnal Green","Mile End","Stratford","Leyton","Leytonstone","Epping"
-    ]]
+    sequences:[
+      // Main east-west trunk (west end → east end)
+      ["Ealing Broadway","West Acton","North Acton","East Acton","White City",
+       "Shepherd's Bush","Notting Hill Gate","Marble Arch","Bond Street",
+       "Oxford Circus","Tottenham Court Road","Holborn","Chancery Lane",
+       "St. Paul's","Bank","Liverpool Street","Bethnal Green","Mile End",
+       "Stratford","Leyton","Leytonstone",
+       "Snaresbrook","South Woodford","Woodford",
+       "Buckhurst Hill","Loughton","Debden","Theydon Bois","Epping"],
+      // West Ruislip branch (from North Acton junction)
+      ["North Acton","Hanger Lane","Perivale","Greenford","Northolt",
+       "South Ruislip","Ruislip Gardens","West Ruislip"],
+      // Hainault loop — clockwise from Woodford
+      ["Woodford","Roding Valley","Chigwell","Grange Hill","Hainault",
+       "Fairlop","Barkingside","Newbury Park","Gants Hill",
+       "Redbridge","Wanstead","Leytonstone"]
+    ]
   },
   "Circle": {
     color:"#FFD300",
@@ -1024,11 +1035,20 @@ const LINES = {
   "District": {
     color:"#00782A",
     sequences:[
-      ["Ealing Broadway","Ealing Common","Acton Town","Turnham Green","Hammersmith",
-       "Barons Court","Earl's Court","Gloucester Road","South Kensington","Sloane Square",
-       "Victoria","Westminster","Embankment","Blackfriars","Monument","Tower Hill",
+      // Main east-west trunk
+      ["Ealing Broadway","Ealing Common","Acton Town","Turnham Green",
+       "Hammersmith","Barons Court","Earl's Court","Gloucester Road",
+       "South Kensington","Sloane Square","Victoria","Westminster",
+       "Embankment","Blackfriars","Monument","Tower Hill",
        "Aldgate East","Whitechapel","Mile End","West Ham","Barking"],
-      ["Earl's Court","High Street Kensington","Notting Hill Gate","Paddington","Edgware Road"]
+      // Earl's Court shuttle / inner loop
+      ["Earl's Court","High Street Kensington","Notting Hill Gate",
+       "Paddington","Edgware Road"],
+      // Richmond branch
+      ["Turnham Green","Gunnersbury","Kew Gardens","Richmond"],
+      // Wimbledon branch
+      ["Earl's Court","Fulham Broadway","Parsons Green","Putney Bridge",
+       "East Putney","Southfields","Wimbledon Park","Wimbledon"]
     ]
   },
   "Hammersmith & City": {
