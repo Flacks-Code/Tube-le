@@ -1069,10 +1069,22 @@ const LINES = {
   },
   "Metropolitan": {
     color:"#9B0056",
-    sequences:[[
-      "Uxbridge","Rayners Lane","Wembley Park","Finchley Road","Baker Street",
-      "Euston Square","King's Cross St. Pancras","Farringdon","Moorgate","Aldgate"
-    ]]
+    sequences:[
+      // Main trunk: Uxbridge → Aldgate
+      // Preston Road and Northwick Park sit between Wembley Park and Harrow-on-the-Hill
+      ["Uxbridge","Rayners Lane","Harrow-on-the-Hill","Northwick Park","Preston Road",
+       "Wembley Park","Finchley Road","Baker Street","Euston Square",
+       "King's Cross St. Pancras","Farringdon","Moorgate","Aldgate"],
+      // Harrow-on-the-Hill northward to Moor Park junction
+      ["Harrow-on-the-Hill","North Harrow","Pinner","Northwood Hills",
+       "Northwood","Moor Park"],
+      // Watford branch (from Moor Park)
+      ["Moor Park","Croxley","Watford"],
+      // Amersham branch (from Moor Park)
+      ["Moor Park","Rickmansworth","Chorleywood","Chalfont & Latimer","Amersham"],
+      // Chesham spur
+      ["Chalfont & Latimer","Chesham"]
+    ]
   },
   "Northern": {
     color:"#000000",
@@ -1113,20 +1125,43 @@ const LINES = {
   "DLR": {
     color:"#00A4A7",
     sequences:[
-      ["Bank","Canary Wharf","Lewisham"],
-      ["Stratford","Canning Town","West Ham"],
-      ["Canning Town","Canary Wharf"]
+      // Bank → Lewisham (main trunk via Isle of Dogs)
+      ["Bank","Shadwell","Limehouse","Westferry","Poplar","West India Quay",
+       "Canary Wharf","Heron Quays","South Quay","Crossharbour","Mudchute",
+       "Island Gardens","Cutty Sark","Greenwich","Deptford Bridge",
+       "Elverson Road","Lewisham"],
+      // Tower Gateway spur (branches from Shadwell)
+      ["Tower Gateway","Shadwell"],
+      // Stratford → West Ham (via Stratford High Street)
+      ["Stratford","Stratford High Street","Abbey Road","West Ham"],
+      // Stratford → Poplar (via Pudding Mill Lane / Bow Church)
+      ["Stratford","Pudding Mill Lane","Devons Road","Bow Church",
+       "Langdon Park","All Saints","Poplar"],
+      // Canning Town → Beckton
+      ["Canning Town","Royal Victoria","Custom House","Prince Regent",
+       "Royal Albert","Beckton Park","Cyprus","Gallions Reach","Beckton"],
+      // Canning Town → Woolwich Arsenal
+      ["Canning Town","Silvertown","London City Airport","King George V",
+       "Woolwich Arsenal"]
     ]
   },
   "Elizabeth": {
     color:"#6950A1",
     sequences:[
-      ["Heathrow Terminal 5","Heathrow Terminals 2 & 3","Paddington","Bond Street",
-       "Tottenham Court Road","Farringdon","Liverpool Street","Whitechapel",
-       "Canary Wharf","Woolwich","Abbey Wood"],
+      // Main trunk: Reading → Abbey Wood
+      ["Reading","Twyford","Maidenhead","Taplow","Burnham","Slough","Langley",
+       "Iver","West Drayton","Hayes & Harlington","Southall","Hanwell",
+       "West Ealing","Ealing Broadway","Acton Main Line","Paddington",
+       "Bond Street","Tottenham Court Road","Farringdon","Liverpool Street",
+       "Whitechapel","Canary Wharf","Woolwich","Abbey Wood"],
+      // Heathrow T4 spur
       ["Heathrow Terminals 2 & 3","Heathrow Terminal 4"],
-      ["Liverpool Street","Stratford"],
-      ["Paddington","Ealing Broadway"]
+      // Heathrow T5 spur
+      ["Heathrow Terminal 5","Heathrow Terminals 2 & 3"],
+      // Shenfield branch (from Liverpool Street via Stratford)
+      ["Liverpool Street","Stratford","Maryland","Manor Park","Forest Gate",
+       "Ilford","Seven Kings","Goodmayes","Chadwell Heath","Romford",
+       "Gidea Park","Harold Wood","Brentwood","Shenfield"]
     ]
   }
 };
