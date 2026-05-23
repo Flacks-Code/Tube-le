@@ -281,7 +281,7 @@ LINE_STATIONS: dict[str, list[str]] = {
 # something completely unrelated.
 COLOUR_DIST_MAX = 80
 # Station proximity radius (in PDF coords).
-STATION_NEAR_RADIUS = 25
+STATION_NEAR_RADIUS = 40
 # Strokes pass validation if (a) they hit at least STATION_HITS_MIN of
 # the candidate line's canonical stations, AND (b) the candidate-line
 # hit count exceeds the highest hit count for any OTHER target line.
@@ -447,10 +447,12 @@ def _find_graphical_markers(drawings: list) -> list[tuple[float, float]]:
     return markers
 
 
-SNAP_RADIUS = 30
+SNAP_RADIUS = 90
 
 def normalise(s: str) -> str:
     s = s.replace("’", "'").replace(" ", " ")
+    # Expand common PDF ligatures so "Northﬁelds" matches "Northfields"
+    s = s.replace("ﬁ", "fi").replace("ﬂ", "fl")
     s = re.sub(r'\s+', ' ', s).strip()
     return s
 
