@@ -1619,6 +1619,7 @@ function drawPuzzleScene(svg, target, guessCount) {
 
   const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
   mapGroup.style.display = '';
+  for (const u of mapGroup.querySelectorAll('use,defs')) u.remove();
   if (clipR !== null) mapGroup.setAttribute('clip-path', 'url(#map-clip)');
   if (guessCount < 4) mapGroup.style.filter = 'saturate(0)';
   svg.appendChild(mapGroup);
@@ -1630,6 +1631,7 @@ function drawPuzzleScene(svg, target, guessCount) {
 function drawFullMapScene(svg, target) {
   const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
   mapGroup.style.display = '';
+  for (const u of mapGroup.querySelectorAll('use,defs')) u.remove();
   svg.appendChild(mapGroup);
 
   drawTargetMarker(svg, target, true);
