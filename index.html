@@ -781,22 +781,22 @@ const STATIONS = {
   "Angel":                    { coords:[716.6,381.7], zone:1, lines:["Northern"], river:"medium" },
   "Old Street":               { coords:[757.1,373.8], zone:1, lines:["Northern"], river:"medium" },
   "Baker Street":             { coords:[566.0,360.4], zone:1, lines:["Bakerloo","Circle","Hammersmith & City","Jubilee","Metropolitan"], river:"medium" },
-  "Farringdon":               { coords:[716.6,381.7], zone:1, lines:["Circle","Hammersmith & City","Metropolitan","Elizabeth"], river:"medium" },
+  "Farringdon":               { coords:[716.6,381.7], zone:1, lines:["Circle","Hammersmith & City","Metropolitan"], river:"medium" },
   "Warren Street":            { coords:[642.1,372.6], zone:1, lines:["Northern","Victoria"], river:"medium" },
 
   // West/Central Zone 1
-  "Paddington":               { coords:[467.8,374.2], zone:1, lines:["Bakerloo","Circle","District","Hammersmith & City","Elizabeth"], river:"medium" },
+  "Paddington":               { coords:[467.8,374.2], zone:1, lines:["Bakerloo","Circle","District","Hammersmith & City"], river:"medium" },
   "Edgware Road":             { coords:[443.4,349.6], zone:1, lines:["Circle","District","Hammersmith & City"], river:"medium" },
   "Notting Hill Gate":        { coords:[467.8,454.2], zone:1, lines:["Central","Circle","District"], river:"medium" },
   "Marble Arch":              { coords:[467.8,454.2], zone:1, lines:["Central"], river:"medium" },
-  "Bond Street":              { coords:[569.8,425.6], zone:1, lines:["Central","Jubilee","Elizabeth"], river:"medium" },
+  "Bond Street":              { coords:[569.8,425.6], zone:1, lines:["Central","Jubilee"], river:"medium" },
   "Oxford Circus":            { coords:[589.2,425.6], zone:1, lines:["Bakerloo","Central","Victoria"], river:"medium" },
-  "Tottenham Court Road":     { coords:[632.6,425.6], zone:1, lines:["Central","Northern","Elizabeth"], river:"medium" },
+  "Tottenham Court Road":     { coords:[632.6,425.6], zone:1, lines:["Central","Northern"], river:"medium" },
   "Holborn":                  { coords:[679.8,432.1], zone:1, lines:["Central","Piccadilly"], river:"medium" },
   "Chancery Lane":            { coords:[679.8,432.1], zone:1, lines:["Central"], river:"medium" },
   "St. Paul's":               { coords:[717.3,443.1], zone:1, lines:["Central"], river:"close" },
-  "Bank":                     { coords:[777.1,456.9], zone:1, lines:["Central","Northern","Waterloo & City","DLR"], river:"close" },
-  "Liverpool Street":         { coords:[786.4,380.1], zone:1, lines:["Central","Circle","Hammersmith & City","Elizabeth"], river:"medium" },
+  "Bank":                     { coords:[777.1,456.9], zone:1, lines:["Central","Northern","Waterloo & City"], river:"close" },
+  "Liverpool Street":         { coords:[786.4,380.1], zone:1, lines:["Central","Circle","Hammersmith & City"], river:"medium" },
   "Aldgate":                  { coords:[820.4,457.0], zone:1, lines:["Circle","Metropolitan"], river:"close" },
   "Aldgate East":             { coords:[875.5,410.8], zone:1, lines:["District","Hammersmith & City"], river:"close" },
   "Moorgate":                 { coords:[754.6,434.3], zone:1, lines:["Circle","Hammersmith & City","Metropolitan","Northern"], river:"medium" },
@@ -828,7 +828,7 @@ const STATIONS = {
   "Turnham Green":            { coords:[311.8,514.2], zone:3, lines:["District","Piccadilly"], river:"close" },
   "Acton Town":               { coords:[244.5,504.7], zone:3, lines:["District","Piccadilly"], river:"far" },
   "Ealing Common":            { coords:[223.4,482.7], zone:3, lines:["District","Piccadilly"], river:"far" },
-  "Ealing Broadway":          { coords:[210.2,446.0], zone:3, lines:["Central","District","Elizabeth"], river:"far" },
+  "Ealing Broadway":          { coords:[210.2,446.0], zone:3, lines:["Central","District"], river:"far" },
   "White City":               { coords:[381.1,453.9], zone:2, lines:["Central"], river:"far" },
   "Shepherd's Bush":          { coords:[439.5,454.1], zone:2, lines:["Central"], river:"medium" },
 
@@ -844,24 +844,21 @@ const STATIONS = {
   // East
   "Bethnal Green":            { coords:[875.5,410.8], zone:2, lines:["Central"], river:"medium" },
   "Mile End":                 { coords:[940.4,401.2],zone:2, lines:["Central","District","Hammersmith & City"], river:"medium" },
-  "West Ham":                 { coords:[1017.0,410.8],zone:3, lines:["District","Hammersmith & City","Jubilee","DLR"], river:"close" },
-  "Canning Town":             { coords:[1022.0,526.0],zone:3, lines:["Jubilee","DLR"], river:"close" },
+  "West Ham":                 { coords:[1017.0,410.8],zone:3, lines:["District","Hammersmith & City","Jubilee"], river:"close" },
+  "Canning Town":             { coords:[1022.0,526.0],zone:3, lines:["Jubilee"], river:"close" },
   "North Greenwich":          { coords:[1022.0,526.0],zone:2, lines:["Jubilee"], river:"close" },
-  "Canary Wharf":             { coords:[1022.0,526.0],zone:2, lines:["Jubilee","DLR","Elizabeth"], river:"close" },
-  "Whitechapel":              { coords:[875.5,410.8],zone:2, lines:["District","Hammersmith & City","Elizabeth"], river:"medium" },
-  "Stratford":                { coords:[992.5,322.9],zone:3, lines:["Central","Jubilee","DLR","Elizabeth"], river:"medium" },
+  "Canary Wharf":             { coords:[1022.0,526.0],zone:2, lines:["Jubilee"], river:"close" },
+  "Whitechapel":              { coords:[875.5,410.8],zone:2, lines:["District","Hammersmith & City"], river:"medium" },
+  "Stratford":                { coords:[992.5,322.9],zone:3, lines:["Central","Jubilee"], river:"medium" },
   "Leyton":                   { coords:[964.5,234.4],zone:3, lines:["Central"], river:"far" },
   "Leytonstone":              { coords:[1056.2,273.9],zone:3, lines:["Central"], river:"far" },
   "Epping":                   { coords:[1123.1,87.0],zone:6, lines:["Central"], river:"far" },
-  "Lewisham":                 { coords:[1004.4,716.1],zone:2, lines:["DLR"], river:"far" },
-  "Woolwich":                 { coords:[1147.1,655.1],zone:4, lines:["Elizabeth"], river:"close" },
-  "Abbey Wood":               { coords:[1147.1,655.1],zone:4, lines:["Elizabeth"], river:"close" },
   "Barking":                  { coords:[1150.4,403.0],zone:4, lines:["District","Hammersmith & City"], river:"medium" },
 
   // Heathrow
-  "Heathrow Terminals 2 & 3": { coords:[84.9,645.1],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
-  "Heathrow Terminal 4":      { coords:[84.9,645.1],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
-  "Heathrow Terminal 5":      { coords:[84.9,645.1],  zone:6, lines:["Piccadilly","Elizabeth"], river:"far" },
+  "Heathrow Terminals 2 & 3": { coords:[84.9,645.1],  zone:6, lines:["Piccadilly"], river:"far" },
+  "Heathrow Terminal 4":      { coords:[84.9,645.1],  zone:6, lines:["Piccadilly"], river:"far" },
+  "Heathrow Terminal 5":      { coords:[84.9,645.1],  zone:6, lines:["Piccadilly"], river:"far" },
 
   // --- Piccadilly: Uxbridge branch ---
   "North Ealing":             { coords:[231.8,387.1], zone:3, lines:["Piccadilly"], river:"far", display_only:true },
@@ -943,69 +940,6 @@ const STATIONS = {
   "Chalfont & Latimer":  { coords:[98.0,80.2], zone:7, lines:["Metropolitan"], river:"far", display_only:true },
   "Amersham":            { coords:[98.0,80.2], zone:9, lines:["Metropolitan"], river:"far", display_only:true },
   "Chesham":             { coords:[98.0,80.2], zone:9, lines:["Metropolitan"], river:"far", display_only:true },
-  // Elizabeth — Shenfield branch (display_only)
-  "Maryland":            { coords:[1058.8,303.3], zone:3, lines:["Elizabeth"], river:"far", display_only:true },
-  "Manor Park":          { coords:[1119.7,286.9], zone:3, lines:["Elizabeth"], river:"far", display_only:true },
-  "Forest Gate":         { coords:[1087.8,286.8], zone:3, lines:["Elizabeth"], river:"far", display_only:true },
-  "Ilford":              { coords:[1140.8,286.9], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Seven Kings":         { coords:[1156.0,286.9], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Goodmayes":           { coords:[1156.0,286.9], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Chadwell Heath":      { coords:[1194.2,257.7], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Romford":             { coords:[1212.5,239.5], zone:6, lines:["Elizabeth"], river:"far", display_only:true },
-  "Gidea Park":          { coords:[1226.6,225.5], zone:6, lines:["Elizabeth"], river:"far", display_only:true },
-  "Harold Wood":         { coords:[1241.0,211.0], zone:6, lines:["Elizabeth"], river:"far", display_only:true },
-  "Brentwood":           { coords:[1266.2,186.0], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Shenfield":           { coords:[1287.4,164.5], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  // Elizabeth — Reading branch (display_only)
-  "Acton Main Line":     { coords:[296.7,397.7], zone:3, lines:["Elizabeth"], river:"far", display_only:true },
-  "West Ealing":         { coords:[189.2,446.0], zone:3, lines:["Elizabeth"], river:"far", display_only:true },
-  "Hanwell":             { coords:[169.2,446.0], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Southall":            { coords:[154.7,446.0], zone:4, lines:["Elizabeth"], river:"far", display_only:true },
-  "Hayes & Harlington":  { coords:[127.2,446.0], zone:5, lines:["Elizabeth"], river:"far", display_only:true },
-  "West Drayton":        { coords:[71.6,410.9], zone:6, lines:["Elizabeth"], river:"far", display_only:true },
-  "Iver":                { coords:[71.6,386.5], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Langley":             { coords:[71.6,364.0], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Slough":              { coords:[71.6,340.3], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Burnham":             { coords:[71.6,316.4], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Taplow":              { coords:[71.6,291.8], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Maidenhead":          { coords:[71.6,270.5], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Twyford":             { coords:[71.6,248.8], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  "Reading":             { coords:[71.6,227.3], zone:7, lines:["Elizabeth"], river:"far", display_only:true },
-  // DLR — full network (display_only)
-  "Tower Gateway":       { coords:[820.4,457.0], zone:1, lines:["DLR"], river:"medium", display_only:true },
-  "Shadwell":            { coords:[875.7,465.4], zone:2, lines:["DLR"], river:"medium", display_only:true },
-  "Limehouse":           { coords:[875.7,465.4], zone:2, lines:["DLR"], river:"medium", display_only:true },
-  "Westferry":           { coords:[949.9,410.8], zone:2, lines:["DLR"], river:"medium", display_only:true },
-  "Poplar":              { coords:[1022.0,526.0], zone:2, lines:["DLR"], river:"medium", display_only:true },
-  "West India Quay":     { coords:[1022.0,526.0], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Heron Quays":         { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "South Quay":          { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Crossharbour":        { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Mudchute":            { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Island Gardens":      { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Cutty Sark":          { coords:[969.8,622.7], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Greenwich":           { coords:[965.5,642.8], zone:2, lines:["DLR"], river:"close", display_only:true },
-  "Deptford Bridge":     { coords:[1034.2,642.7], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "Elverson Road":       { coords:[1004.4,716.1], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "Stratford High Street":{ coords:[1038.5,323.4], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Abbey Road":          { coords:[1017.0,410.8], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Royal Victoria":      { coords:[1150.4,403.0], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "Custom House":        { coords:[1226.2,443.0], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "Prince Regent":       { coords:[1226.2,443.0], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "Royal Albert":        { coords:[1226.2,443.0], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "Beckton Park":        { coords:[1115.3,622.4], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Cyprus":              { coords:[1115.3,622.4], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Gallions Reach":      { coords:[1147.1,655.1], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Beckton":             { coords:[1147.1,655.1], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Pudding Mill Lane":   { coords:[1017.0,410.8], zone:3, lines:["DLR"], river:"far", display_only:true },
-  "Devons Road":         { coords:[967.9,410.8], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "Bow Church":          { coords:[967.9,410.8], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "Langdon Park":        { coords:[967.9,410.8], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "All Saints":          { coords:[1017.0,410.8], zone:2, lines:["DLR"], river:"far", display_only:true },
-  "Silvertown":          { coords:[1115.3,622.4], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "London City Airport": { coords:[1115.3,622.4], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "King George V":       { coords:[1115.3,622.4], zone:3, lines:["DLR"], river:"close", display_only:true },
-  "Woolwich Arsenal":    { coords:[1114.5,642.7], zone:4, lines:["DLR"], river:"close", display_only:true }
 };
 
 /* ============================================================
@@ -1148,48 +1082,6 @@ const LINES = {
     color:"#95CDBA",
     sequences:[["Waterloo","Bank"]]
   },
-  "DLR": {
-    color:"#00A4A7",
-    sequences:[
-      // Bank → Lewisham (main trunk via Isle of Dogs)
-      ["Bank","Shadwell","Limehouse","Westferry","Poplar","West India Quay",
-       "Canary Wharf","Heron Quays","South Quay","Crossharbour","Mudchute",
-       "Island Gardens","Cutty Sark","Greenwich","Deptford Bridge",
-       "Elverson Road","Lewisham"],
-      // Tower Gateway spur (branches from Shadwell)
-      ["Tower Gateway","Shadwell"],
-      // Stratford → West Ham (via Stratford High Street)
-      ["Stratford","Stratford High Street","Abbey Road","West Ham"],
-      // Stratford → Poplar (via Pudding Mill Lane / Bow Church)
-      ["Stratford","Pudding Mill Lane","Devons Road","Bow Church",
-       "Langdon Park","All Saints","Poplar"],
-      // Canning Town → Beckton
-      ["Canning Town","Royal Victoria","Custom House","Prince Regent",
-       "Royal Albert","Beckton Park","Cyprus","Gallions Reach","Beckton"],
-      // Canning Town → Woolwich Arsenal
-      ["Canning Town","Silvertown","London City Airport","King George V",
-       "Woolwich Arsenal"]
-    ]
-  },
-  "Elizabeth": {
-    color:"#6950A1",
-    sequences:[
-      // Main trunk: Reading → Abbey Wood
-      ["Reading","Twyford","Maidenhead","Taplow","Burnham","Slough","Langley",
-       "Iver","West Drayton","Hayes & Harlington","Southall","Hanwell",
-       "West Ealing","Ealing Broadway","Acton Main Line","Paddington",
-       "Bond Street","Tottenham Court Road","Farringdon","Liverpool Street",
-       "Whitechapel","Canary Wharf","Woolwich","Abbey Wood"],
-      // Heathrow T4 spur
-      ["Heathrow Terminals 2 & 3","Heathrow Terminal 4"],
-      // Heathrow T5 spur
-      ["Heathrow Terminal 5","Heathrow Terminals 2 & 3"],
-      // Shenfield branch (from Liverpool Street via Stratford)
-      ["Liverpool Street","Stratford","Maryland","Manor Park","Forest Gate",
-       "Ilford","Seven Kings","Goodmayes","Chadwell Heath","Romford",
-       "Gidea Park","Harold Wood","Brentwood","Shenfield"]
-    ]
-  }
 };
 
 /* River Thames — stylised path through London, in the same 1400×900 grid */
@@ -1524,7 +1416,7 @@ const LINE_ABBREV = {
   "Bakerloo":"BAK","Central":"CEN","Circle":"CIR","District":"DIS",
   "Hammersmith & City":"H&C","Jubilee":"JUB","Metropolitan":"MET",
   "Northern":"NOR","Piccadilly":"PIC","Victoria":"VIC",
-  "Waterloo & City":"W&C","DLR":"DLR","Elizabeth":"ELZ"
+  "Waterloo & City":"W&C"
 };
 function lineSwatch(lineName) {
   const color = LINES[lineName].color;
@@ -1632,7 +1524,7 @@ function snap45(angle) {
    Pre-computed once so the full-map render is cheap. */
 const LINE_ORDER = ['Bakerloo','Central','Circle','District','Hammersmith & City',
                     'Jubilee','Metropolitan','Northern','Piccadilly','Victoria',
-                    'Waterloo & City','DLR','Elizabeth'];
+                    'Waterloo & City'];
 
 const ALL_EDGES = (() => {
   const edges = new Map();
@@ -1703,22 +1595,6 @@ const TFL_LINE_PATHS = {
   "Victoria": [
     "M641,696.66 L578.38,634.04 L574.78,630.42 L569.65,625.29 C568.23,623.87 567.06,621.05 567.06,619.04 L567.27,485.07 L567.26,484.02 L567.3,451.19 C567.3,449.17 568.44,446.38 569.87,444.95 L582.91,431.91 L584.44,430.37 L640.44,374.37 L641.89,372.92 L660.83,353.98 C662.26,352.55 665.08,351.39 667.09,351.39 L704.31,351.39 L706.55,351.39 L745.76,351.35 C747.78,351.35 750.59,350.18 752.02,348.76 L772.17,329.15 L773.59,327.73 L778.56,322.85 C779.98,321.43 781.15,318.61 781.15,316.6 L781.15,263.39 L781.15,261.75 L781.15,256.88 C781.15,254.87 782.32,252.05 783.74,250.63 L789.55,244.79 L790.66,243.68 L806.03,228.31 C807.46,226.89 810.28,225.72 812.29,225.72 L835.5,225.72 L837.63,225.73 L971.44,225.73"
   ],
-  "DLR": [
-    "M1057.49,459.27 L1057.49,335.93 C1057.49,333.91 1056.32,331.1 1054.9,329.67 C1052.9,327.67 1017.25,291.95 1017.25,291.95 C1015.83,290.53 1013.01,289.36 1010.99,289.36 L991.17,289.36",
-    "M1074.74,477.98 C1076.75,477.98 1079.57,479.15 1080.99,480.58 L1098.75,498.33 L1100.9,500.49 L1122.4,521.98 C1123.82,523.4 1124.99,526.22 1124.99,528.23 L1124.99,555.27 L1124.99,559.2 L1124.99,634.6",
-    "M977.4,698.74 L977.4,398.33 C977.4,396.29 978.57,393.17 980,391.75 L1048.63,324.06",
-    "M969.26,483.17 L974.8,488.72 C976.23,490.14 977.39,492.96 977.39,494.97 L977.39,504.55",
-    "M889.07,477.98 L845.49,477.98 C843.47,477.98 840.66,476.82 839.23,475.39 C837.95,474.11 833.87,470.03 833.87,470.03",
-    "M765.12,444.56 L839.2,444.56 C841.21,444.56 844.03,445.73 845.46,447.15 L863.29,464.98 L865.29,466.99 L873.69,475.39 C875.12,476.81 877.93,477.98 879.95,477.98 L900.01,477.98 L903.49,477.98 L921.21,477.98 L924.66,477.98 L1088.45,477.98 L1090.76,477.98 L1098.86,477.98 L1101.9,477.98 L1117.79,477.98 L1117.82,477.98 L1125.79,477.98 C1127.81,477.98 1130.62,479.14 1132.04,480.56 L1154.82,503.34 L1157.58,506.09 L1164.56,513.07 C1165.98,514.49 1167.15,517.31 1167.15,519.32 L1167.15,528.9 L1167.15,531.65 L1167.15,606.51"
-  ],
-  "Elizabeth": [
-    "M1265.79,292.6 L1212.75,239.56",
-    "M1287.67,164.43 L1167.79,284.32 C1166.36,285.74 1163.55,286.91 1161.54,286.91 L1078.78,286.91 C1076.77,286.91 1073.95,288.08 1072.53,289.5 L1012.97,349.07 L1009.99,352.04 L984.45,377.58 C983.03,379.01 980.21,380.17 978.19,380.17 L971.51,380.17 L967.33,380.17 L928.04,380.17",
-    "M1069.58,292.45 L1072.53,289.5 C1073.95,288.08 1076.77,286.91 1078.78,286.91 L1082.67,286.91",
-    "M129.22,446.07 L80.39,446.07 C77.96,446.07 75.76,445.08 74.17,443.49 C72.57,441.9 71.59,439.69 71.59,437.26 L71.59,412.39 L71.6,406.69 L71.6,225.93",
-    "M113.21,635.85 L113.22,571.72 L113.22,567.26 L113.22,479.12 L113.22,476.02 L113.22,454.87 C113.22,452.44 114.2,450.24 115.8,448.64 C117.39,447.05 119.59,446.07 122.02,446.07 L130.19,446.07 L132.45,446.07 L230.18,446.07 L236.98,446.07 L244.73,446.07 C246.74,446.07 249.55,444.9 250.98,443.48 C250.98,443.48 270.52,423.92 286.03,408.38 L289.81,404.61 C297.22,397.19 302.89,391.51 303.36,391.04 C304.78,389.62 307.3,388.57 309.27,388.5 L336.08,388.5 L343.21,388.51 L481.84,388.5",
-    "M113.22,464.62 L113.22,454.95"
-  ]
 };
 
 function getTargetExits(target) {
@@ -2144,7 +2020,7 @@ const LINE_EMOJI = {
   "Bakerloo":"🟧","Central":"🟥","Circle":"🟨","District":"🟩",
   "Hammersmith & City":"🟪","Jubilee":"⬜","Metropolitan":"🟪",
   "Northern":"⬛","Piccadilly":"🟦","Victoria":"🟦",
-  "Waterloo & City":"🟨","DLR":"⬛","Elizabeth":"🟪"
+  "Waterloo & City":"🟨"
 };
 
 function buildShareGrid() {
