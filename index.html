@@ -1698,104 +1698,11 @@ function drawPuzzleScene(svg, target, guessCount) {
 
 /* ============== Full map (post-game) scene ============== */
 function drawFullMapScene(svg, target) {
-  // 1. Thames at the bottom
-  drawThames(svg, 0.85);
+  const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
+  mapGroup.style.display = '';
+  svg.appendChild(mapGroup);
 
-  // 2. Real TFL line paths — extracted from the TfL standard tube map PDF
-  //    and rescaled into our 1400×900 viewBox. Falls back to Euclidean
-  //    parallel-offset segments if TFL_LINE_PATHS isn't present.
-  const segs = el('g', { class:'all-segments' });
-  if (typeof TFL_LINE_PATHS !== 'undefined') {
-    const lineW = 4.5;
-    for (const lineName of LINE_ORDER) {
-      const paths = TFL_LINE_PATHS[lineName];
-      if (!paths) continue;
-      const color = LINES[lineName].color;
-      for (const d of paths) {
-        segs.appendChild(el('path', {
-          d, fill:'none', stroke: color,
-          'stroke-width': lineW,
-          'stroke-linecap':'round',
-          'stroke-linejoin':'round'
-        }));
-      }
-    }
-  } else {
-    const lineW = 6.5, gap = 0.6;
-    for (const e of ALL_EDGES) {
-      const A = STATIONS[e.a].coords;
-      const B = STATIONS[e.b].coords;
-      const dx = B[0]-A[0], dy = B[1]-A[1];
-      const len = Math.hypot(dx, dy) || 1;
-      const ux = dx/len, uy = dy/len;
-      const px = -uy, py = ux;
-      const n = e.lines.length;
-      for (let i=0; i<n; i++) {
-        const offset = (i - (n-1)/2) * (lineW + gap);
-        const x1 = A[0] + px*offset, y1 = A[1] + py*offset;
-        const x2 = B[0] + px*offset, y2 = B[1] + py*offset;
-        segs.appendChild(el('line', {
-          x1, y1, x2, y2,
-          stroke: LINES[e.lines[i]].color,
-          'stroke-width': lineW,
-          'stroke-linecap':'round'
-        }));
-      }
-    }
-  }
-  svg.appendChild(segs);
-
-  // 3. All station markers
-  const markers = el('g', { class:'all-stations' });
-  for (const [name, s] of Object.entries(STATIONS)) {
-    if (name === target) continue; // target drawn last on top
-    const r = s.lines.length >= 2 ? 4.5 : 3.3;
-    const g = el('g', { class:'stn-marker' });
-    g.appendChild(el('circle', {
-      cx: s.coords[0], cy: s.coords[1], r,
-      fill:'#fff', stroke:'#0a0a0a', 'stroke-width': 1.6
-    }));
-    // hover tooltip via SVG <title>
-    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
-    title.textContent = `${name} · Zone ${s.zone}`;
-    g.appendChild(title);
-    markers.appendChild(g);
-  }
-  svg.appendChild(markers);
-
-  // 4. Target marker (highlighted) + label
-  const t = STATIONS[target];
-  const tg = el('g', { class:'target-marker' });
-  // halo
-  const halo = el('circle', {
-    cx: t.coords[0], cy: t.coords[1], r: 18,
-    fill:'rgba(220,36,31,.15)', stroke:'#DC241F','stroke-width':2.5
-  });
-  tg.appendChild(halo);
-  // marker
-  tg.appendChild(el('circle', {
-    cx: t.coords[0], cy: t.coords[1], r: 8,
-    fill:'#fff', stroke:'#0a0a0a','stroke-width': 3
-  }));
-  tg.appendChild(el('circle', {
-    cx: t.coords[0], cy: t.coords[1], r: 3.5,
-    fill:'#DC241F'
-  }));
-  // pulse animation
-  halo.animate(
-    [{ r: 18, opacity: 1 }, { r: 30, opacity: 0 }],
-    { duration: 1800, iterations: Infinity, easing:'cubic-bezier(.2,.7,.2,1)' }
-  );
-  // label
-  const labelText = el('text', {
-    x: t.coords[0], y: t.coords[1] - 24,
-    'text-anchor':'middle',
-    'font-family':'Hammersmith One, sans-serif',
-    'font-size': 18, fill:'#0a0a0a',
-    'paint-order':'stroke', stroke:'#FAF7F0', 'stroke-width': 5
-  }, target);
-  tg.appendChild(labelText);
-  svg.appendChild(tg);
+  drawTargetMarker(svg, target, true);
 }
 
 /* ============== Thames ============== */
