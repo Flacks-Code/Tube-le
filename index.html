@@ -1675,77 +1675,23 @@ function renderMap() {
    ============================================================ */
 function drawPuzzleScene(svg, target, guessCount) {
   const t = STATIONS[target];
-  const colored = guessCount >= 1;
-  const showNeighbours = guessCount >= 2;
-  const showThames = guessCount >= 4;
-  // What lines exist around the target. Initial reveal only includes
-  // lines that actually pass through this station; later stages broaden
-  // to all lines so the player can see the full surrounding network.
-  const targetLines = new Set(t.lines);
 
-  // Initial stages clip the rendering to a small radius around the
-  // target so the player only sees short stubs of the lines passing
-  // through this station — enough to read the number of lines and the
-  // angles they exit at, without giving away the broader network.
-  const clipR =
-        guessCount < 2 ? 55 :      // initial / colour-reveal: short stubs
-        guessCount < 4 ? 220 :     // neighbour stage: local subgraph
-        null;                      // 4+: no clip
-  let clipRef = null;
-  if (clipR != null) {
+  // Clip radius: 54 for guesses 0-2, 214 for guesses 3-4, none at 5+
+  const clipR = guessCount < 3 ? 54 : guessCount < 5 ? 214 : null;
+
+  if (clipR !== null) {
     const defs = el('defs');
-    const cp = el('clipPath', { id:'puzzle-clip' });
-    cp.appendChild(el('circle', { cx:t.coords[0], cy:t.coords[1], r:clipR }));
+    const cp = el('clipPath', { id: 'map-clip' });
+    cp.appendChild(el('circle', { cx: t.coords[0], cy: t.coords[1], r: clipR }));
     defs.appendChild(cp);
     svg.appendChild(defs);
-    clipRef = 'url(#puzzle-clip)';
   }
 
-  if (showThames) drawThames(svg, 0.85);
-
-  // Draw every line from the real TFL geometry, but for the initial
-  // reveal include only the lines that pass through the target — so the
-  // window literally shows just the snippets of those lines crossing at
-  // this station. From guess 2 onward we draw all lines (still clipped).
-  const segs = el('g', { class:'puzzle-segments' });
-  if (clipRef) segs.setAttribute('clip-path', clipRef);
-  const lineW = 5;
-  for (const lineName of LINE_ORDER) {
-    const paths = (typeof TFL_LINE_PATHS !== 'undefined') ? TFL_LINE_PATHS[lineName] : null;
-    if (!paths || !paths.length) continue;
-    if (guessCount < 2 && !targetLines.has(lineName)) continue;
-    const stroke = colored ? LINES[lineName].color : '#b6b1a6';
-    for (const d of paths) {
-      segs.appendChild(el('path', {
-        d, fill:'none', stroke,
-        'stroke-width': lineW,
-        'stroke-linecap':'round',
-        'stroke-linejoin':'round',
-        opacity: colored ? 1 : 0.85
-      }));
-    }
-  }
-  svg.appendChild(segs);
-
-  // Neighbour markers (from guess 2+).
-  if (showNeighbours) {
-    const adjGroup = el('g', { class:'puzzle-neighbours' });
-    for (const n of neighborsOf(target)) {
-      const c = STATIONS[n].coords;
-      adjGroup.appendChild(el('circle', {
-        cx:c[0], cy:c[1], r:3.6,
-        fill:'#fff', stroke:'#0a0a0a','stroke-width':1.4,
-        opacity:0
-      }));
-    }
-    svg.appendChild(adjGroup);
-    requestAnimationFrame(() => {
-      [...adjGroup.children].forEach(child => {
-        child.style.transition = 'opacity .6s ease';
-        child.style.opacity = '1';
-      });
-    });
-  }
+  const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
+  mapGroup.style.display = '';
+  if (clipR !== null) mapGroup.setAttribute('clip-path', 'url(#map-clip)');
+  if (guessCount < 4) mapGroup.style.filter = 'saturate(0)';
+  svg.appendChild(mapGroup);
 
   drawTargetMarker(svg, target, false);
 }
