@@ -1644,19 +1644,25 @@ function renderMap() {
   } else {
     // Puzzle scene — local subgraph, fixed view
     drawPuzzleScene(svg, target, guessCount);
-    const zoomLevel = guessCount < 2 ? 0 : (guessCount < 4 ? 1 : 2);
-    setView(t.coords, [340, 620, 1100][zoomLevel]);
+    const viewW = guessCount < 3 ? 300 : guessCount < 5 ? 700 : 1100;
+    setView(t.coords, viewW);
     mapEl.classList.remove('interactive');
     $('#zoom-controls').classList.remove('show');
     $('#map-hint').classList.remove('show');
   }
 
   // Reveal chips (DOM, outside SVG)
-  if (guessCount >= 3 || ended) {
+  if (guessCount >= 1 || ended) {
     $('#chip-zone-text').textContent = `Zone ${t.zone} · ${t.river === 'close' ? 'By the river' : t.river === 'medium' ? 'A walk from the river' : 'Inland'}`;
     $('#chip-zone').classList.add('show');
   } else {
     $('#chip-zone').classList.remove('show');
+  }
+  if (guessCount >= 2 || ended) {
+    $('#chip-year-text').textContent = `Opened ${t.year || '—'}`;
+    $('#chip-year').classList.add('show');
+  } else {
+    $('#chip-year').classList.remove('show');
   }
   if (guessCount >= 5 || ended) {
     $('#chip-letter-text').textContent = `Starts with “${target[0]}”`;
@@ -1820,50 +1826,30 @@ function drawNeighbourGraph(svg, targetName, guessCount, finalReveal) {
 
 function drawTargetMarker(svg, targetName, showLabel) {
   const t = STATIONS[targetName];
-  const lineCount = t.lines.length;
-  // For interchange (2+ lines), TFL uses an oblong white shape with black outline.
-  // For single-line stations we'd use a tick — but visually for the puzzle we always
-  // use the interchange shape so the central station is unmistakable.
-  const g = el('g', { class:'target-marker' });
-  const r = Math.min(14, 9 + lineCount * 0.8);
-  if (lineCount === 1) {
-    g.appendChild(el('circle', {
-      cx:t.coords[0], cy:t.coords[1], r:8,
-      fill:'#fff', stroke:'#0a0a0a','stroke-width':3
-    }));
-  } else {
-    g.appendChild(el('circle', {
-      cx:t.coords[0], cy:t.coords[1], r:r,
-      fill:'#fff', stroke:'#0a0a0a','stroke-width':3.2
-    }));
-    g.appendChild(el('circle', {
-      cx:t.coords[0], cy:t.coords[1], r:r*0.45,
-      fill:'#0a0a0a'
-    }));
-  }
-  // pulse on first render
-  const pulse = el('circle', {
-    cx:t.coords[0], cy:t.coords[1], r:r+2,
-    fill:'none', stroke:'#DC241F','stroke-width':2
-  });
+  const [cx, cy] = t.coords;
+  const r = 10;
+  const g = el('g', { class: 'target-marker' });
+
+  const pulse = el('circle', { cx, cy, r: r + 2, fill: 'none', stroke: '#DC241F', 'stroke-width': 2 });
   pulse.animate(
-    [{ r: r+2, opacity: 0.7 }, { r: r+30, opacity: 0 }],
-    { duration: 1800, iterations: 1, easing:'cubic-bezier(.2,.7,.2,1)' }
+    [{ r: r + 2, opacity: 0.7 }, { r: r + 30, opacity: 0 }],
+    { duration: 1800, iterations: 1, easing: 'cubic-bezier(.2,.7,.2,1)' }
   );
   g.appendChild(pulse);
 
+  g.appendChild(el('circle', { cx, cy, r, fill: '#fff', stroke: '#0a0a0a', 'stroke-width': 3 }));
+
   if (showLabel) {
-    const label = el('g', { transform:`translate(${t.coords[0]}, ${t.coords[1]+r+22})` });
-    // background plate for legibility
-    const text = el('text', {
-      x:0, y:0,
-      'text-anchor':'middle',
-      'font-family':'Hammersmith One, sans-serif',
-      'font-size':18,
-      fill:'#0a0a0a'
-    }, targetName);
-    label.appendChild(text);
-    g.appendChild(label);
+    g.appendChild(el('text', {
+      x: cx, y: cy + r + 20,
+      'text-anchor': 'middle',
+      'font-family': 'Hammersmith One, sans-serif',
+      'font-size': 18,
+      fill: '#0a0a0a',
+      'paint-order': 'stroke',
+      stroke: '#FAF7F0',
+      'stroke-width': 5
+    }, targetName));
   }
 
   svg.appendChild(g);
