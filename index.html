@@ -1603,8 +1603,27 @@ function renderMap() {
    target station. Colour palettes swap between reveal stages via a saturate
    filter.
    ============================================================ */
+// Find the SVG interchange circle nearest to (tx, ty), within 120 units.
+// Returns {cx, cy, r} or null for non-interchange stations.
+function findSVGCircle(tx, ty) {
+  const src = document.getElementById('tube-map-src');
+  let best = null, bestD2 = Infinity;
+  for (const c of src.querySelectorAll('circle')) {
+    const dx = parseFloat(c.getAttribute('cx')) - tx;
+    const dy = parseFloat(c.getAttribute('cy')) - ty;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < bestD2) { bestD2 = d2; best = c; }
+  }
+  return best && Math.sqrt(bestD2) < 120
+    ? { cx: parseFloat(best.getAttribute('cx')), cy: parseFloat(best.getAttribute('cy')), r: parseFloat(best.getAttribute('r')) }
+    : null;
+}
+
 function drawPuzzleScene(svg, target, guessCount) {
   const t = STATIONS[target];
+  const svgC = findSVGCircle(t.coords[0], t.coords[1]);
+  const cx = svgC ? svgC.cx : t.coords[0];
+  const cy = svgC ? svgC.cy : t.coords[1];
 
   // Clip radius: 54 for guesses 0-2, 214 for guesses 3-4, none at 5+
   const clipR = guessCount < 3 ? 54 : guessCount < 5 ? 214 : null;
@@ -1612,7 +1631,7 @@ function drawPuzzleScene(svg, target, guessCount) {
   if (clipR !== null) {
     const defs = el('defs');
     const cp = el('clipPath', { id: 'map-clip' });
-    cp.appendChild(el('circle', { cx: t.coords[0], cy: t.coords[1], r: clipR }));
+    cp.appendChild(el('circle', { cx, cy, r: clipR }));
     defs.appendChild(cp);
     svg.appendChild(defs);
   }
@@ -1623,36 +1642,56 @@ function drawPuzzleScene(svg, target, guessCount) {
   if (guessCount < 4) mapGroup.style.filter = 'saturate(0)';
   svg.appendChild(mapGroup);
 
-  drawTargetMarker(svg, target, false);
+  drawTargetMarker(svg, mapGroup, target, false, svgC);
 }
 
 /* ============== Full map (post-game) scene ============== */
 function drawFullMapScene(svg, target) {
+  const t = STATIONS[target];
+  const svgC = findSVGCircle(t.coords[0], t.coords[1]);
   const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
   mapGroup.removeAttribute('style');
   svg.appendChild(mapGroup);
 
-  drawTargetMarker(svg, target, true);
+  drawTargetMarker(svg, mapGroup, target, true, svgC);
 }
 
-function drawTargetMarker(svg, targetName, showLabel) {
+// svgC: {cx,cy,r} of the matching SVG interchange circle, or null.
+// When present, we highlight that circle in the cloned mapGroup instead of
+// drawing a separate dot on top.
+function drawTargetMarker(svg, mapGroup, targetName, showLabel, svgC) {
   const t = STATIONS[targetName];
-  const [cx, cy] = t.coords;
-  const r = 10;
-  const g = el('g', { class: 'target-marker' });
+  let cx, cy;
 
-  const pulse = el('circle', { cx, cy, r: r + 2, fill: 'none', stroke: '#DC241F', 'stroke-width': 2 });
+  if (svgC) {
+    // Highlight the existing interchange circle in the cloned map group
+    for (const c of mapGroup.querySelectorAll('circle')) {
+      if (Math.abs(parseFloat(c.getAttribute('cx')) - svgC.cx) < 0.5 &&
+          Math.abs(parseFloat(c.getAttribute('cy')) - svgC.cy) < 0.5) {
+        c.setAttribute('stroke', '#DC241F');
+        c.setAttribute('stroke-width', '3.5');
+        break;
+      }
+    }
+    cx = svgC.cx; cy = svgC.cy;
+  } else {
+    // Fallback: no interchange circle for this station — draw a small dot
+    cx = t.coords[0]; cy = t.coords[1];
+    svg.appendChild(el('circle', { cx, cy, r: 5, fill: '#DC241F', stroke: '#fff', 'stroke-width': 2 }));
+  }
+
+  // Pulse ring
+  const pr = svgC ? svgC.r + 2 : 7;
+  const pulse = el('circle', { cx, cy, r: pr, fill: 'none', stroke: '#DC241F', 'stroke-width': 2 });
   pulse.animate(
-    [{ r: r + 2, opacity: 0.7 }, { r: r + 30, opacity: 0 }],
+    [{ r: pr, opacity: 0.8 }, { r: pr + 28, opacity: 0 }],
     { duration: 1800, iterations: 1, easing: 'cubic-bezier(.2,.7,.2,1)' }
   );
-  g.appendChild(pulse);
-
-  g.appendChild(el('circle', { cx, cy, r, fill: '#fff', stroke: '#0a0a0a', 'stroke-width': 3 }));
+  svg.appendChild(pulse);
 
   if (showLabel) {
-    g.appendChild(el('text', {
-      x: cx, y: cy + r + 20,
+    svg.appendChild(el('text', {
+      x: cx, y: cy + (svgC ? svgC.r : 5) + 18,
       'text-anchor': 'middle',
       'font-family': 'Hammersmith One, sans-serif',
       'font-size': 18,
@@ -1662,8 +1701,6 @@ function drawTargetMarker(svg, targetName, showLabel) {
       'stroke-width': 5
     }, targetName));
   }
-
-  svg.appendChild(g);
 }
 
 /* ============================================================
