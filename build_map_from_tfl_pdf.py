@@ -27,7 +27,7 @@ from pathlib import Path
 PDF = Path('tube_map_tfl.pdf')
 HTML = Path('index.html')
 
-MAP_W, MAP_H = 1400, 900
+MAP_W, MAP_H = 1359, 850
 MARGIN = 40
 
 # Canonical Tube-le station list (must match index.html).
