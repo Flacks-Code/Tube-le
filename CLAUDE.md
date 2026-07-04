@@ -5,9 +5,12 @@ A Wordle-like game using the London Underground map. Players guess tube stations
 
 ## Key Files
 - `build_map_from_tfl_pdf.py` — main pipeline: extracts line paths and station positions from the TfL PDF and patches `index.html`.
-- `index.html` — the game front-end. Contains `STATIONS`, `LINES`, `ALL_EDGES`, and `TFL_LINE_PATHS` JS constants.
+- `index.html` — the game front-end. Contains `STATIONS`, `LINES`, `ALL_EDGES`, and `TFL_LINE_PATHS` JS constants. Each non-display_only STATIONS entry carries `zone:N, year:NNNN` fields.
 - `tube_map_tfl.pdf` — source TfL standard tube map PDF (not committed, must be present locally).
 - `tfl_lines.json` / `tfl_stations.json` — generated output (JSON inspection files).
+- `fetch_station_years.py` — one-use script: fetches station opening years from Wikipedia and writes `station_years.json`.
+- `apply_years.py` — one-use script: reads `station_years.json` and patches every non-display_only STATIONS entry in `index.html` with `year:NNNN`.
+- `station_years.json` — 269-entry year lookup sourced from Wikipedia "List of London Underground stations".
 
 ## Architecture: build_map_from_tfl_pdf.py
 
