@@ -672,6 +672,7 @@
     <svg id="map-svg" preserveAspectRatio="xMidYMid meet"></svg>
     <div class="map-overlay">
       <div class="chip" id="chip-zone"><span class="dot"></span><span id="chip-zone-text">Zone —</span></div>
+      <div class="chip" id="chip-year"><span class="dot"></span><span id="chip-year-text">Opened —</span></div>
       <div class="chip" id="chip-letter"><span class="dot" style="background:var(--bar)"></span><span id="chip-letter-text">Starts with —</span></div>
     </div>
     <button class="reopen-btn" id="reopen-btn">
@@ -700,11 +701,12 @@
     </div>
     <div class="legend" id="legend">
       <strong>The reveal</strong>
-      <div class="legend-row"><b>Guess 1+</b> Lines light up in colour</div>
-      <div class="legend-row"><b>Guess 3+</b> Connecting tracks appear</div>
-      <div class="legend-row"><b>Guess 4+</b> Zone revealed</div>
-      <div class="legend-row"><b>Guess 5+</b> River Thames shown</div>
-      <div class="legend-row"><b>Guess 6</b> First letter revealed</div>
+      <div class="legend-row"><b>Wrong guess 1</b> Zone revealed</div>
+      <div class="legend-row"><b>Wrong guess 2</b> Opening year revealed</div>
+      <div class="legend-row"><b>Wrong guess 3</b> Map view expands</div>
+      <div class="legend-row"><b>Wrong guess 4</b> Colour revealed</div>
+      <div class="legend-row"><b>Wrong guess 5</b> Full map shown</div>
+      <div class="legend-row"><b>Wrong guess 6</b> First letter revealed</div>
     </div>
   </section>
 </main>
@@ -1238,6 +1240,7 @@ function resetPuzzle() {
   $('#reopen-btn').classList.remove('show');
   $('#legend').style.display = '';
   $('#chip-zone').classList.remove('show');
+  $('#chip-year').classList.remove('show');
   $('#chip-letter').classList.remove('show');
   renderHistory();
   renderProgress();
@@ -1487,8 +1490,8 @@ function renderHistory() {
 /* ============================================================
    RENDER — the map (right side)
    ============================================================ */
-const MAP_W = 1400, MAP_H = 900;
-const ASPECT = 9/14;
+const MAP_W = 1359, MAP_H = 850;
+const ASPECT = 850/1359;
 
 /* Camera (viewBox) state. We mutate this and call applyViewBox() to commit. */
 const vb = { x:0, y:0, w:MAP_W, h:MAP_H };
