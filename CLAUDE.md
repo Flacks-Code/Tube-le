@@ -6,8 +6,6 @@ A Wordle-like game using the London Underground map. Players guess tube stations
 ## Key Files
 - `index.html` — the game front-end. Contains `STATIONS`, `LINES`, `ALL_EDGES` JS constants. Lines and Thames are rendered via the inlined `london-tube-net.svg` group.
 - `london-tube-net.svg` — the pre-built Beck-style tube map SVG (1359×850 coordinate space). Inlined into `index.html` as `<g id="tube-map-src" style="display:none">` and cloned on each render.
-- `build_map_from_tfl_pdf.py` — legacy pipeline; extracts station positions from the TfL PDF. No longer used: `STATIONS[*].coords` are retained in the data but not used by any rendering code.
-- `tube_map_tfl.pdf` — source TfL standard tube map PDF (not committed).
 
 ## Rendering Architecture
 
@@ -30,7 +28,7 @@ On each render:
 - If the target has an entry in `SVG_CIRCLE_COORDS`, `drawTargetMarker` adds a red ring + pulse animation + name label at that position.
 - Non-interchange stations: no marker drawn on the map. The result modal names the station.
 
-`STATIONS[*].coords` values are present in the data but **not used** by any rendering function.
+`STATIONS[*].coords` are derived from `london-tube-net.svg` tick-mark positions (32 interchanges use confirmed SVG circle positions; the rest are matched to the nearest line tick-mark). There is no build script for this — coords were patched into `index.html` directly. The old PDF-extraction pipeline (`build_map_from_tfl_pdf.py` and friends) has been removed; it produced inaccurate, sometimes-duplicate coordinates.
 
 ### Progressive reveal sequence (6 guesses total)
 | After wrong guess | Clue |
@@ -52,12 +50,7 @@ On each render:
 No automated tests (all verification is manual per spec).
 
 ## Running
-```bash
-uv run --no-project --script build_map_from_tfl_pdf.py
-```
-Requires `tube_map_tfl.pdf` and `index.html` present in the working directory.
+No build step — `index.html` is a static file, open it directly or serve the directory.
 
 ## Development Notes
-- Use `uv run --no-project` for all Python execution.
-- `pymupdf` import is deferred into `main()` so the module can be imported without pymupdf installed.
-- `SNAP_RADIUS=90`, `STATION_NEAR_RADIUS=40` PDF units (widened to handle stations with labels far from graphical circles).
+- Use `uv run --no-project` for all Python execution (there are currently no Python scripts in this repo; add this note back if a pipeline script is reintroduced).
