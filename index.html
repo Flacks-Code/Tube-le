@@ -1682,12 +1682,10 @@ function drawPuzzleScene(svg, guessCount, target) {
 /* ============== Full map (post-game) scene ============== */
 function drawFullMapScene(svg, target) {
   // Show the full labeled SVG (station name text included) via <image> reference.
-  // Overlay rects cover the logo (bottom-right) and legend key (bottom-left).
+  // Overlay rect covers the legend key panel (bottom-left).
   svg.appendChild(el('image', {
     href: 'london-tube-net.svg', x: 0, y: 0, width: MAP_W, height: MAP_H
   }));
-  // Cover networkle logo (bottom-right corner ~x1145–1360, y783–850)
-  svg.appendChild(el('rect', { x: 1145, y: 783, width: 215, height: 67, fill: '#eee' }));
   // Cover legend key panel (bottom-left corner ~x0–265, y675–850)
   svg.appendChild(el('rect', { x: 0, y: 675, width: 265, height: 175, fill: '#eee' }));
 

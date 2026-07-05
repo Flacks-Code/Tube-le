@@ -12,13 +12,13 @@ A Wordle-like game using the London Underground map. Players guess tube stations
 ### Map layer (london-tube-net.svg)
 Two SVG files exist:
 - **Inlined (stripped)**: `<g id="tube-map-src" style="display:none">` in `index.html` — ~28KB, no text labels, used for the puzzle phase.
-- **Full file**: `london-tube-net.svg` — 741KB, all station text labels as vector glyphs, used for the post-game reveal via `<image href="london-tube-net.svg">`.
+- **Full file**: `london-tube-net.svg` — 737KB, all station text labels as vector glyphs, used for the post-game reveal via `<image href="london-tube-net.svg">`. The Networkle logo watermark has been stripped from this file (was previously masked at render time; now removed at the source).
 
 On each render:
 - `drawPuzzleScene(svg, guessCount, target)`: clones the inlined group.
   - Guesses 0–3: single greyscale clone (`filter:saturate(0)`).
   - Guess 4+: two clones stacked — greyscale base + colour overlay with only the target station's line groups visible (`colourFilterGroup` hides non-target lines).
-- `drawFullMapScene(svg, target)`: uses `<image>` pointing to the full labeled SVG; two `<rect fill="#eee">` overlays mask the logo (bottom-right) and legend key (bottom-left).
+- `drawFullMapScene(svg, target)`: uses `<image>` pointing to the full labeled SVG; a `<rect fill="#eee">` overlay masks the legend key (bottom-left).
 
 ### Selective colour reveal (guess 4+)
 `LINE_SVG_CLASS` maps each line name to its SVG class letter (`l`=District, `m`=Circle, `n`=H&C, `q`=Metropolitan, `r`=Piccadilly, `s`=Northern, `t`=Central, `u`=Jubilee, `v`=Bakerloo). Victoria uses `stroke="#14a2e2"`, W&C uses `stroke="#67c6bc"`. `colourFilterGroup` recursively hides groups/paths whose class letters are not in the target's line set.
