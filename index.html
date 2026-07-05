@@ -1060,15 +1060,10 @@ const SOUTH_STATIONS = new Set([
 /* ============================================================
    GRAPH HELPERS
    ============================================================ */
-// Lines excluded from BFS distance — still in LINES for colour/label display,
-// but their edges are skipped in ADJ so stop counts aren't affected.
-const BFS_EXCLUDED_LINES = new Set(['Waterloo & City']);
-
 const ADJ = (() => {
   const adj = {};
   for (const name in STATIONS) adj[name] = {};
   for (const [lineName, line] of Object.entries(LINES)) {
-    if (BFS_EXCLUDED_LINES.has(lineName)) continue;
     for (const seq of line.sequences) {
       for (let i=0; i<seq.length; i++) {
         const a = seq[i];

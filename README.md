@@ -43,7 +43,7 @@ After the game ends, the full labelled map is revealed with the station marked.
 
 **164 stations** across nine lines: Bakerloo, Central, Circle, District, Hammersmith & City, Jubilee, Metropolitan, Northern, and Piccadilly.
 
-The Elizabeth line and DLR are not included. Waterloo & City stations (Bank and Waterloo) appear as part of their other lines.
+The Elizabeth line and DLR are not included.
 
 ---
 
@@ -67,4 +67,4 @@ The puzzle uses a Beck-style London Underground map built as a hand-crafted SVG.
 - **Guess 4+** — greyscale base with the target line(s) overlaid in colour.
 - **Game end** — the full 741 KB labelled SVG loads, with the target station circled in red.
 
-Stop distances between stations are calculated with a BFS graph built from each line's station sequences. The Waterloo & City line is excluded from distance calculations to avoid an artificially short Bank ↔ Waterloo shortcut.
+Stop distances between stations are calculated with a BFS graph built from each line's station sequences, counting the minimum number of station hops across all lines including the Waterloo & City.

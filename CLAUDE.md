@@ -44,7 +44,7 @@ On each render:
 
 ### Game data
 - Elizabeth line and DLR removed from the game entirely.
-- Waterloo & City line removed from `LINES` (so it builds no BFS edges) because the Bank↔Waterloo 1-stop shortcut made distances feel counterintuitively short. W&C remains in `STATIONS.lines` for Bank and Waterloo for display accuracy (lines chip, colour reveal).
+- Waterloo & City line is included in `LINES` and in the BFS graph. Bank↔Waterloo is 1 stop, which is factually correct.
 - Each STATIONS entry has a `year:` field (opening year on Underground network).
 - No `display_only` stations exist for Elizabeth or DLR.
 
