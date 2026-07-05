@@ -6,7 +6,6 @@
   <p>Guess the mystery London Underground station in six tries.<br>
   A new puzzle every day.</p>
 
-  <a href="https://flacks-code.github.io/Tube-le/"><strong>▶ Play now</strong></a>
 
 </div>
 
