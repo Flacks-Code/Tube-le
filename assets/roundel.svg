@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Tube-le roundel">
+  <circle cx="50" cy="50" r="36" fill="none" stroke="#DC241F" stroke-width="15"/>
+  <rect x="2" y="41" width="96" height="18" fill="#0019A8"/>
+  <text x="50" y="53" text-anchor="middle" dominant-baseline="middle"
+        fill="#ffffff" font-size="9.5" font-weight="700" letter-spacing="1.8"
+        font-family="'Arial Narrow','Gill Sans MT Condensed','Gill Sans','Trebuchet MS',Arial,sans-serif">TUBE-LE</text>
+</svg>
