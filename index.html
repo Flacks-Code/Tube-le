@@ -1605,23 +1605,60 @@ function renderMap() {
    ============================================================ */
 // Find the SVG interchange circle nearest to (tx, ty), within 120 units.
 // Returns {cx, cy, r} or null for non-interchange stations.
-function findSVGCircle(tx, ty) {
+// SVG interchange circle coordinates derived from london-tube-net.svg via line-proximity detection.
+// Stations not in this table have no dedicated SVG circle; they fall back to pipeline coords.
+const SVG_CIRCLE_COORDS = {
+  "Acton Town":              [222.60, 428.47],
+  "Aldgate":                 [889.97, 516.21],
+  "Barking":                 [1237.50, 457.15],
+  "Bond Street":             [590.00, 445.00],
+  "Charing Cross":           [690.00, 495.00],
+  "Ealing Broadway":         [190.52, 398.36],
+  "Ealing Common":           [234.87, 468.51],
+  "Earl's Court":            [385.62, 579.98],
+  "Elephant & Castle":       [790.99, 632.47],
+  "Embankment":              [711.38, 549.17],
+  "Finsbury Park":           [850.50, 250.96],
+  "Gloucester Road":         [457.28, 579.98],
+  "Green Park":              [610.00, 510.01],
+  "Hammersmith":             [354.96, 580.00],
+  "Holborn":                 [750.00, 450.00],
+  "King's Cross St. Pancras":[690.00, 395.00],
+  "London Bridge":           [837.94, 585.83],
+  "Moorgate":                [845.31, 457.01],
+  "Notting Hill Gate":       [475.09, 475.50],
+  "Oxford Circus":           [640.00, 445.00],
+  "Paddington":              [542.73, 378.00],
+  "Piccadilly Circus":       [655.00, 495.00],
+  "Rayners Lane":            [210.47, 197.41],
+  "South Kensington":        [535.24, 579.98],
+  "Stockwell":               [720.66, 703.21],
+  "Stratford":               [1103.62, 366.87],
+  "Tottenham Court Road":    [690.00, 445.00],
+  "Turnham Green":           [289.06, 522.69],
+  "Victoria":                [610.00, 581.61],
+  "Waterloo":                [691.34, 529.03],
+  "West Ham":                [1099.12, 457.36],
+  "Westminster":             [680.27, 581.61],
+};
+
+function findSVGCircle(stationName) {
+  const coords = SVG_CIRCLE_COORDS[stationName];
+  if (!coords) return null;
+  const [tcx, tcy] = coords;
   const src = document.getElementById('tube-map-src');
-  let best = null, bestD2 = Infinity;
   for (const c of src.querySelectorAll('circle')) {
-    const dx = parseFloat(c.getAttribute('cx')) - tx;
-    const dy = parseFloat(c.getAttribute('cy')) - ty;
-    const d2 = dx * dx + dy * dy;
-    if (d2 < bestD2) { bestD2 = d2; best = c; }
+    const dx = parseFloat(c.getAttribute('cx')) - tcx;
+    const dy = parseFloat(c.getAttribute('cy')) - tcy;
+    if (Math.sqrt(dx * dx + dy * dy) < 2)
+      return { cx: tcx, cy: tcy, r: parseFloat(c.getAttribute('r')) };
   }
-  return best && Math.sqrt(bestD2) < 120
-    ? { cx: parseFloat(best.getAttribute('cx')), cy: parseFloat(best.getAttribute('cy')), r: parseFloat(best.getAttribute('r')) }
-    : null;
+  return null;
 }
 
 function drawPuzzleScene(svg, target, guessCount) {
   const t = STATIONS[target];
-  const svgC = findSVGCircle(t.coords[0], t.coords[1]);
+  const svgC = findSVGCircle(target);
   const cx = svgC ? svgC.cx : t.coords[0];
   const cy = svgC ? svgC.cy : t.coords[1];
 
@@ -1648,7 +1685,7 @@ function drawPuzzleScene(svg, target, guessCount) {
 /* ============== Full map (post-game) scene ============== */
 function drawFullMapScene(svg, target) {
   const t = STATIONS[target];
-  const svgC = findSVGCircle(t.coords[0], t.coords[1]);
+  const svgC = findSVGCircle(target);
   const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
   mapGroup.removeAttribute('style');
   svg.appendChild(mapGroup);
