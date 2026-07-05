@@ -305,7 +305,8 @@
   .ticket .t-lines{
     display:flex;gap:5px;margin-top:11px;flex-wrap:wrap;align-items:center;
   }
-  .ticket .t-lines span{
+  .ticket .t-lines span,
+  .mg-lines span{
     height:18px;
     border-radius:3px;
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
@@ -316,21 +317,6 @@
     display:inline-flex;
     align-items:center;
     line-height:1;
-  }
-  .ticket .t-row{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-top:10px;gap:10px;
-  }
-  .ticket .t-compass{
-    display:flex;align-items:center;gap:8px;
-    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
-    color:var(--ink-soft);
-  }
-  .ticket .t-compass svg{width:26px;height:26px}
-  .ticket .t-temp{
-    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
-    color:var(--ink);
-    padding:3px 7px;border-radius:9px;border:1.2px solid var(--ink);
   }
   .ticket.win{
     background:linear-gradient(180deg, #E8F3E0 0%, #C6E1B6 100%);
@@ -363,32 +349,6 @@
   .map.interactive svg{cursor:grab}
   .map.interactive svg.grabbing{cursor:grabbing}
 
-  .zoom-controls{
-    position:absolute;
-    top:50%;right:18px;
-    transform:translateY(-50%);
-    display:none;
-    flex-direction:column;gap:6px;
-    z-index:6;
-  }
-  .zoom-controls.show{display:flex}
-  .zoom-btn{
-    background:var(--paper);
-    border:1.5px solid var(--ink);
-    width:38px;height:38px;
-    border-radius:50%;
-    cursor:pointer;
-    display:inline-flex;align-items:center;justify-content:center;
-    font-family:'Hammersmith One',serif;
-    font-size:20px;line-height:1;
-    color:var(--ink);
-    box-shadow:var(--shadow);
-    transition:background .15s ease, color .15s ease, transform .1s ease;
-    padding:0;
-  }
-  .zoom-btn:hover{background:var(--ink);color:var(--paper)}
-  .zoom-btn:active{transform:scale(.92)}
-  .zoom-btn svg{width:16px;height:16px}
   .map-hint{
     position:absolute;
     top:18px;right:18px;
@@ -423,6 +383,13 @@
     transition:opacity .4s ease, transform .4s ease;
   }
   .chip.show{opacity:1;transform:none}
+  #chip-lines-inner{display:inline-flex;gap:5px;flex-wrap:wrap;align-items:center}
+  #chip-lines-inner span{
+    height:18px;border-radius:3px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);
+    padding:0 7px;font-size:9.5px;font-weight:800;letter-spacing:1px;
+    display:inline-flex;align-items:center;line-height:1;
+  }
   .reopen-btn{
     position:absolute;bottom:18px;right:18px;
     background:var(--ink);color:var(--paper);
@@ -528,16 +495,31 @@
   .stat .v{font-family:'Hammersmith One',serif;font-size:22px;line-height:1}
   .stat .l{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin-top:3px}
   .grid-area{
-    background:var(--paper-2);
-    border:1.5px solid var(--ink);
-    border-radius:8px;
-    padding:12px;
-    text-align:center;
     margin:10px 0 14px;
-    font-family:'Public Sans',monospace;
-    font-size:13px;line-height:1.5;letter-spacing:.5px;
-    white-space:pre;
+    display:flex;flex-direction:column;gap:5px;
   }
+  .mg-row{
+    display:flex;align-items:center;gap:8px;
+    background:var(--paper-2);
+    border:1.5px solid var(--rule);
+    border-radius:7px;
+    padding:6px 10px;
+    font-size:12px;
+  }
+  .mg-row.mg-correct{
+    border-color:#00521E;background:linear-gradient(90deg,#E8F3E0,#D4ECC4);
+  }
+  .mg-name{
+    flex:1;font-weight:600;color:var(--ink);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .mg-lines{display:inline-flex;gap:3px;flex-shrink:0}
+  .mg-stops{
+    flex-shrink:0;font-variant-numeric:tabular-nums;
+    color:var(--ink-soft);font-size:11px;font-weight:700;
+    letter-spacing:.5px;
+  }
+  .mg-row.mg-correct .mg-stops{color:#00521E}
   .modal .actions{
     display:flex;gap:8px;
   }
@@ -612,10 +594,10 @@
     <div class="panel-head">
       <div class="brand">
         <svg class="roundel" viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="#DC241F" stroke-width="12"/>
-          <rect x="6" y="42" width="88" height="16" fill="#0019A8"/>
-          <text x="50" y="55" text-anchor="middle" fill="#fff"
-            font-family="Hammersmith One, sans-serif" font-size="11" letter-spacing="1.5">UNDERGROUND</text>
+          <circle cx="50" cy="50" r="37" fill="none" stroke="#DC241F" stroke-width="16"/>
+          <rect x="0" y="40" width="100" height="20" fill="#0019A8"/>
+          <text x="50" y="53.5" text-anchor="middle" fill="#fff"
+            font-family="Hammersmith One, sans-serif" font-size="9.5" letter-spacing="1.0">TUBE-LE</text>
         </svg>
         <div class="titleblock">
           <h1>Tube-le</h1>
@@ -632,7 +614,7 @@
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
             </svg>
           </button>
-          <button class="text-btn" id="next-btn">Next puzzle</button>
+          <button class="text-btn" id="next-btn">Random station</button>
         </div>
       </div>
 
@@ -669,8 +651,10 @@
   <section class="map">
     <svg id="map-svg" preserveAspectRatio="xMidYMid meet"></svg>
     <div class="map-overlay">
-      <div class="chip" id="chip-zone"><span class="dot"></span><span id="chip-zone-text">Zone —</span></div>
       <div class="chip" id="chip-year"><span class="dot"></span><span id="chip-year-text">Opened —</span></div>
+      <div class="chip" id="chip-river"><span class="dot"></span><span id="chip-river-text">— of the river</span></div>
+      <div class="chip" id="chip-zone"><span class="dot"></span><span id="chip-zone-text">Zone —</span></div>
+      <div class="chip" id="chip-lines"><span class="dot"></span><span id="chip-lines-inner"></span></div>
       <div class="chip" id="chip-letter"><span class="dot" style="background:var(--bar)"></span><span id="chip-letter-text">Starts with —</span></div>
     </div>
     <button class="reopen-btn" id="reopen-btn">
@@ -678,33 +662,14 @@
       <span id="reopen-text">Show result</span>
     </button>
     <div class="map-hint" id="map-hint">Drag · scroll · pinch</div>
-    <div class="zoom-controls" id="zoom-controls">
-      <button class="zoom-btn" id="zoom-in" aria-label="Zoom in" title="Zoom in">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </button>
-      <button class="zoom-btn" id="zoom-out" aria-label="Zoom out" title="Zoom out">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </button>
-      <button class="zoom-btn" id="zoom-reset" aria-label="Recenter on station" title="Recenter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-          <circle cx="12" cy="12" r="3"/>
-          <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
-        </svg>
-      </button>
-    </div>
     <div class="legend" id="legend">
       <strong>The reveal</strong>
-      <div class="legend-row"><b>Wrong guess 1</b> Zone revealed</div>
-      <div class="legend-row"><b>Wrong guess 2</b> Opening year revealed</div>
-      <div class="legend-row"><b>Wrong guess 3</b> Map view expands</div>
-      <div class="legend-row"><b>Wrong guess 4</b> Colour revealed</div>
-      <div class="legend-row"><b>Wrong guess 5</b> Full map shown</div>
-      <div class="legend-row"><b>Wrong guess 6</b> First letter revealed</div>
+      <div class="legend-row"><b>Wrong guess 1</b> Opening year revealed</div>
+      <div class="legend-row"><b>Wrong guess 2</b> North or south of the river</div>
+      <div class="legend-row"><b>Wrong guess 3</b> Zone revealed</div>
+      <div class="legend-row"><b>Wrong guess 4</b> Lines revealed in colour on map</div>
+      <div class="legend-row"><b>Wrong guess 5</b> First letter revealed</div>
+      <div class="legend-row"><b>Wrong guess 6</b> Game over</div>
     </div>
   </section>
 </main>
@@ -718,9 +683,9 @@
       </svg>
     </button>
     <svg class="roundel" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#DC241F" stroke-width="12"/>
-      <rect x="6" y="42" width="88" height="16" fill="#0019A8"/>
-      <text x="50" y="55" text-anchor="middle" fill="#fff" font-family="Hammersmith One, sans-serif" font-size="11" letter-spacing="1.5">UNDERGROUND</text>
+      <circle cx="50" cy="50" r="37" fill="none" stroke="#DC241F" stroke-width="16"/>
+      <rect x="0" y="40" width="100" height="20" fill="#0019A8"/>
+      <text x="50" y="53.5" text-anchor="middle" fill="#fff" font-family="Hammersmith One, sans-serif" font-size="9.5" letter-spacing="1.0">TUBE-LE</text>
     </svg>
     <h2 id="modal-title">Station Found</h2>
     <div class="station-found" id="modal-station">—</div>
@@ -732,7 +697,7 @@
     </div>
     <div class="grid-area" id="grid-area"></div>
     <div class="actions">
-      <button class="btn-secondary" id="modal-next">New puzzle</button>
+      <button class="btn-secondary" id="modal-next">Random station</button>
       <button class="btn-primary" id="copy-btn">Copy result</button>
     </div>
     <div class="toast" id="toast">Copied</div>
@@ -777,12 +742,12 @@ const STATIONS = {
   "St John's Wood":           { coords:[585.42,346.78], zone:2, year:1939, lines:["Jubilee"], river:"medium" },
   "Euston Square":            { coords:[619.21,380.3], zone:1, year:1863, lines:["Circle","Hammersmith & City","Metropolitan"], river:"medium" },
   "King's Cross St. Pancras": { coords:[690.0,395.0], zone:1, year:1863, lines:["Circle","Hammersmith & City","Metropolitan","Northern","Piccadilly","Victoria"], river:"medium" },
-  "Euston":                   { coords:[806.31,289.99], zone:1, year:1907, lines:["Northern","Victoria"], river:"medium" },
+  "Euston":                   { coords:[690,412], zone:1, year:1907, lines:["Northern","Victoria"], river:"medium" },
   "Angel":                    { coords:[692.93,419.73], zone:1, year:1901, lines:["Northern"], river:"medium" },
   "Old Street":               { coords:[800.97,370.41], zone:1, year:1901, lines:["Northern"], river:"medium" },
-  "Baker Street":             { coords:[541.28,388.81], zone:1, year:1863, lines:["Bakerloo","Circle","Hammersmith & City","Jubilee","Metropolitan"], river:"medium" },
+  "Baker Street":             { coords:[555.9,363.2], zone:1, year:1863, lines:["Bakerloo","Circle","Hammersmith & City","Jubilee","Metropolitan"], river:"medium" },
   "Farringdon":               { coords:[665.22,380.3], zone:1, year:1863, lines:["Circle","Hammersmith & City","Metropolitan"], river:"medium" },
-  "Warren Street":            { coords:[697.11,490.8], zone:1, year:1907, lines:["Northern","Victoria"], river:"medium" },
+  "Warren Street":            { coords:[690,428], zone:1, year:1907, lines:["Northern","Victoria"], river:"medium" },
 
   // West/Central Zone 1
   "Paddington":               { coords:[542.73,378.0], zone:1, year:1863, lines:["Bakerloo","Circle","District","Hammersmith & City"], river:"medium" },
@@ -803,7 +768,7 @@ const STATIONS = {
 
   // Theatreland / South Bank
   "Covent Garden":            { coords:[728.8,473.92], zone:1, year:1907, lines:["Piccadilly"], river:"close" },
-  "Leicester Square":         { coords:[622.98,388.6], zone:1, year:1906, lines:["Northern","Piccadilly"], river:"close" },
+  "Leicester Square":         { coords:[690,470], zone:1, year:1906, lines:["Northern","Piccadilly"], river:"close" },
   "Piccadilly Circus":        { coords:[655.0,495.0], zone:1, year:1906, lines:["Bakerloo","Piccadilly"], river:"close" },
   "Charing Cross":            { coords:[690.0,495.0], zone:1, year:1906, lines:["Bakerloo","Northern"], river:"close" },
   "Embankment":               { coords:[711.38,549.17], zone:1, year:1870, lines:["Bakerloo","Circle","District","Northern"], river:"close" },
@@ -843,7 +808,7 @@ const STATIONS = {
 
   // East
   "Bethnal Green":            { coords:[969.61,463.66], zone:2, year:1946, lines:["Central"], river:"medium" },
-  "Mile End":                 { coords:[987.34,477.5],zone:2, year:1902, lines:["Central","District","Hammersmith & City"], river:"medium" },
+  "Mile End":                 { coords:[996.2,484.4],zone:2, year:1902, lines:["Central","District","Hammersmith & City"], river:"medium" },
   "West Ham":                 { coords:[1099.12,457.36],zone:3, year:1902, lines:["District","Hammersmith & City","Jubilee"], river:"close" },
   "Canning Town":             { coords:[1034.58,600.38],zone:3, year:1999, lines:["Jubilee"], river:"close" },
   "North Greenwich":          { coords:[1101.04,526.68],zone:2, year:1999, lines:["Jubilee"], river:"close" },
@@ -1084,13 +1049,26 @@ const LINES = {
   },
 };
 
+// Stations south of the River Thames
+const SOUTH_STATIONS = new Set([
+  'Borough','Brixton','Battersea Power Station','East Putney',
+  'Elephant & Castle','Kennington','London Bridge','Morden',
+  'North Greenwich','Richmond','Southfields','Stockwell',
+  'Vauxhall','Waterloo','Wimbledon','Wimbledon Park',
+]);
+
 /* ============================================================
    GRAPH HELPERS
    ============================================================ */
+// Lines excluded from BFS distance — still in LINES for colour/label display,
+// but their edges are skipped in ADJ so stop counts aren't affected.
+const BFS_EXCLUDED_LINES = new Set(['Waterloo & City']);
+
 const ADJ = (() => {
   const adj = {};
   for (const name in STATIONS) adj[name] = {};
   for (const [lineName, line] of Object.entries(LINES)) {
+    if (BFS_EXCLUDED_LINES.has(lineName)) continue;
     for (const seq of line.sequences) {
       for (let i=0; i<seq.length; i++) {
         const a = seq[i];
@@ -1139,14 +1117,6 @@ function bfsDistance(a, b) {
   return Infinity;
 }
 
-const COMPASS = ['E','SE','S','SW','W','NW','N','NE'];
-function bearingFromTo(a, b) {
-  const [ax,ay] = STATIONS[a].coords;
-  const [bx,by] = STATIONS[b].coords;
-  const angle = Math.atan2(by-ay, bx-ax); // -PI..PI, y is down
-  const oct = Math.round((angle / (Math.PI/4))) & 7;
-  return COMPASS[oct];
-}
 
 /* ============================================================
    AUDIO — synthesised, lazily resumed
@@ -1206,13 +1176,17 @@ function hash32(s) {
   }
   return h >>> 0;
 }
-function targetForOffset(off) {
-  const seed = hash32(todayStr() + ':' + off);
+function dailyTarget() {
+  const seed = hash32(todayStr());
   return STATION_NAMES[seed % STATION_NAMES.length];
+}
+function randomTarget(exclude) {
+  const pool = STATION_NAMES.filter(n => n !== exclude);
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 const state = {
-  puzzleOffset: 0,
+  mode: 'daily', // 'daily' | 'random'
   date: todayStr(),
   target: null,
   guesses: [],
@@ -1222,7 +1196,11 @@ const state = {
 };
 
 function resetPuzzle() {
-  state.target = targetForOffset(state.puzzleOffset);
+  if (state.mode === 'random') {
+    state.target = randomTarget(state.target);
+  } else {
+    state.target = dailyTarget();
+  }
   state.guesses = [];
   state.status = 'playing';
   const inp = $('#station-input');
@@ -1233,13 +1211,17 @@ function resetPuzzle() {
   $('#modal-bd').classList.remove('open');
   $('#reopen-btn').classList.remove('show');
   $('#legend').style.display = '';
-  $('#chip-zone').classList.remove('show');
   $('#chip-year').classList.remove('show');
+  $('#chip-river').classList.remove('show');
+  $('#chip-zone').classList.remove('show');
+  $('#chip-lines').classList.remove('show');
   $('#chip-letter').classList.remove('show');
   renderHistory();
   renderProgress();
   renderMap();
-  $('#dateline').textContent = `Tube-le · ${state.date}${state.puzzleOffset>0 ? ' · #'+(state.puzzleOffset+1):''}`;
+  $('#dateline').textContent = state.mode === 'random'
+    ? `Tube-le · Random`
+    : `Tube-le · ${state.date}`;
 }
 
 /* ============================================================
@@ -1248,7 +1230,7 @@ function resetPuzzle() {
 const $  = sel => document.querySelector(sel);
 const $$ = sel => [...document.querySelectorAll(sel)];
 function el(tag, attrs={}, ...children) {
-  const ns = (tag === 'svg' || tag === 'g' || tag === 'path' || tag === 'line' || tag === 'circle' || tag === 'rect' || tag === 'text' || tag === 'defs' || tag === 'filter' || tag === 'feTurbulence' || tag === 'feColorMatrix' || tag === 'clipPath' || tag === 'mask') ? 'http://www.w3.org/2000/svg' : null;
+  const ns = (tag === 'svg' || tag === 'g' || tag === 'path' || tag === 'line' || tag === 'circle' || tag === 'rect' || tag === 'text' || tag === 'image' || tag === 'defs' || tag === 'filter' || tag === 'feTurbulence' || tag === 'feColorMatrix' || tag === 'clipPath' || tag === 'mask') ? 'http://www.w3.org/2000/svg' : null;
   const node = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
   for (const [k,v] of Object.entries(attrs)) {
     if (k === 'class') node.setAttribute('class', v);
@@ -1357,8 +1339,7 @@ function submitGuess() {
   const target = state.target;
   const correct = v === target;
   const distance = correct ? 0 : bfsDistance(v, target);
-  const bearing = correct ? null : bearingFromTo(v, target);
-  state.guesses.push({ name:v, distance, bearing, correct });
+  state.guesses.push({ name:v, distance, correct });
 
   $('#station-input').value = '';
   $('#submit-btn').disabled = true;
@@ -1423,28 +1404,6 @@ function lineSwatch(lineName) {
   return sw;
 }
 
-function compassSVG(dir) {
-  if (!dir) return el('span');
-  const map = { 'N':-90,'NE':-45,'E':0,'SE':45,'S':90,'SW':135,'W':180,'NW':-135 };
-  const a = map[dir];
-  return el('svg', { viewBox:'0 0 100 100' },
-    el('circle', { cx:50, cy:50, r:46, fill:'none', stroke:'currentColor','stroke-width':3 }),
-    el('g', { transform:`rotate(${a} 50 50)` },
-      el('path', { d:'M 50 12 L 62 50 L 50 38 L 38 50 Z', fill:'currentColor' }),
-      el('line', { x1:50, y1:50, x2:50, y2:80, stroke:'currentColor','stroke-width':3 })
-    ),
-    el('text', { x:50, y:96, 'text-anchor':'middle', 'font-family':'Public Sans, sans-serif', 'font-size':18, 'font-weight':700, fill:'currentColor' }, dir)
-  );
-}
-
-function tempLabel(distance) {
-  if (distance === 1) return 'NEXT STOP';
-  if (distance <= 2) return 'BURNING';
-  if (distance <= 4) return 'WARM';
-  if (distance <= 7) return 'COOL';
-  if (distance <= 12) return 'COLD';
-  return 'FREEZING';
-}
 
 function renderHistory() {
   const wrap = $('#history');
@@ -1471,9 +1430,6 @@ function renderHistory() {
       ),
       el('div', { class:'t-lines' },
         ...s.lines.map(l => lineSwatch(l))
-      ),
-      el('div', { class:'t-row' },
-        el('div', { class:'t-temp' }, g.correct ? 'CORRECT' : tempLabel(g.distance))
       )
     );
     wrap.appendChild(node);
@@ -1544,9 +1500,6 @@ const ALL_EDGES = (() => {
   return [...edges.values()];
 })();
 
-function distance(a, b) {
-  return Math.hypot(b[0]-a[0], b[1]-a[1]);
-}
 
 function renderMap() {
   const svg = $('#map-svg');
@@ -1560,34 +1513,50 @@ function renderMap() {
   const mapEl = $('.map');
 
   if (ended) {
-    // Full map reveal — pannable, zoomable, centered on target
+    // Full map reveal — pannable, zoomable
     drawFullMapScene(svg, target);
-    setView(t.coords, 700);
+    const svgC = findSVGCircle(target);
+    if (svgC) {
+      setView([svgC.cx, svgC.cy], 700);
+    } else {
+      setView([MAP_W / 2, MAP_H / 2], MAP_W);
+    }
     mapEl.classList.add('interactive');
-    $('#zoom-controls').classList.add('show');
     $('#map-hint').classList.add('show');
   } else {
-    // Puzzle scene — local subgraph, fixed view
-    drawPuzzleScene(svg, target, guessCount);
-    const viewW = guessCount < 3 ? 300 : guessCount < 5 ? 700 : 1100;
-    setView(t.coords, viewW);
+    // Full map, greyscale until guess 4, not interactive
+    drawPuzzleScene(svg, guessCount, target);
+    setView([MAP_W / 2, MAP_H / 2], MAP_W);
     mapEl.classList.remove('interactive');
-    $('#zoom-controls').classList.remove('show');
     $('#map-hint').classList.remove('show');
   }
 
   // Reveal chips (DOM, outside SVG)
   if (guessCount >= 1 || ended) {
-    $('#chip-zone-text').textContent = `Zone ${t.zone} · ${t.river === 'close' ? 'By the river' : t.river === 'medium' ? 'A walk from the river' : 'Inland'}`;
-    $('#chip-zone').classList.add('show');
-  } else {
-    $('#chip-zone').classList.remove('show');
-  }
-  if (guessCount >= 2 || ended) {
     $('#chip-year-text').textContent = `Opened ${t.year || '—'}`;
     $('#chip-year').classList.add('show');
   } else {
     $('#chip-year').classList.remove('show');
+  }
+  if (guessCount >= 2 || ended) {
+    $('#chip-river-text').textContent = SOUTH_STATIONS.has(target) ? 'South of the river' : 'North of the river';
+    $('#chip-river').classList.add('show');
+  } else {
+    $('#chip-river').classList.remove('show');
+  }
+  if (guessCount >= 3 || ended) {
+    $('#chip-zone-text').textContent = `Zone ${t.zone}`;
+    $('#chip-zone').classList.add('show');
+  } else {
+    $('#chip-zone').classList.remove('show');
+  }
+  if (guessCount >= 4 || ended) {
+    const inner = $('#chip-lines-inner');
+    inner.innerHTML = '';
+    for (const l of t.lines) inner.appendChild(lineSwatch(l));
+    $('#chip-lines').classList.add('show');
+  } else {
+    $('#chip-lines').classList.remove('show');
   }
   if (guessCount >= 5 || ended) {
     $('#chip-letter-text').textContent = `Starts with “${target[0]}”`;
@@ -1597,16 +1566,13 @@ function renderMap() {
   }
 }
 
-/* ============== Puzzle (in-game) scene ==============
-   The puzzle view is an extract from the inlined london-tube-net.svg diagram:
-   the SVG group is cloned and the viewBox crops to a window centred on the
-   target station. Colour palettes swap between reveal stages via a saturate
-   filter.
+/* ============== Map rendering ==============
+   Puzzle: full map cloned from tube-map-src, greyscale (saturate 0) until
+   guess 4, then full colour. No clip, no station marker — no coordinates needed.
+   Post-game: full colour, interactive; interchange circles highlighted if known.
    ============================================================ */
-// Find the SVG interchange circle nearest to (tx, ty), within 120 units.
-// Returns {cx, cy, r} or null for non-interchange stations.
-// SVG interchange circle coordinates derived from london-tube-net.svg via line-proximity detection.
-// Stations not in this table have no dedicated SVG circle; they fall back to pipeline coords.
+// Find the SVG interchange circle for a station, using SVG_CIRCLE_COORDS as a lookup.
+// Returns {cx, cy, r} or null. Non-interchange stations return null and show no map marker.
 const SVG_CIRCLE_COORDS = {
   "Acton Town":              [222.60, 428.47],
   "Aldgate":                 [889.97, 516.21],
@@ -1656,88 +1622,110 @@ function findSVGCircle(stationName) {
   return null;
 }
 
-function drawPuzzleScene(svg, target, guessCount) {
-  const t = STATIONS[target];
-  const svgC = findSVGCircle(target);
-  const cx = svgC ? svgC.cx : t.coords[0];
-  const cy = svgC ? svgC.cy : t.coords[1];
+// SVG class letter → tube line name mapping for selective colour reveal
+const LINE_SVG_CLASS = {
+  'Bakerloo':'v','Central':'t','Circle':'m','District':'l',
+  'Hammersmith & City':'n','Jubilee':'u','Metropolitan':'q','Northern':'s','Piccadilly':'r',
+};
+const ALL_LINE_LETTERS = new Set(['l','m','n','q','r','s','t','u','v']);
 
-  // Clip radius: 54 for guesses 0-2, 214 for guesses 3-4, none at 5+
-  const clipR = guessCount < 3 ? 54 : guessCount < 5 ? 214 : null;
-
-  if (clipR !== null) {
-    const defs = el('defs');
-    const cp = el('clipPath', { id: 'map-clip' });
-    cp.appendChild(el('circle', { cx, cy, r: clipR }));
-    defs.appendChild(cp);
-    svg.appendChild(defs);
+function colourFilterGroup(group, targetClasses, hasVictoria, hasWC) {
+  for (const child of Array.from(group.children)) {
+    const cls = new Set((child.getAttribute('class') || '').split(' ').filter(Boolean));
+    const stroke = child.getAttribute('stroke') || '';
+    const lineLetters = [...cls].filter(c => ALL_LINE_LETTERS.has(c));
+    if (lineLetters.length > 0) {
+      // Group/path belongs to a specific line — hide if not a target line
+      if (!lineLetters.some(c => targetClasses.has(c))) child.style.display = 'none';
+    } else if (stroke === '#14a2e2') {
+      if (!hasVictoria) child.style.display = 'none';
+    } else if (stroke === '#67c6bc') {
+      if (!hasWC) child.style.display = 'none';
+    } else if (child.tagName === 'g') {
+      // Generic wrapper group — recurse
+      colourFilterGroup(child, targetClasses, hasVictoria, hasWC);
+    } else {
+      // Background paths, zone outlines, Thames, style elements — hide so
+      // the greyscale Layer 1 underneath shows through unchanged
+      child.style.display = 'none';
+    }
   }
+}
 
-  const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
-  mapGroup.removeAttribute('style');
-  if (clipR !== null) mapGroup.setAttribute('clip-path', 'url(#map-clip)');
-  if (guessCount < 4) mapGroup.style.filter = 'saturate(0)';
-  svg.appendChild(mapGroup);
-
-  drawTargetMarker(svg, mapGroup, target, false, svgC);
+function drawPuzzleScene(svg, guessCount, target) {
+  const baseGroup = document.getElementById('tube-map-src').cloneNode(true);
+  baseGroup.removeAttribute('style');
+  if (guessCount < 4) {
+    baseGroup.style.filter = 'saturate(0)';
+    svg.appendChild(baseGroup);
+  } else {
+    // Layer 1: greyscale base map
+    baseGroup.style.filter = 'saturate(0)';
+    svg.appendChild(baseGroup);
+    // Layer 2: target station lines in colour on top
+    const colourGroup = document.getElementById('tube-map-src').cloneNode(true);
+    colourGroup.removeAttribute('style');
+    const t = STATIONS[target];
+    const targetClasses = new Set(
+      t.lines.filter(l => LINE_SVG_CLASS[l]).map(l => LINE_SVG_CLASS[l])
+    );
+    colourFilterGroup(colourGroup, targetClasses,
+      t.lines.includes('Victoria'), t.lines.includes('Waterloo & City'));
+    svg.appendChild(colourGroup);
+    // Layer 3: interchange circles re-cloned on top so coloured lines don't pass over them
+    const src = document.getElementById('tube-map-src');
+    for (const child of src.children) {
+      const cls = (child.getAttribute('class') || '').split(' ');
+      if (cls.includes('o') && child.getAttribute('stroke-width') === '1.5') {
+        svg.appendChild(child.cloneNode(true));
+        break;
+      }
+    }
+  }
 }
 
 /* ============== Full map (post-game) scene ============== */
 function drawFullMapScene(svg, target) {
-  const t = STATIONS[target];
-  const svgC = findSVGCircle(target);
-  const mapGroup = document.getElementById('tube-map-src').cloneNode(true);
-  mapGroup.removeAttribute('style');
-  svg.appendChild(mapGroup);
+  // Show the full labeled SVG (station name text included) via <image> reference.
+  // Overlay rects cover the logo (bottom-right) and legend key (bottom-left).
+  svg.appendChild(el('image', {
+    href: 'london-tube-net.svg', x: 0, y: 0, width: MAP_W, height: MAP_H
+  }));
+  // Cover networkle logo (bottom-right corner ~x1145–1360, y783–850)
+  svg.appendChild(el('rect', { x: 1145, y: 783, width: 215, height: 67, fill: '#eee' }));
+  // Cover legend key panel (bottom-left corner ~x0–265, y675–850)
+  svg.appendChild(el('rect', { x: 0, y: 675, width: 265, height: 175, fill: '#eee' }));
 
-  drawTargetMarker(svg, mapGroup, target, true, svgC);
+  const svgC = findSVGCircle(target);
+  drawTargetMarker(svg, target, svgC);
 }
 
-// svgC: {cx,cy,r} of the matching SVG interchange circle, or null.
-// When present, we highlight that circle in the cloned mapGroup instead of
-// drawing a separate dot on top.
-function drawTargetMarker(svg, mapGroup, targetName, showLabel, svgC) {
-  const t = STATIONS[targetName];
-  let cx, cy;
+// Draws a highlight ring + label for the target station's interchange circle.
+// Non-interchange stations (svgC null) show no marker — the result modal names them.
+function drawTargetMarker(svg, targetName, svgC) {
+  if (!svgC) return;
 
-  if (svgC) {
-    // Highlight the existing interchange circle in the cloned map group
-    for (const c of mapGroup.querySelectorAll('circle')) {
-      if (Math.abs(parseFloat(c.getAttribute('cx')) - svgC.cx) < 0.5 &&
-          Math.abs(parseFloat(c.getAttribute('cy')) - svgC.cy) < 0.5) {
-        c.setAttribute('stroke', '#DC241F');
-        c.setAttribute('stroke-width', '3.5');
-        break;
-      }
-    }
-    cx = svgC.cx; cy = svgC.cy;
-  } else {
-    // Fallback: no interchange circle for this station — draw a small dot
-    cx = t.coords[0]; cy = t.coords[1];
-    svg.appendChild(el('circle', { cx, cy, r: 5, fill: '#DC241F', stroke: '#fff', 'stroke-width': 2 }));
-  }
+  // Red ring outline over the circle
+  svg.appendChild(el('circle', {
+    cx: svgC.cx, cy: svgC.cy, r: svgC.r + 0.5,
+    fill: 'none', stroke: '#DC241F', 'stroke-width': '3.5'
+  }));
 
-  // Pulse ring
-  const pr = svgC ? svgC.r + 2 : 7;
-  const pulse = el('circle', { cx, cy, r: pr, fill: 'none', stroke: '#DC241F', 'stroke-width': 2 });
+  const pr = svgC.r + 2;
+  const pulse = el('circle', { cx: svgC.cx, cy: svgC.cy, r: pr, fill: 'none', stroke: '#DC241F', 'stroke-width': 2 });
   pulse.animate(
     [{ r: pr, opacity: 0.8 }, { r: pr + 28, opacity: 0 }],
     { duration: 1800, iterations: 1, easing: 'cubic-bezier(.2,.7,.2,1)' }
   );
   svg.appendChild(pulse);
 
-  if (showLabel) {
-    svg.appendChild(el('text', {
-      x: cx, y: cy + (svgC ? svgC.r : 5) + 18,
-      'text-anchor': 'middle',
-      'font-family': 'Hammersmith One, sans-serif',
-      'font-size': 18,
-      fill: '#0a0a0a',
-      'paint-order': 'stroke',
-      stroke: '#FAF7F0',
-      'stroke-width': 5
-    }, targetName));
-  }
+  svg.appendChild(el('text', {
+    x: svgC.cx, y: svgC.cy + svgC.r + 18,
+    'text-anchor': 'middle',
+    'font-family': 'Hammersmith One, sans-serif',
+    'font-size': 18, fill: '#0a0a0a', 'paint-order': 'stroke',
+    stroke: '#FAF7F0', 'stroke-width': 5
+  }, targetName));
 }
 
 /* ============================================================
@@ -1775,7 +1763,20 @@ function openModal(won) {
   $('#stat-guesses').textContent = won ? state.guesses.length : 'X';
   $('#stat-lines').textContent = t.lines.length;
   $('#stat-zone').textContent = t.zone;
-  $('#grid-area').textContent = buildShareGrid();
+  const grid = $('#grid-area');
+  grid.innerHTML = '';
+  for (const g of state.guesses) {
+    const gs = STATIONS[g.name];
+    const row = el('div', { class: 'mg-row' + (g.correct ? ' mg-correct' : '') },
+      el('div', { class: 'mg-lines' }, ...gs.lines.map(l => lineSwatch(l))),
+      el('div', { class: 'mg-name' }, g.name),
+      el('div', { class: 'mg-stops' },
+        g.correct ? '★ Found'
+          : (g.distance === Infinity ? '∞ stops' : `${g.distance} stop${g.distance === 1 ? '' : 's'}`)
+      )
+    );
+    grid.appendChild(row);
+  }
   $('#modal-bd').classList.add('open');
   $('#reopen-btn').classList.remove('show');
 }
@@ -1875,12 +1876,12 @@ function bindEvents() {
   });
 
   $('#next-btn').addEventListener('click', () => {
-    state.puzzleOffset += 1;
+    state.mode = 'random';
     resetPuzzle();
     sndClick();
   });
   $('#modal-next').addEventListener('click', () => {
-    state.puzzleOffset += 1;
+    state.mode = 'random';
     closeModal();
     resetPuzzle();
     sndClick();
@@ -1935,16 +1936,6 @@ function zoomAround(clientX, clientY, factor) {
   clampView();
   applyViewBox();
 }
-function zoomCenter(factor) {
-  const r = $('#map-svg').getBoundingClientRect();
-  zoomAround(r.left + r.width/2, r.top + r.height/2, factor);
-}
-function recenter() {
-  if (!state.target) return;
-  setView(STATIONS[state.target].coords, 700);
-  clampView(); applyViewBox();
-}
-
 function bindMapInteraction() {
   const svg = $('#map-svg');
   const pointers = new Map();
@@ -2031,10 +2022,6 @@ function bindMapInteraction() {
     hideHintOnce();
   }, { passive: false });
 
-  // Buttons
-  $('#zoom-in').addEventListener('click', () => { sndClick(); zoomCenter(0.78); });
-  $('#zoom-out').addEventListener('click', () => { sndClick(); zoomCenter(1.28); });
-  $('#zoom-reset').addEventListener('click', () => { sndClick(); recenter(); });
 }
 
 function updateMuteUI() {
