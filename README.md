@@ -64,6 +64,12 @@ The puzzle uses a Beck-style London Underground map built as a hand-crafted SVG.
 
 - **Guesses 1–3** — full network, greyscale.
 - **Guess 4+** — greyscale base with the target line(s) overlaid in colour.
-- **Game end** — the full 741 KB labelled SVG loads, with the target station circled in red.
+- **Game end** — the full 737 KB labelled SVG loads, with the target station circled in red.
 
 Stop distances between stations are calculated with a BFS graph built from each line's station sequences, counting the minimum number of station hops across all lines including the Waterloo & City.
+
+---
+
+## Credits
+
+Base tube map SVG from Networkle.
